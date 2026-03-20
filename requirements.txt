@@ -1,0 +1,4 @@
+tkintermapview
+tkinterdnd2
+gpxpy
+pillow
