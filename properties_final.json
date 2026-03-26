@@ -1,0 +1,137 @@
+{
+    "app": {
+        "main_window": {
+            "geometry": "1760x784+-7+43"
+        },
+        "recent_files": {
+            "with_timestamps": {
+                "W:/Navigation/Touren/test/Iseo - Wenns_downsampled.gpx": 1774519905.7839656,
+                "Z:/work/Navigation/Touren/test/GW01.gpx": 1774519905.7839663,
+                "Z:/work/Navigation/Touren/test/GW01_converted_tracks_converted_routes.gpx": 1774519905.7839663,
+                "Z:/work/Navigation/Touren/test/GW01_converted_tracks.gpx": 1774519905.7839665,
+                "Z:/work/Navigation/Touren/test/bft Autowäsche, Obernburg a.Main - Sölden.gpx": 1774519905.7839665,
+                "Z:/work/Navigation/Touren/test/Iseo - Wenns.gpx": 1774519905.7839668
+            }
+        }
+    },
+    "dialogs": {
+        "geometry": {
+            "MarkerSettingsDialog": "366x654+627+51",
+            "LoggingSettingsDialog": "681x348+688+170",
+            "RenderingSettingsDialog": "423x387+692+119",
+            "PropertiesEditorDialog": "450x391+627+250",
+            "TrackToRouteDialog": "621x480+633+58",
+            "RouteToTrackDialog": "607x462+639+74",
+            "TrackDownsamplingDialog": "423x465+527+102"
+        },
+        "settings": {
+            "logging": {
+                "level": "WARNING",
+                "file": "W:/TomsGPXEditor/applog.txt",
+                "display_lines": 100
+            },
+            "rendering": {
+                "waypoints": {
+                    "enabled": true,
+                    "step": 1,
+                    "percent": 4,
+                    "color": "#9B261E",
+                    "color_circle": "#9B261E",
+                    "color_outside": "#C5542D",
+                    "color_text": "#652A22"
+                },
+                "trackpoints": {
+                    "enabled": true,
+                    "step": 1,
+                    "percent": 1,
+                    "color": "#C5542D",
+                    "color_circle": "#4169E1",
+                    "color_outside": "#6495ED",
+                    "color_text": "#FFFFFF"
+                },
+                "routepoints": {
+                    "enabled": true,
+                    "step": 1,
+                    "percent": 7,
+                    "color": "#652A22",
+                    "color_circle": "#228B22",
+                    "color_outside": "#32CD32",
+                    "color_text": "#FFFFFF"
+                },
+                "track_line": {
+                    "enabled": true,
+                    "width": 5
+                },
+                "route_line": {
+                    "enabled": true,
+                    "width": 4
+                }
+            },
+            "conversion": {
+                "track_to_route": {
+                    "points_per_100km": 10
+                },
+                "route_to_track": {
+                    "points_per_100km": 45
+                },
+                "downsample": {
+                    "points_per_100km": 20,
+                    "keep_waypoints": true,
+                    "overwrite_original": false
+                }
+            }
+        }
+    },
+    "files": {
+        "session": {
+            "1": {
+                "path": "Z:/work/Navigation/Touren/test/Iseo - Wenns.gpx",
+                "settings": {
+                    "test": true,
+                    "visible": false,
+                    "editable": false,
+                    "color": "#ff8040"
+                }
+            },
+            "2": {
+                "path": "Z:/work/Navigation/Touren/test/bft Autowäsche, Obernburg a.Main - Sölden.gpx",
+                "settings": {
+                    "visible": false,
+                    "editable": false,
+                    "color": "#8080ff"
+                }
+            },
+            "3": {
+                "path": "Z:/work/Navigation/Touren/test/GW01_converted_tracks.gpx",
+                "settings": {
+                    "visible": true,
+                    "editable": false
+                }
+            },
+            "4": {
+                "path": "Z:/work/Navigation/Touren/test/GW01_converted_tracks_converted_routes.gpx",
+                "settings": {
+                    "color": "#00ffff",
+                    "visible": false,
+                    "editable": false
+                }
+            },
+            "5": {
+                "path": "Z:/work/Navigation/Touren/test/GW01.gpx",
+                "settings": {
+                    "color": "#800040",
+                    "visible": false,
+                    "editable": false
+                }
+            },
+            "7": {
+                "path": "W:/Navigation/Touren/test/Iseo - Wenns_downsampled.gpx",
+                "settings": {
+                    "visible": false,
+                    "editable": true,
+                    "color": "#0080c0"
+                }
+            }
+        }
+    }
+}

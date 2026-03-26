@@ -143,14 +143,14 @@ def _render_markers(map_widget, gpx_data, properties):
         return
         
     # Separate Einstellungen für jeden Punkt-Typ
-    waypoints_enabled = properties.get('waypoints_enabled', True)
-    trackpoints_enabled = properties.get('trackpoints_enabled', True)
-    routepoints_enabled = properties.get('routepoints_enabled', True)
+    waypoints_enabled = properties.get('dialogs.settings.rendering.waypoints.enabled', True)
+    trackpoints_enabled = properties.get('dialogs.settings.rendering.trackpoints.enabled', True)
+    routepoints_enabled = properties.get('dialogs.settings.rendering.routepoints.enabled', True)
     
     # % Werte aus Properties
-    waypoints_percent = properties.get('waypoints_percent', 100)
-    trackpoints_percent = properties.get('trackpoints_percent', 50)
-    routepoints_percent = properties.get('routepoints_percent', 50)
+    waypoints_percent = properties.get('dialogs.settings.rendering.waypoints.percent', 100)
+    trackpoints_percent = properties.get('dialogs.settings.rendering.trackpoints.percent', 50)
+    routepoints_percent = properties.get('dialogs.settings.rendering.routepoints.percent', 50)
     
     # Step aus % berechnen
     def percent_to_step(percent):
@@ -166,17 +166,17 @@ def _render_markers(map_widget, gpx_data, properties):
     routepoints_step = percent_to_step(routepoints_percent)
     
     # Separate Farben für jeden Punkt-Typ (3 Farben pro Typ)
-    waypoints_color_circle = properties.get('waypoints_color_circle', "#9B261E")
-    waypoints_color_outside = properties.get('waypoints_color_outside', "#C5542D")
-    waypoints_color_text = properties.get('waypoints_color_text', "#652A22")
+    waypoints_color_circle = properties.get('dialogs.settings.rendering.waypoints.color_circle', "#9B261E")
+    waypoints_color_outside = properties.get('dialogs.settings.rendering.waypoints.color_outside', "#C5542D")
+    waypoints_color_text = properties.get('dialogs.settings.rendering.waypoints.color_text', "#652A22")
     
-    trackpoints_color_circle = properties.get('trackpoints_color_circle', "#4169E1")
-    trackpoints_color_outside = properties.get('trackpoints_color_outside', "#6495ED")
-    trackpoints_color_text = properties.get('trackpoints_color_text', "#FFFFFF")
+    trackpoints_color_circle = properties.get('dialogs.settings.rendering.trackpoints.color_circle', "#4169E1")
+    trackpoints_color_outside = properties.get('dialogs.settings.rendering.trackpoints.color_outside', "#6495ED")
+    trackpoints_color_text = properties.get('dialogs.settings.rendering.trackpoints.color_text', "#FFFFFF")
     
-    routepoints_color_circle = properties.get('routepoints_color_circle', "#228B22")
-    routepoints_color_outside = properties.get('routepoints_color_outside', "#32CD32")
-    routepoints_color_text = properties.get('routepoints_color_text', "#FFFFFF")
+    routepoints_color_circle = properties.get('dialogs.settings.rendering.routepoints.color_circle', "#228B22")
+    routepoints_color_outside = properties.get('dialogs.settings.rendering.routepoints.color_outside', "#32CD32")
+    routepoints_color_text = properties.get('dialogs.settings.rendering.routepoints.color_text', "#FFFFFF")
     
     # Render waypoints
     if waypoints_enabled and gpx_data.waypoints:
@@ -263,10 +263,10 @@ def render_tracks_on_map(map_widget, entries, properties):
             is_visible = True  # Fallback: sichtbar
         
         if is_visible:
-            logger.info(f"Rendering entry: {entry.get_path()}, visible={is_visible}")
             gpx_data = GPXCache.get_gpx(entry.get_path())
             if gpx_data:
-                logger.info(f"GPX data loaded: {len(gpx_data.tracks)} tracks, {len(gpx_data.routes)} routes")
+                logger.info(f"Rendering GPX file: {os.path.basename(entry.get_path())} ({len(gpx_data.tracks)} tracks, {len(gpx_data.routes)} routes)")
+                
                 # Render tracks with line width
                 track_line_enabled = properties.get('track_line_enabled', True)
                 track_line_width = properties.get('track_line_width', 2)

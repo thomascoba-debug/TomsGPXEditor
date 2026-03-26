@@ -49,6 +49,10 @@ class TrackToRouteDialog(PersistentDialog):
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
         
+        # Store references for rebuild
+        self.canvas = canvas
+        self.scrollable_frame = scrollable_frame
+        
         # Add files with checkboxes
         editable_count = 0
         for entry in self.entries:
@@ -108,6 +112,30 @@ class TrackToRouteDialog(PersistentDialog):
         button_frame = ttk.Frame(frame)
         button_frame.pack(fill="x")
         
+        # Select All button
+        select_all_button = ttk.Button(
+            button_frame, 
+            text="Select All",
+            command=self._select_all
+        )
+        select_all_button.pack(side="left", padx=(0, 5))
+        
+        # Deselect All button
+        deselect_all_button = ttk.Button(
+            button_frame, 
+            text="Deselect All",
+            command=self._deselect_all
+        )
+        deselect_all_button.pack(side="left", padx=(0, 5))
+        
+        # Remove button
+        remove_button = ttk.Button(
+            button_frame, 
+            text="Remove Selected",
+            command=self._remove_selected
+        )
+        remove_button.pack(side="left", padx=(0, 5))
+        
         # Downsample button
         downsample_button = ttk.Button(
             button_frame, 
@@ -132,6 +160,9 @@ class TrackToRouteDialog(PersistentDialog):
         self.downsample_button = downsample_button
         self.convert_button = convert_button
         self.close_button = close_button
+        
+        # Load settings
+        self._load_settings()
         
         # Update status
         self._update_status()
@@ -301,6 +332,86 @@ class TrackToRouteDialog(PersistentDialog):
             messagebox.showerror("Error", f"Exception during conversion:\n{str(e)}")
 
     def _on_close(self):
-        """Close dialog"""
-        self._save_geometry()
-        self.destroy()
+        """Close dialog - ALWAYS save settings and geometry"""
+        # Save settings before closing
+        self._save_settings()
+        # Save geometry (handled by PersistentDialog base class)
+        super()._on_close()
+
+    def _load_settings(self):
+        """Load saved settings"""
+        try:
+            points_per_100km = self.properties.get("track_to_route_points_per_100km", 100)
+            self.points_var.set(points_per_100km)
+            logger.debug(f"Loaded track to route settings: points={points_per_100km}")
+        except Exception as e:
+            logger.error(f"Error loading track to route settings: {e}")
+
+    def _save_settings(self):
+        """Save current settings"""
+        try:
+            self.properties.set("track_to_route_points_per_100km", self.points_var.get())
+            logger.debug(f"Saved track to route settings: points={self.points_var.get()}")
+        except Exception as e:
+            logger.error(f"Error saving track to route settings: {e}")
+
+    def _select_all(self):
+        """Select all files"""
+        for var in self.selected_files.values():
+            var.set(True)
+        self._update_status()
+
+    def _deselect_all(self):
+        """Deselect all files"""
+        for var in self.selected_files.values():
+            var.set(False)
+        self._update_status()
+
+    def _remove_selected(self):
+        """Remove selected files from the list"""
+        selected_files = [path for path, var in self.selected_files.items() if var.get()]
+        
+        if not selected_files:
+            messagebox.showwarning("No Selection", "Please select at least one file to remove.")
+            return
+        
+        # Confirm removal
+        result = messagebox.askyesno(
+            "Remove Files",
+            f"Remove {len(selected_files)} file(s) from the list?\n\n"
+            "This will not delete the actual files, just remove them from this dialog.",
+            icon="question"
+        )
+        
+        if not result:
+            return
+        
+        # Remove selected files
+        for file_path in selected_files:
+            del self.selected_files[file_path]
+        
+        # Rebuild the file list
+        self._rebuild_file_list()
+        self._update_status()
+
+    def _rebuild_file_list(self):
+        """Rebuild the file list display"""
+        # Clear existing widgets
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        # Re-add files
+        for file_path, var in self.selected_files.items():
+            file_frame = ttk.Frame(self.scrollable_frame)
+            file_frame.pack(fill="x", padx=5, pady=2)
+            
+            checkbox = ttk.Checkbutton(
+                file_frame, 
+                text=os.path.basename(file_path),
+                variable=var
+            )
+            checkbox.pack(side="left")
+        
+        # Update canvas scroll region
+        self.scrollable_frame.update_idletasks()
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))

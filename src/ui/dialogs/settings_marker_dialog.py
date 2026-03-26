@@ -19,25 +19,25 @@ class MarkerSettingsDialog(PersistentDialog):
         self.marker_enabled = tk.BooleanVar(value=properties.get("marker_enabled", True))
         
         # Waypoints Einstellungen - 3 Farben + %
-        self.waypoints_enabled = tk.BooleanVar(value=properties.get("waypoints_enabled", True))
-        self.waypoints_percent = tk.IntVar(value=properties.get("waypoints_percent", 100))  # % statt Step
-        self.waypoints_color_circle = tk.StringVar(value=properties.get("waypoints_color_circle", "#9B261E"))
-        self.waypoints_color_outside = tk.StringVar(value=properties.get("waypoints_color_outside", "#C5542D"))
-        self.waypoints_color_text = tk.StringVar(value=properties.get("waypoints_color_text", "#652A22"))
+        self.waypoints_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.waypoints.enabled', True))
+        self.waypoints_percent = tk.IntVar(value=properties.get('dialogs.settings.rendering.waypoints.percent', 100))  # % statt Step
+        self.waypoints_color_circle = tk.StringVar(value=properties.get('dialogs.settings.rendering.waypoints.color_circle', "#9B261E"))
+        self.waypoints_color_outside = tk.StringVar(value=properties.get('dialogs.settings.rendering.waypoints.color_outside', "#C5542D"))
+        self.waypoints_color_text = tk.StringVar(value=properties.get('dialogs.settings.rendering.waypoints.color_text', "#652A22"))
         
         # Track Points Einstellungen - 3 Farben + %
-        self.trackpoints_enabled = tk.BooleanVar(value=properties.get("trackpoints_enabled", True))
-        self.trackpoints_percent = tk.IntVar(value=properties.get("trackpoints_percent", 50))  # % statt Step
-        self.trackpoints_color_circle = tk.StringVar(value=properties.get("trackpoints_color_circle", "#4169E1"))
-        self.trackpoints_color_outside = tk.StringVar(value=properties.get("trackpoints_color_outside", "#6495ED"))
-        self.trackpoints_color_text = tk.StringVar(value=properties.get("trackpoints_color_text", "#FFFFFF"))
+        self.trackpoints_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.trackpoints.enabled', True))
+        self.trackpoints_percent = tk.IntVar(value=properties.get('dialogs.settings.rendering.trackpoints.percent', 50))  # % statt Step
+        self.trackpoints_color_circle = tk.StringVar(value=properties.get('dialogs.settings.rendering.trackpoints.color_circle', "#4169E1"))
+        self.trackpoints_color_outside = tk.StringVar(value=properties.get('dialogs.settings.rendering.trackpoints.color_outside', "#6495ED"))
+        self.trackpoints_color_text = tk.StringVar(value=properties.get('dialogs.settings.rendering.trackpoints.color_text', "#FFFFFF"))
         
         # Route Points Einstellungen - 3 Farben + %
-        self.routepoints_enabled = tk.BooleanVar(value=properties.get("routepoints_enabled", True))
-        self.routepoints_percent = tk.IntVar(value=properties.get("routepoints_percent", 50))  # % statt Step
-        self.routepoints_color_circle = tk.StringVar(value=properties.get("routepoints_color_circle", "#228B22"))
-        self.routepoints_color_outside = tk.StringVar(value=properties.get("routepoints_color_outside", "#32CD32"))
-        self.routepoints_color_text = tk.StringVar(value=properties.get("routepoints_color_text", "#FFFFFF"))
+        self.routepoints_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.routepoints.enabled', True))
+        self.routepoints_percent = tk.IntVar(value=properties.get('dialogs.settings.rendering.routepoints.percent', 50))  # % statt Step
+        self.routepoints_color_circle = tk.StringVar(value=properties.get('dialogs.settings.rendering.routepoints.color_circle', "#228B22"))
+        self.routepoints_color_outside = tk.StringVar(value=properties.get('dialogs.settings.rendering.routepoints.color_outside', "#32CD32"))
+        self.routepoints_color_text = tk.StringVar(value=properties.get('dialogs.settings.rendering.routepoints.color_text', "#FFFFFF"))
 
         frame = ttk.Frame(self)
         frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -79,25 +79,25 @@ class MarkerSettingsDialog(PersistentDialog):
             properties.set("marker_enabled", self.marker_enabled.get())
             
             # Waypoints
-            properties.set("waypoints_enabled", self.waypoints_enabled.get())
-            properties.set("waypoints_percent", self.waypoints_percent.get())  # % statt Step
-            properties.set("waypoints_color_circle", self.waypoints_color_circle.get())
-            properties.set("waypoints_color_outside", self.waypoints_color_outside.get())
-            properties.set("waypoints_color_text", self.waypoints_color_text.get())
+            properties.set('dialogs.settings.rendering.waypoints.enabled', self.waypoints_enabled.get())
+            properties.set('dialogs.settings.rendering.waypoints.percent', self.waypoints_percent.get())  # % statt Step
+            properties.set('dialogs.settings.rendering.waypoints.color_circle', self.waypoints_color_circle.get())
+            properties.set('dialogs.settings.rendering.waypoints.color_outside', self.waypoints_color_outside.get())
+            properties.set('dialogs.settings.rendering.waypoints.color_text', self.waypoints_color_text.get())
             
             # Track Points
-            properties.set("trackpoints_enabled", self.trackpoints_enabled.get())
-            properties.set("trackpoints_percent", self.trackpoints_percent.get())  # % statt Step
-            properties.set("trackpoints_color_circle", self.trackpoints_color_circle.get())
-            properties.set("trackpoints_color_outside", self.trackpoints_color_outside.get())
-            properties.set("trackpoints_color_text", self.trackpoints_color_text.get())
+            properties.set('dialogs.settings.rendering.trackpoints.enabled', self.trackpoints_enabled.get())
+            properties.set('dialogs.settings.rendering.trackpoints.percent', self.trackpoints_percent.get())  # % statt Step
+            properties.set('dialogs.settings.rendering.trackpoints.color_circle', self.trackpoints_color_circle.get())
+            properties.set('dialogs.settings.rendering.trackpoints.color_outside', self.trackpoints_color_outside.get())
+            properties.set('dialogs.settings.rendering.trackpoints.color_text', self.trackpoints_color_text.get())
             
             # Route Points
-            properties.set("routepoints_enabled", self.routepoints_enabled.get())
-            properties.set("routepoints_percent", self.routepoints_percent.get())  # % statt Step
-            properties.set("routepoints_color_circle", self.routepoints_color_circle.get())
-            properties.set("routepoints_color_outside", self.routepoints_color_outside.get())
-            properties.set("routepoints_color_text", self.routepoints_color_text.get())
+            properties.set('dialogs.settings.rendering.routepoints.enabled', self.routepoints_enabled.get())
+            properties.set('dialogs.settings.rendering.routepoints.percent', self.routepoints_percent.get())  # % statt Step
+            properties.set('dialogs.settings.rendering.routepoints.color_circle', self.routepoints_color_circle.get())
+            properties.set('dialogs.settings.rendering.routepoints.color_outside', self.routepoints_color_outside.get())
+            properties.set('dialogs.settings.rendering.routepoints.color_text', self.routepoints_color_text.get())
             
             save_callback()
             self._on_close()

@@ -4,6 +4,7 @@ from tkinter import ttk, filedialog, messagebox
 from tkinterdnd2 import DND_FILES, TkinterDnD
 from tkintermapview import TkinterMapView
 import logging
+import gpxpy
 
 # Import from new architecture
 from src.infrastructure.repositories.properties_repository import AppProperties
@@ -18,6 +19,7 @@ from src.ui.dialogs.settings_rendering_dialog import RenderingSettingsDialog
 from src.ui.dialogs.settings_properties_dialog import PropertiesEditorDialog
 from src.ui.dialogs.track_to_route_dialog import TrackToRouteDialog
 from src.ui.dialogs.route_to_track_dialog import RouteToTrackDialog
+from src.ui.dialogs.track_downsampling_dialog import TrackDownsamplingDialog
 
 # UI Widgets from new architecture
 from src.ui.widgets.file_entry import FileEntry
@@ -80,6 +82,9 @@ class TomsGPXEditor(TkinterDnD.Tk):
     def __init__(self):
 
         super().__init__()
+        
+        # Add initialization flag
+        self._initialized = False
 
         self.title("Toms GPX Editor")
 
@@ -161,19 +166,30 @@ class TomsGPXEditor(TkinterDnD.Tk):
 
         edit_menu.add_command(
             label="Open Track Table Editor",
-            command=self._open_table_editor
+            command=self._open_table_editor,
+            state="disabled"
         )
         
         edit_menu.add_separator()
         
         self.track_to_route_menu = edit_menu.add_command(
             label="Track to Route",
-            command=self._show_track_to_route_dialog
+            command=self._show_track_to_route_dialog,
+            state="disabled"
         )
         
         self.route_to_track_menu = edit_menu.add_command(
             label="Route to Track", 
-            command=self._show_route_to_track_dialog
+            command=self._show_route_to_track_dialog,
+            state="disabled"
+        )
+        
+        edit_menu.add_separator()
+        
+        self.track_downsampling_menu = edit_menu.add_command(
+            label="Track Downsampling",
+            command=self._show_track_downsampling_dialog,
+            state="disabled"
         )
 
         menubar.add_cascade(label="Edit", menu=edit_menu)
@@ -387,7 +403,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
         if not os.path.exists(path):
             return
 
-        logger.info(f"=== ADDING FILE: {path} ===")
+        logger.debug(f"=== ADDING FILE: {path} ===")
 
         # Add to recent files
         self.recent_files_manager.add_file(path)
@@ -399,7 +415,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
         ref_num = self.properties.get_or_create_file_reference(path)
         settings = self.properties.get_file_settings_by_reference(ref_num)
         
-        logger.info(f"File {path}: ref_num={ref_num}, settings={settings}")
+        logger.debug(f"File {path}: ref_num={ref_num}, settings={settings}")
         
         # Create widgets directly in main grid
         visible_var = tk.BooleanVar()
@@ -407,7 +423,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
         
         # Load checkbox states
         if settings:
-            logger.info(f"Loading settings for ref {ref_num}: visible={settings.get('visible')}, editable={settings.get('editable')}, color={settings.get('color')}")
+            logger.debug(f"Loading settings for ref {ref_num}: visible={settings.get('visible')}, editable={settings.get('editable')}, color={settings.get('color')}")
             visible_var.set(settings.get('visible', True))
             editable_var.set(settings.get('editable', False))
         else:
@@ -415,18 +431,18 @@ class TomsGPXEditor(TkinterDnD.Tk):
             visible_var.set(True)
             editable_var.set(False)
         
-        logger.info(f"After loading: visible={visible_var.get()}, editable={editable_var.get()}")
+        logger.debug(f"After loading: visible={visible_var.get()}, editable={editable_var.get()}")
         
         # Create checkbox change handlers
         def on_visible_change():
-            logger.info(f"=== VISIBLE CHANGE for ref {ref_num} ===")
-            logger.info(f"Visible changed to: {visible_var.get()}")
+            logger.debug(f"=== VISIBLE CHANGE for ref {ref_num} ===")
+            logger.debug(f"Visible changed to: {visible_var.get()}")
             save_states()
             self.update_map()
         
         def on_editable_change():
-            logger.info(f"=== EDITABLE CHANGE for ref {ref_num} ===")
-            logger.info(f"Editable changed to: {editable_var.get()}")
+            logger.debug(f"=== EDITABLE CHANGE for ref {ref_num} ===")
+            logger.debug(f"Editable changed to: {editable_var.get()}")
             save_states()
         
         # Create widgets directly in main_grid
@@ -447,7 +463,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
         editable_cb.grid(row=self.current_row, column=1, padx=3)
         
         # Add debug to verify handlers are connected
-        logger.info(f"Created handlers for ref {ref_num}: visible_cb connected={visible_cb.cget('command')}, editable_cb connected={editable_cb.cget('command')}")
+        logger.debug(f"Created handlers for ref {ref_num}: visible_cb connected={visible_cb.cget('command')}, editable_cb connected={editable_cb.cget('command')}")
         
         ref_label = ttk.Label(
             self.main_grid,
@@ -513,21 +529,21 @@ class TomsGPXEditor(TkinterDnD.Tk):
         
         # Add save_states method to entry
         def save_states():
-            logger.info(f"=== SAVING STATES for ref {ref_num} ===")
-            logger.info(f"Before save: visible={visible_var.get()}, editable={editable_var.get()}")
+            logger.debug(f"=== SAVING STATES for ref {ref_num} ===")
+            logger.debug(f"Before save: visible={visible_var.get()}, editable={editable_var.get()}")
             
             settings = self.properties.get_file_settings_by_reference(ref_num)
-            logger.info(f"Current settings in DB: {settings}")
+            logger.debug(f"Current settings in DB: {settings}")
             
             settings['visible'] = visible_var.get()
             settings['editable'] = editable_var.get()
             
-            logger.info(f"Settings to save: {settings}")
+            logger.debug(f"Settings to save: {settings}")
             self.properties.save_file_settings_by_reference(ref_num, settings)
             
             # Verify save
             saved_settings = self.properties.get_file_settings_by_reference(ref_num)
-            logger.info(f"Settings after save: {saved_settings}")
+            logger.debug(f"Settings after save: {saved_settings}")
             
             # Update edit menu state after editable state changes
             self._update_edit_menu_state()
@@ -560,6 +576,9 @@ class TomsGPXEditor(TkinterDnD.Tk):
 
         # Verzögertes Karten-Update für korrekte Initialisierung
         self.after(100, self._delayed_map_update)
+        
+        # Mark as initialized
+        self._initialized = True
     
     def _analyze_gpx_file(self, path):
         """Analyze GPX file and return file type information"""
@@ -719,24 +738,24 @@ class TomsGPXEditor(TkinterDnD.Tk):
     # ------------------------------------------------------------
 
     def _select_all(self):
-        logger.info("=== SELECT ALL CALLED ===")
-        logger.info(f"Number of entries: {len(self.entries)}")
+        logger.info("Select all files - making all files visible")
+        logger.debug(f"Number of entries: {len(self.entries)}")
 
         for e in self.entries:
-            logger.info(f"Processing entry: visible before={e.visible_var.get()}")
+            logger.debug(f"Processing entry: visible before={e.visible_var.get()}")
             e.visible_var.set(True)
-            logger.info(f"Processing entry: visible after={e.visible_var.get()}")
+            logger.debug(f"Processing entry: visible after={e.visible_var.get()}")
             if hasattr(e, '_save_states'):
-                logger.info(f"Calling save_states for entry")
+                logger.debug(f"Calling save_states for entry")
                 e._save_states()
             else:
                 logger.warning(f"Entry has no _save_states method")
 
         self.update_map()
-        logger.info("=== SELECT ALL FINISHED ===")
+        logger.debug("=== SELECT ALL FINISHED ===")
 
     def _deselect_all(self):
-
+        logger.info("Deselect all files - hiding all files")
         for e in self.entries:
             e.visible_var.set(False)
             if hasattr(e, '_save_states'):
@@ -746,29 +765,29 @@ class TomsGPXEditor(TkinterDnD.Tk):
 
     def _select_all_edit(self):
         """Select all edit checkboxes"""
-        logger.info("=== SELECT ALL EDIT CALLED ===")
+        logger.info("Enable editing for all files")
         for e in self.entries:
-            logger.info(f"Setting editable=True for entry")
+            logger.debug(f"Setting editable=True for entry")
             e.editable_var.set(True)
             if hasattr(e, '_save_states'):
-                logger.info(f"Calling save_states for editable change")
+                logger.debug(f"Calling save_states for editable change")
                 e._save_states()
-        logger.info("=== SELECT ALL EDIT FINISHED ===")
+        logger.debug("=== SELECT ALL EDIT FINISHED ===")
 
     def _deselect_all_edit(self):
         """Deselect all edit checkboxes"""
-        logger.info("=== DESELECT ALL EDIT CALLED ===")
+        logger.info("Disable editing for all files")
         for e in self.entries:
-            logger.info(f"Setting editable=False for entry")
+            logger.debug(f"Setting editable=False for entry")
             e.editable_var.set(False)
             if hasattr(e, '_save_states'):
-                logger.info(f"Calling save_states for deselect")
+                logger.debug(f"Calling save_states for deselect")
                 e._save_states()
-        logger.info("=== DESELECT ALL EDIT FINISHED ===")
+        logger.debug("=== DESELECT ALL EDIT FINISHED ===")
 
     def _route_to_track(self):
         """Convert selected GPX routes to tracks"""
-        logger.debug("Route to track conversion started")
+        logger.info("Route to track conversion started")
         
         converted_count = 0
         error_count = 0
@@ -798,7 +817,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
                             success_save, message_save = save_converted_gpx(gpx_data, save_path)
                             
                             if success_save:
-                                logger.info(f"Successfully converted routes to tracks and saved to: {save_path}")
+                                logger.info(f"Successfully converted routes to tracks and saved to: {os.path.basename(save_path)}")
                                 
                                 # Add the new file to the file list
                                 self._add_file(save_path)
@@ -816,11 +835,11 @@ class TomsGPXEditor(TkinterDnD.Tk):
                     logger.error(f"Exception converting {e.path}: {str(ex)}")
                     error_count += 1
         
-        logger.info(f"Route to track conversion completed: {converted_count} files converted, {error_count} errors")
+        logger.debug(f"Route to track conversion completed: {converted_count} files converted, {error_count} errors")
 
     def _track_to_route(self):
         """Convert selected GPX tracks to routes"""
-        logger.debug("Track to route conversion started")
+        logger.info("Track to route conversion started")
         
         converted_count = 0
         error_count = 0
@@ -859,7 +878,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
                             success_save, message_save = save_converted_gpx(gpx_data, save_path)
                             
                             if success_save:
-                                logger.info(f"Successfully converted tracks to routes and saved to: {save_path}")
+                                logger.info(f"Successfully converted tracks to routes and saved to: {os.path.basename(save_path)}")
                                 
                                 # Add the new file to the file list
                                 self._add_file(save_path)
@@ -885,7 +904,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
         # Show result messagebox
         self._show_conversion_results(conversion_results, converted_count, error_count, no_tracks_files)
         
-        logger.info(f"Track to route conversion completed: {converted_count} files converted, {error_count} errors")
+        logger.debug(f"Track to route conversion completed: {converted_count} files converted, {error_count} errors")
 
     def _show_conversion_results(self, conversion_results, converted_count, error_count, no_tracks_files):
         """Show conversion results in a messagebox"""
@@ -1143,30 +1162,55 @@ class TomsGPXEditor(TkinterDnD.Tk):
         self.after(0, set_geom)
 
     def _update_edit_menu_state(self):
-        """Update edit menu items based on editable files count"""
+        """Update edit menu items based on editable files count and track availability"""
         editable_count = sum(1 for entry in self.entries if entry.editable_var.get())
         
-        # Enable/disable menu items based on editable files
+        # Check if any editable files have tracks
+        editable_track_files_count = 0
+        for entry in self.entries:
+            if entry.editable_var.get():
+                try:
+                    with open(entry.get_path(), 'r', encoding='utf-8') as f:
+                        gpx = gpxpy.parse(f)
+                    if gpx.tracks and len(gpx.tracks) > 0:
+                        editable_track_files_count += 1
+                        break  # Only need to know if at least one exists
+                except:
+                    continue
+        
+        # Enable/disable menu items based on conditions
         new_state = "normal" if editable_count > 0 else "disabled"
+        track_state = "normal" if editable_track_files_count > 0 else "disabled"
         
         # Only update if state actually changed
-        if not hasattr(self, '_last_menu_state') or self._last_menu_state != new_state:
+        if not hasattr(self, '_last_menu_state') or self._last_menu_state != (new_state, track_state):
             # Reduced logging - only log state changes
-            logger.info(f"Edit menu state changed: {editable_count} editable files -> {new_state}")
+            logger.debug(f"Edit menu state changed: editable={editable_count}, editable_tracks={editable_track_files_count}")
             
             try:
                 # Configure menu items by index in edit_menu
                 # Open Track Table Editor is at index 0
                 # Track to Route is at index 2 (after separator)
                 # Route to Track is at index 3
+                # Track Downsampling is at index 5 (after separator)
                 self.edit_menu.entryconfig(0, state=new_state)  # Open Track Table Editor
                 self.edit_menu.entryconfig(2, state=new_state)  # Track to Route
                 self.edit_menu.entryconfig(3, state=new_state)  # Route to Track
+                self.edit_menu.entryconfig(5, state=track_state)  # Track Downsampling
             except Exception as e:
                 logger.error(f"Error updating menu state: {e}")
             
             # Store current state
-            self._last_menu_state = new_state
+            self._last_menu_state = (new_state, track_state)
+
+    def _safe_menu_update(self):
+        """Safe menu update that runs after full initialization"""
+        if getattr(self, '_initialized', False):
+            self._update_edit_menu_state()
+
+    def _enable_edit_menus(self):
+        """Manually enable edit menus - call this when ready"""
+        self._safe_menu_update()
 
     def _show_track_to_route_dialog(self):
         """Show Track to Route dialog"""
@@ -1177,6 +1221,11 @@ class TomsGPXEditor(TkinterDnD.Tk):
         """Show Route to Track dialog"""
         logger.debug("_show_route_to_track_dialog called")
         dialog = RouteToTrackDialog(self, self.entries, self.properties)
+
+    def _show_track_downsampling_dialog(self):
+        """Show Track Downsampling dialog"""
+        logger.debug("_show_track_downsampling_dialog called")
+        dialog = TrackDownsamplingDialog(self, self.entries, self.properties)
 
     def _on_close(self):
         geom = self.geometry()
