@@ -253,8 +253,8 @@ def render_tracks_on_map(map_widget, entries, properties):
         # Direkte Sichtbarkeits-Prüfung statt entry.is_visible()
         is_visible = False
         try:
-            # Hole Sichtbarkeit aus Properties direkt
-            session_files = properties.data.get('session_files', {})
+            # Hole Sichtbarkeit aus Properties mit neuer Struktur
+            session_files = properties.get("files.session") or properties.data.get('session_files', {})
             for ref_num, file_info in session_files.items():
                 if file_info.get('path') == entry.get_path():
                     is_visible = file_info.get('settings', {}).get('visible', True)
@@ -263,8 +263,10 @@ def render_tracks_on_map(map_widget, entries, properties):
             is_visible = True  # Fallback: sichtbar
         
         if is_visible:
+            logger.info(f"Rendering entry: {entry.get_path()}, visible={is_visible}")
             gpx_data = GPXCache.get_gpx(entry.get_path())
             if gpx_data:
+                logger.info(f"GPX data loaded: {len(gpx_data.tracks)} tracks, {len(gpx_data.routes)} routes")
                 # Render tracks with line width
                 track_line_enabled = properties.get('track_line_enabled', True)
                 track_line_width = properties.get('track_line_width', 2)

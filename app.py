@@ -387,6 +387,8 @@ class TomsGPXEditor(TkinterDnD.Tk):
         if not os.path.exists(path):
             return
 
+        logger.info(f"=== ADDING FILE: {path} ===")
+
         # Add to recent files
         self.recent_files_manager.add_file(path)
 
@@ -397,20 +399,34 @@ class TomsGPXEditor(TkinterDnD.Tk):
         ref_num = self.properties.get_or_create_file_reference(path)
         settings = self.properties.get_file_settings_by_reference(ref_num)
         
+        logger.info(f"File {path}: ref_num={ref_num}, settings={settings}")
+        
         # Create widgets directly in main grid
         visible_var = tk.BooleanVar()
         editable_var = tk.BooleanVar()
         
         # Load checkbox states
-        visible_var.set(settings.get('visible', True))
-        editable_var.set(settings.get('editable', False))
+        if settings:
+            logger.info(f"Loading settings for ref {ref_num}: visible={settings.get('visible')}, editable={settings.get('editable')}, color={settings.get('color')}")
+            visible_var.set(settings.get('visible', True))
+            editable_var.set(settings.get('editable', False))
+        else:
+            logger.warning(f"No settings found for ref {ref_num}, using defaults")
+            visible_var.set(True)
+            editable_var.set(False)
+        
+        logger.info(f"After loading: visible={visible_var.get()}, editable={editable_var.get()}")
         
         # Create checkbox change handlers
         def on_visible_change():
+            logger.info(f"=== VISIBLE CHANGE for ref {ref_num} ===")
+            logger.info(f"Visible changed to: {visible_var.get()}")
             save_states()
             self.update_map()
         
         def on_editable_change():
+            logger.info(f"=== EDITABLE CHANGE for ref {ref_num} ===")
+            logger.info(f"Editable changed to: {editable_var.get()}")
             save_states()
         
         # Create widgets directly in main_grid
@@ -430,6 +446,9 @@ class TomsGPXEditor(TkinterDnD.Tk):
         )
         editable_cb.grid(row=self.current_row, column=1, padx=3)
         
+        # Add debug to verify handlers are connected
+        logger.info(f"Created handlers for ref {ref_num}: visible_cb connected={visible_cb.cget('command')}, editable_cb connected={editable_cb.cget('command')}")
+        
         ref_label = ttk.Label(
             self.main_grid,
             text=f"[{ref_num}]",
@@ -439,7 +458,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
         )
         ref_label.grid(row=self.current_row, column=2, padx=3)
         
-        color = settings.get('color', '#0000ff')
+        color = settings.get('color', '#0000ff') if settings else '#0000ff'
         color_btn = tk.Button(
             self.main_grid,
             bg=color,
@@ -494,10 +513,21 @@ class TomsGPXEditor(TkinterDnD.Tk):
         
         # Add save_states method to entry
         def save_states():
+            logger.info(f"=== SAVING STATES for ref {ref_num} ===")
+            logger.info(f"Before save: visible={visible_var.get()}, editable={editable_var.get()}")
+            
             settings = self.properties.get_file_settings_by_reference(ref_num)
+            logger.info(f"Current settings in DB: {settings}")
+            
             settings['visible'] = visible_var.get()
             settings['editable'] = editable_var.get()
+            
+            logger.info(f"Settings to save: {settings}")
             self.properties.save_file_settings_by_reference(ref_num, settings)
+            
+            # Verify save
+            saved_settings = self.properties.get_file_settings_by_reference(ref_num)
+            logger.info(f"Settings after save: {saved_settings}")
             
             # Update edit menu state after editable state changes
             self._update_edit_menu_state()
@@ -689,13 +719,21 @@ class TomsGPXEditor(TkinterDnD.Tk):
     # ------------------------------------------------------------
 
     def _select_all(self):
+        logger.info("=== SELECT ALL CALLED ===")
+        logger.info(f"Number of entries: {len(self.entries)}")
 
         for e in self.entries:
+            logger.info(f"Processing entry: visible before={e.visible_var.get()}")
             e.visible_var.set(True)
+            logger.info(f"Processing entry: visible after={e.visible_var.get()}")
             if hasattr(e, '_save_states'):
+                logger.info(f"Calling save_states for entry")
                 e._save_states()
+            else:
+                logger.warning(f"Entry has no _save_states method")
 
         self.update_map()
+        logger.info("=== SELECT ALL FINISHED ===")
 
     def _deselect_all(self):
 
@@ -708,13 +746,25 @@ class TomsGPXEditor(TkinterDnD.Tk):
 
     def _select_all_edit(self):
         """Select all edit checkboxes"""
+        logger.info("=== SELECT ALL EDIT CALLED ===")
         for e in self.entries:
+            logger.info(f"Setting editable=True for entry")
             e.editable_var.set(True)
+            if hasattr(e, '_save_states'):
+                logger.info(f"Calling save_states for editable change")
+                e._save_states()
+        logger.info("=== SELECT ALL EDIT FINISHED ===")
 
     def _deselect_all_edit(self):
         """Deselect all edit checkboxes"""
+        logger.info("=== DESELECT ALL EDIT CALLED ===")
         for e in self.entries:
+            logger.info(f"Setting editable=False for entry")
             e.editable_var.set(False)
+            if hasattr(e, '_save_states'):
+                logger.info(f"Calling save_states for deselect")
+                e._save_states()
+        logger.info("=== DESELECT ALL EDIT FINISHED ===")
 
     def _route_to_track(self):
         """Convert selected GPX routes to tracks"""
@@ -1050,7 +1100,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
     # ------------------------------------------------------------
 
     def _load_session_files(self):
-        session_files = self.properties.get("session_files") or {}
+        session_files = self.properties.get("files.session") or self.properties.get("session_files") or {}
         
         # Sort reference numbers numerically
         sorted_refs = sorted(session_files.keys(), key=int)
@@ -1060,6 +1110,9 @@ class TomsGPXEditor(TkinterDnD.Tk):
             file_path = file_data.get("path")
             if file_path and os.path.exists(file_path):
                 self._add_file(file_path)
+        
+        # Update map after loading all files to show visible tracks
+        self.update_map()
 
     def _save_session_file(self, path):
         ref_num = self.properties.get_or_create_file_reference(path)

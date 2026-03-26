@@ -64,12 +64,32 @@ class AppProperties:
             json.dump(self.data, f, indent=4)
 
     def get(self, key, default=None):
-        # Remove debug logging to avoid log-level dependency
-        result = self.data.get(key, default)
-        return result
+        """Get property value, supporting dot notation for nested keys"""
+        if '.' in key:
+            keys = key.split('.')
+            current = self.data
+            for k in keys:
+                if isinstance(current, dict) and k in current:
+                    current = current[k]
+                else:
+                    return default
+            return current
+        else:
+            return self.data.get(key, default)
 
     def set(self, key, value):
-        self.data[key] = value
+        """Set property value, supporting dot notation for nested keys"""
+        if '.' in key:
+            keys = key.split('.')
+            current = self.data
+            for k in keys[:-1]:
+                if k not in current:
+                    current[k] = {}
+                current = current[k]
+            current[keys[-1]] = value
+        else:
+            self.data[key] = value
+        self.save()
 
     # -------------------------------------------------------------
 
@@ -87,7 +107,7 @@ class AppProperties:
 
     def get_or_create_file_reference(self, file_path):
         """Get existing reference number or create new one for file path"""
-        session_files = self.data.get("session_files", {})
+        session_files = self.get("files.session") or self.data.get("session_files", {})
         
         # Look for existing reference
         for ref_num, file_data in session_files.items():
@@ -99,27 +119,25 @@ class AppProperties:
         while str(new_ref) in session_files:
             new_ref += 1
         session_files[str(new_ref)] = {"path": file_path, "settings": {}}
-        self.data["session_files"] = session_files
-        self.save()
+        self.set("files.session", session_files)
         return new_ref
     
     def get_file_settings_by_reference(self, ref_num):
         """Get file settings by reference number"""
-        session_files = self.data.get("session_files", {})
+        session_files = self.get("files.session") or self.data.get("session_files", {})
         file_data = session_files.get(str(ref_num))
         return file_data.get("settings") if file_data else None
     
     def save_file_settings_by_reference(self, ref_num, settings):
         """Save file settings by reference number"""
-        session_files = self.data.get("session_files", {})
+        session_files = self.get("files.session") or self.data.get("session_files", {})
         ref_str = str(ref_num)
         
         if ref_str not in session_files:
             session_files[ref_str] = {"path": "", "settings": {}}
         
         session_files[ref_str]["settings"] = settings
-        self.data["session_files"] = session_files
-        self.save()
+        self.set("files.session", session_files)
 
     # -------------------------------------------------------------
 
