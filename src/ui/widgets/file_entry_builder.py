@@ -29,6 +29,16 @@ class FileEntryBuilder:
         self.properties = None  # Will be set in create_file_entry
         self.button_update_callback = button_update_callback
         self.editable_update_callback = editable_update_callback
+    
+    @classmethod
+    def create_from_container(cls, parent_frame, row: int, container):
+        """Create FileEntryBuilder from DI container"""
+        return cls(
+            parent_frame=parent_frame,
+            row=row,
+            button_update_callback=container.get('button_update_callback'),
+            editable_update_callback=container.get('editable_update_callback')
+        )
         
     def create_file_entry(self, path: str, ref_num: int, file_analysis: Dict[str, Any], 
                        settings: Dict[str, Any], properties: AppProperties):

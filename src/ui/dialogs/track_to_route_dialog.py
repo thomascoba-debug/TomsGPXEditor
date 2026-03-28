@@ -341,7 +341,7 @@ class TrackToRouteDialog(PersistentDialog):
     def _load_settings(self):
         """Load saved settings"""
         try:
-            points_per_100km = self.properties.get("track_to_route_points_per_100km", 100)
+            points_per_100km = self.properties.get("dialogs.settings.conversion.track_to_route.points_per_100km", 10)
             self.points_var.set(points_per_100km)
             logger.debug(f"Loaded track to route settings: points={points_per_100km}")
         except Exception as e:
@@ -350,7 +350,7 @@ class TrackToRouteDialog(PersistentDialog):
     def _save_settings(self):
         """Save current settings"""
         try:
-            self.properties.set("track_to_route_points_per_100km", self.points_var.get())
+            self.properties.set("dialogs.settings.conversion.track_to_route.points_per_100km", self.points_var.get())
             logger.debug(f"Saved track to route settings: points={self.points_var.get()}")
         except Exception as e:
             logger.error(f"Error saving track to route settings: {e}")

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 class GPXFileManager:
     """Zentrale Verwaltung von GPX-Dateien und UI-Einträgen"""
     
-    def __init__(self, properties: AppProperties, map_widget, main_grid, button_update_callback=None, editable_update_callback=None):
+    def __init__(self, properties: AppProperties, map_widget, main_grid, button_update_callback=None, editable_update_callback=None, recent_files_manager=None):
         self.properties = properties
         self.map_widget = map_widget
         self.main_grid = main_grid
@@ -33,6 +33,19 @@ class GPXFileManager:
         self.current_row = 2  # Start nach Header
         self.button_update_callback = button_update_callback
         self.editable_update_callback = editable_update_callback
+        self.recent_files_manager = recent_files_manager
+    
+    @classmethod
+    def create_from_container(cls, container):
+        """Create GPXFileManager from DI container"""
+        return cls(
+            properties=container.get('properties'),
+            map_widget=container.get('map_widget'),
+            main_grid=container.get('main_grid'),
+            button_update_callback=container.get('button_update_callback'),
+            editable_update_callback=container.get('editable_update_callback'),
+            recent_files_manager=container.get('recent_files_manager')
+        )
         
     def load_gpx_file(self, path: str) -> Optional[Dict[str, Any]]:
         """Analysiere eine GPX-Datei und gib Metadaten zurück"""
@@ -153,7 +166,14 @@ class GPXFileManager:
         
         # Erstelle UI-Widgets
         from src.ui.widgets.file_entry_builder import FileEntryBuilder
-        builder = FileEntryBuilder(self.main_grid, self.current_row, self.button_update_callback, self.editable_update_callback)
+        from src.infrastructure.di_container import DIContainer
+        
+        # Create a mini-container for FileEntryBuilder
+        mini_container = DIContainer()
+        mini_container.register_singleton('button_update_callback', self.button_update_callback)
+        mini_container.register_singleton('editable_update_callback', self.editable_update_callback)
+        
+        builder = FileEntryBuilder.create_from_container(self.main_grid, self.current_row, mini_container)
         entry = builder.create_file_entry(path, ref_num, file_analysis, settings, self.properties)
         
         if entry:
@@ -161,6 +181,12 @@ class GPXFileManager:
             self.current_row += 1
             
             # Speichere in Session (bereits durch get_or_create_file_reference oben erledigt)
+            
+            # Add to recent files
+            if self.recent_files_manager:
+                self.recent_files_manager.add_file(path)
+                self.recent_files_manager.reload_recent_files()
+                logger.debug(f"Added to recent files: {path}")
             
             logger.info(f"Added GPX file: {os.path.basename(path)} (ref: {ref_num})")
         
@@ -199,20 +225,40 @@ class GPXFileManager:
     
     def load_session_files(self) -> None:
         """Lade Session-Dateien"""
-        session_files = self.properties.get("files.session") or self.properties.get("session_files") or {}
-        
-        # Sortiere Reference-Nummern
-        sorted_refs = sorted(session_files.keys(), key=int)
-        
-        for ref_num in sorted_refs:
-            file_data = session_files[ref_num]
-            file_path = file_data.get("path")
-            if file_path and os.path.exists(file_path):
+        try:
+            session_files = self.properties.get("files.session") or self.properties.get("session_files") or {}
+            loaded_count = 0
+            
+            # Sortiere Reference-Nummern
+            sorted_refs = sorted(session_files.keys(), key=int)
+            
+            for ref_num in sorted_refs:
                 try:
-                    self.add_file_to_ui(file_path)
+                    file_data = session_files[ref_num]
+                    file_path = file_data.get("path")
+                    
+                    if not file_path:
+                        continue
+                    
+                    if os.path.exists(file_path):
+                        try:
+                            entry = self.add_file_to_ui(file_path)
+                            if entry:
+                                loaded_count += 1
+                        except Exception as e:
+                            logger.error(f"Failed to load session file {file_path}: {str(e)}")
+                            # Continue with other files
+                    else:
+                        logger.warning(f"Session file path does not exist: {file_path}")
+                        # Remove from session files to clean up
+                        self.properties.remove_file_from_session(ref_num)
+                        
                 except Exception as e:
-                    logger.error(f"Failed to load session file {file_path}: {str(e)}", exc_info=True)
-            elif file_path:
-                logger.warning(f"Session file path does not exist: {file_path}")
-        
-        logger.info(f"Loaded {len(self.entries)} session files")
+                    logger.error(f"Error processing session file entry {ref_num}: {str(e)}")
+                    # Continue with other files
+            
+            logger.info(f"Successfully loaded {loaded_count} session files")
+            
+        except Exception as e:
+            logger.error(f"Error loading session files: {str(e)}")
+            # Don't crash the app, just continue without session files

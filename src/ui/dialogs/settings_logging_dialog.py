@@ -207,12 +207,8 @@ class LoggingSettingsDialog(PersistentDialog):
             
             # Save structured settings
             properties.set("dialogs.settings.logging", logging_settings)
-            properties.save()
             
-            # Reconfigure logging with new settings
-            from app import reconfigure_logging
-            reconfigure_logging(properties)
-            
+            # Use save_callback which handles save and reconfigure_logging
             save_callback()
             self._on_close()
 

@@ -38,6 +38,15 @@ class DialogController:
         # Initialize language manager
         from src.i18n import get_language_manager
         self.language_manager = get_language_manager()
+    
+    @classmethod
+    def create_from_container(cls, container):
+        """Create DialogController from DI container"""
+        return cls(
+            parent=container.get('app'),
+            properties=container.get('properties'),
+            save_callback=container.get('app')._save_properties
+        )
         
     def show_settings_dialog(self) -> None:
         """Öffne den Settings-Dialog mit Sprachauswahl"""
@@ -126,7 +135,7 @@ class DialogController:
             dialog = LanguageSettingsDialog(
                 self.parent,
                 self.properties,
-                self.save_callback,
+                self.parent._save_properties_only,  # No map update needed
                 modal=True
             )
             logger.debug("Language settings dialog opened")
@@ -139,7 +148,7 @@ class DialogController:
             dialog = LoggingSettingsDialog(
                 self.parent,
                 self.properties,
-                lambda: (self.save_callback(), self._reconfigure_logging()),
+                self.parent._save_properties_and_reconfigure_logging,  # No map update needed
                 modal=True
             )
             logger.debug("Logging settings dialog opened")
@@ -152,7 +161,7 @@ class DialogController:
             dialog = MarkerSettingsDialog(
                 self.parent,
                 self.properties,
-                self.save_callback,
+                self.parent._save_properties_and_map,  # Map update needed for marker changes
                 modal=True
             )
             logger.debug("Marker settings dialog opened")
@@ -165,7 +174,7 @@ class DialogController:
             dialog = RenderingSettingsDialog(
                 self.parent,
                 self.properties,
-                self.save_callback,
+                self.parent._save_properties_and_map,  # Map update needed for rendering changes
                 modal=True
             )
             logger.debug("Rendering settings dialog opened")
@@ -178,7 +187,7 @@ class DialogController:
             dialog = PropertiesEditorDialog(
                 self.parent,
                 self.properties,
-                self.save_callback,
+                self.parent._save_properties_only,  # No map update needed for properties editor
                 modal=True
             )
             logger.debug("Properties editor dialog opened")

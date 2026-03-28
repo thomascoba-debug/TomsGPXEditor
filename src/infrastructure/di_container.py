@@ -49,10 +49,17 @@ class DIContainer:
             cls = self._services[name]
             return cls()
         
-        raise ValueError(f"Service '{name}' not registered")
+        raise ValueError(f"Service '{name}' not found in container")
+    
+    def get_typed(self, name: str, expected_type: Type[T]) -> T:
+        """Get a service instance with type checking"""
+        instance = self.get(name)
+        if not isinstance(instance, expected_type):
+            raise TypeError(f"Service '{name}' is not of expected type {expected_type}")
+        return instance
     
     def has(self, name: str) -> bool:
-        """Check if a service is registered"""
+        """Check if service is registered"""
         return name in self._singletons or name in self._factories or name in self._services
     
     def clear(self):

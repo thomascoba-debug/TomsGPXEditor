@@ -18,6 +18,7 @@ import logging
 from src.infrastructure.repositories.properties_repository import AppProperties
 from src.infrastructure.error_handler import safe_execute, GPXEditorException, validate_gpx_data
 from src.infrastructure.di_container import configure_container, get_container
+from src.infrastructure.container_config import configure_container as setup_container
 from src.infrastructure.state_manager import get_state_manager, ApplicationState
 from src.infrastructure.resource_manager import get_resource_manager
 from src.infrastructure.shutdown_manager import initialize_graceful_shutdown, get_shutdown_manager, ShutdownPriority
@@ -89,9 +90,9 @@ class TomsGPXEditor(TkinterDnD.Tk):
         # Initialize infrastructure components first
         self._initialize_infrastructure()
         
-        # Initialize core components
-        self.properties = AppProperties()
-        self.recent_files_manager = RecentFilesFromSessionManager(self.properties)
+        # Initialize core components from container
+        self.properties = self.container.get('properties')
+        self.recent_files_manager = self.container.get('recent_files_manager')
         
         # Initialize controllers
         self.gpx_file_manager = None
@@ -100,14 +101,14 @@ class TomsGPXEditor(TkinterDnD.Tk):
         self.gpx_service = GPXEditController(self)
         
         # Initialize language manager
-        initialize_language_manager(self.properties)
+        initialize_language_manager(self.container.get('properties'))
         
         # Set window title after language manager is initialized
         self.title(t("app.title"))
         
         # Initialize UI managers
         self.progress_manager = ProgressManager(self)
-        self.auto_save_manager = AutoSaveManager(self.properties, self._save_all)
+        self.auto_save_manager = AutoSaveManager(self.container.get('properties'), self._save_all)
         self.keyboard_manager = KeyboardShortcutManager(self)
         
         # Restore window geometry
@@ -120,16 +121,18 @@ class TomsGPXEditor(TkinterDnD.Tk):
         self._initialize_controllers()
         
         # Build menu AFTER controllers are initialized
-        self._build_menu()
+        try:
+            if self.winfo_exists():
+                self._build_menu()
+        except Exception as e:
+            logger.error(f"Failed to build menu: {e}")
+            # Don't crash the app, continue without menu
         
         # Setup logging AFTER all imports to avoid conflicts
         setup_logging(self.properties)
         
-        # Load session files
-        self._load_session_files()
-        
-        # Update conversion button states
-        self._update_conversion_buttons()
+        # Update conversion button states (will be called after session loading)
+        # self._load_session_files()  # Moved to after UI is fully built
         
         # Timer is no longer needed - callback system handles updates
         
@@ -144,12 +147,23 @@ class TomsGPXEditor(TkinterDnD.Tk):
         else:
             logger.debug("Application already in ready state")
         
-        # Handle window close
-        self.protocol("WM_DELETE_WINDOW", self._on_close)
+        # Schedule session file loading after app is fully ready
+        self.after(1000, self._safe_load_session_files)
         
-        # Setup drag and drop
-        self.drop_target_register(DND_FILES)
-        self.dnd_bind("<<Drop>>", self._on_drop)
+        # Handle window close (only if window still exists)
+        try:
+            if self.winfo_exists():
+                self.protocol("WM_DELETE_WINDOW", self._on_close)
+        except Exception as e:
+            logger.warning(f"Could not set window close protocol: {e}")
+        
+        # Setup drag and drop (only if window still exists)
+        try:
+            if self.winfo_exists():
+                self.drop_target_register(DND_FILES)
+                self.dnd_bind("<<Drop>>", self._on_drop)
+        except Exception as e:
+            logger.warning(f"Could not setup drag and drop: {e}")
     
     def _initialize_infrastructure(self):
         """Initialize infrastructure components"""
@@ -163,7 +177,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
             resource_manager = get_resource_manager()
             
             # Initialize dependency injection container
-            configure_container(self)
+            self.container = setup_container(self)
             
             # Initialize graceful shutdown
             initialize_graceful_shutdown()
@@ -237,25 +251,56 @@ class TomsGPXEditor(TkinterDnD.Tk):
         separator.grid(row=1, column=0, columnspan=6, sticky="ew", pady=2)
         
         # Initialize map widget first (needed for controllers)
-        from tkintermapview import TkinterMapView
-        self.map_widget = TkinterMapView(right)
-        self.map_widget.pack(fill="both", expand=True)
-        self.map_widget.set_position(51.0, 10.0)
-        self.map_widget.set_zoom(5)
+        try:
+            from tkintermapview import TkinterMapView
+            # Create map widget with error handling
+            self.map_widget = TkinterMapView(right)
+            self.map_widget.pack(fill="both", expand=True)
+            
+            # Set basic position and zoom with error handling
+            try:
+                self.map_widget.set_position(51.0, 10.0)
+                self.map_widget.set_zoom(5)
+            except Exception as e:
+                logger.warning(f"Could not set initial map position/zoom: {e}")
+            
+            logger.debug("Map widget initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize map widget: {e}")
+            # Create a fallback widget
+            self.map_widget = ttk.Label(right, text="Map widget failed to initialize\nPlease check tkintermapview installation", 
+                                      foreground="red", justify="center")
+            self.map_widget.pack(fill="both", expand=True)
+            # Continue with fallback widget
+        
+        # Register UI components in container after they are created
+        from src.infrastructure.container_config import ContainerConfig
+        config = ContainerConfig(self.container)
+        config.configure_ui_components_after_build(self)
         
         # Initialize controllers after map widget is created
         self._initialize_controllers()
         
         # Build control buttons
         self._build_control_buttons(left)
+        
+        # Load session files AFTER everything is built and stable
+        # TEMPORARILY DISABLED to stabilize startup
+        # try:
+        #     if self.winfo_exists():
+        #         self._load_session_files()
+        #         self._update_conversion_buttons()
+        # except Exception as e:
+        #     logger.warning(f"Could not load session files: {e}")
+        logger.info("Session file loading temporarily disabled for stability")
     
     def _initialize_controllers(self):
         """Initialize business logic controllers"""
         try:
-            # Initialize controllers
-            self.gpx_file_manager = GPXFileManager(self.properties, self.map_widget, self.main_grid, self._update_conversion_buttons, self._update_editable_buttons_only)
-            self.map_controller = MapController(self.map_widget, self.properties)
-            self.dialog_controller = DialogController(self, self.properties, self._save_properties)
+            # Initialize controllers using factory methods to avoid circular dependencies
+            self.gpx_file_manager = GPXFileManager.create_from_container(self.container)
+            self.map_controller = MapController.create_from_container(self.container)
+            self.dialog_controller = DialogController.create_from_container(self.container)
             
             logger.info("Business logic controllers initialized successfully")
             
@@ -405,21 +450,49 @@ class TomsGPXEditor(TkinterDnD.Tk):
     def _open_file_dialog(self):
         """Open file dialog for GPX files"""
         files = filedialog.askopenfilenames(filetypes=[("GPX files", "*.gpx")])
+        added_files = []
+        
         for path in files:
-            self.gpx_file_manager.add_file_to_ui(path)
+            entry = self.gpx_file_manager.add_file_to_ui(path)
+            if entry:
+                added_files.append(path)
+                logger.info(f"Added file via dialog: {path}")
+            else:
+                logger.warning(f"Failed to add file via dialog: {path}")
         
         # Update map after adding files
         self._update_map()
+        
+        # Update recent files menu if files were added
+        if added_files:
+            # Force reload recent files to ensure they appear in the list
+            self.recent_files_manager.reload_recent_files()
+            self._update_recent_files_menu()
+            logger.info(f"Updated recent files for {len(added_files)} dialog files")
     
     def _on_drop(self, event):
         """Handle drag and drop files"""
         files = self.tk.splitlist(event.data)
+        added_files = []
+        
         for path in files:
             if path.endswith(".gpx"):
-                self.gpx_file_manager.add_file_to_ui(path)
+                entry = self.gpx_file_manager.add_file_to_ui(path)
+                if entry:
+                    added_files.append(path)
+                    logger.info(f"Added file via drag and drop: {path}")
+                else:
+                    logger.warning(f"Failed to add file via drag and drop: {path}")
         
         # Update map after adding files
         self._update_map()
+        
+        # Update recent files menu if files were added
+        if added_files:
+            # Force reload recent files to ensure they appear in the list
+            self.recent_files_manager.reload_recent_files()
+            self._update_recent_files_menu()
+            logger.info(f"Updated recent files for {len(added_files)} drag and drop files")
     
     def _select_all(self):
         """Select all files (make visible)"""
@@ -606,13 +679,46 @@ class TomsGPXEditor(TkinterDnD.Tk):
     
     def _load_session_files(self):
         """Load session files using the GPX file manager"""
-        self.gpx_file_manager.load_session_files()
-        self._update_map()
+        try:
+            self.gpx_file_manager.load_session_files()
+            self._update_map()
+        except Exception as e:
+            logger.error(f"Error loading session files: {e}")
+            # Don't crash the app, just continue without session files
+    
+    def _safe_load_session_files(self):
+        """Safely load session files after app is fully initialized"""
+        try:
+            if self.winfo_exists() and hasattr(self, 'gpx_file_manager'):
+                logger.info("Loading session files safely...")
+                self._load_session_files()
+                self._update_conversion_buttons()
+                logger.info("Session files loaded successfully")
+            else:
+                logger.warning("App not ready for session loading")
+        except Exception as e:
+            logger.error(f"Safe session loading failed: {e}")
+            # Don't crash the app
     
     def _save_properties(self):
         """Save properties and update map"""
         self.properties.save()
         self._update_map()
+    
+    def _save_properties_only(self):
+        """Save properties without updating map"""
+        self.properties.save()
+    
+    def _save_properties_and_map(self):
+        """Save properties and update map (for rendering changes)"""
+        self.properties.save()
+        self._update_map()
+    
+    def _save_properties_and_reconfigure_logging(self):
+        """Save properties and reconfigure logging"""
+        self.properties.save()
+        # Note: The actual reconfigure_logging is called by the dialog
+        # This method just saves properties without map update
     
     def _save_all(self):
         """Save all changes - used by AutoSaveManager"""

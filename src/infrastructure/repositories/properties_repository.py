@@ -85,11 +85,38 @@ class AppProperties:
             for k in keys[:-1]:
                 if k not in current:
                     current[k] = {}
+                elif isinstance(current[k], list):
+                    # If it's a list, we can't navigate further with dot notation
+                    logger.warning(f"Cannot navigate into list with key '{k}' for path '{key}'")
+                    self.data[key] = value
+                    self.save()
+                    return
                 current = current[k]
             current[keys[-1]] = value
         else:
             self.data[key] = value
         self.save()
+    
+    def remove(self, key):
+        """Remove property key, supporting dot notation for nested keys"""
+        if '.' in key:
+            keys = key.split('.')
+            current = self.data
+            for k in keys[:-1]:
+                if k in current and isinstance(current[k], dict):
+                    current = current[k]
+                else:
+                    # Path doesn't exist
+                    return
+            
+            # Remove the final key
+            if keys[-1] in current:
+                del current[keys[-1]]
+                self.save()
+        else:
+            if key in self.data:
+                del self.data[key]
+                self.save()
 
     # -------------------------------------------------------------
 

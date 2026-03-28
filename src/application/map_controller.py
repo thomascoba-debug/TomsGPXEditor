@@ -25,26 +25,65 @@ class MapController:
     def __init__(self, map_widget: TkinterMapView, properties: AppProperties):
         self.map_widget = map_widget
         self.properties = properties
+    
+    @classmethod
+    def create_from_container(cls, container):
+        """Create MapController from DI container"""
+        return cls(
+            map_widget=container.get('map_widget'),
+            properties=container.get('properties')
+        )
         
     def update_map(self, entries: List[FileEntry]) -> None:
         """Aktualisiere die Karte mit allen Einträgen"""
         try:
             logger.debug(f"Updating map with {len(entries)} entries")
             
+            # Check if map widget is still valid
+            if not self.map_widget or not self.map_widget.winfo_exists():
+                logger.warning("Map widget no longer exists, skipping update")
+                return
+            
+            # Filter out entries with destroyed widgets
+            valid_entries = []
+            for entry in entries:
+                try:
+                    # Test if the widget still exists
+                    if hasattr(entry, 'widgets') and entry.widgets:
+                        for widget_name, widget in entry.widgets.items():
+                            if hasattr(widget, 'winfo_exists') and not widget.winfo_exists():
+                                logger.debug(f"Widget {widget_name} destroyed, skipping entry")
+                                break
+                        else:
+                            # All widgets exist
+                            valid_entries.append(entry)
+                    else:
+                        # Entry without widgets or widgets check method
+                        valid_entries.append(entry)
+                except Exception as e:
+                    logger.debug(f"Error checking entry widgets: {e}")
+                    # Skip this entry
+                    continue
+            
+            if not valid_entries:
+                logger.debug("No valid entries to render")
+                return
+            
             # Rendere Tracks und Marker
             render_tracks_on_map(
                 self.map_widget,
-                entries,
+                valid_entries,
                 self.properties
             )
             
             # Zentriere auf GPX-Daten
-            self.fit_to_gpx(entries)
+            self.fit_to_gpx(valid_entries)
             
             logger.debug("Map update completed successfully")
             
         except Exception as e:
             logger.error(f"Error updating map: {e}", exc_info=True)
+            # Don't re-raise, just log and continue
     
     def update_visibility_only(self, entries: List[FileEntry]) -> None:
         """Schnelle Sichtbarkeits-Update ohne kompletten Neuaufbau"""
