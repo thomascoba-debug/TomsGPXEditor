@@ -56,14 +56,17 @@ def _set_default_marker_size(map_widget, marker, size):
         logger.debug(f"Could not set marker size: {e}")
 
 
-def _add_marker_with_colors(map_widget, latitude, longitude, text, icon_path, icon_size, color_circle, color_outside, color_text):
+def _add_marker_with_colors(map_widget, latitude, longitude, text=None, icon_path=None, icon_size=None, color_circle="#9B261E", color_outside="#C5542D", color_text="#652A22"):
     """Add a marker to the map with custom colors"""
     try:
         logger.debug(f"_add_marker_with_colors called at {latitude}, {longitude} with text: {text}")
         
+        # Only show text if provided
+        display_text = text if text else ""
+        
         # Create TkinterMapView marker with custom colors
         try:
-            marker = map_widget.set_marker(latitude, longitude, text=text,
+            marker = map_widget.set_marker(latitude, longitude, text=display_text,
                                          marker_color_circle=color_circle,
                                          marker_color_outside=color_outside,
                                          text_color=color_text)
@@ -73,7 +76,7 @@ def _add_marker_with_colors(map_widget, latitude, longitude, text, icon_path, ic
             logger.debug(f"Error creating custom color marker: {e}")
             # Fallback to default marker
             try:
-                marker = map_widget.set_marker(latitude, longitude, text=text)
+                marker = map_widget.set_marker(latitude, longitude, text=display_text)
                 logger.debug(f"Fallback default TkinterMapView marker created: {marker}")
                 return marker
             except Exception as fallback_error:
@@ -152,6 +155,11 @@ def _render_markers(map_widget, gpx_data, properties):
     trackpoints_percent = properties.get('dialogs.settings.rendering.trackpoints.percent', 50)
     routepoints_percent = properties.get('dialogs.settings.rendering.routepoints.percent', 50)
     
+    # Text-Enabled Einstellungen
+    waypoints_text_enabled = properties.get('dialogs.settings.rendering.waypoints.text_enabled', True)
+    trackpoints_text_enabled = properties.get('dialogs.settings.rendering.trackpoints.text_enabled', True)
+    routepoints_text_enabled = properties.get('dialogs.settings.rendering.routepoints.text_enabled', True)
+    
     # Step aus % berechnen
     def percent_to_step(percent):
         if percent >= 100:
@@ -182,8 +190,9 @@ def _render_markers(map_widget, gpx_data, properties):
     if waypoints_enabled and gpx_data.waypoints:
         for i, waypoint in enumerate(gpx_data.waypoints):
             if i % waypoints_step == 0:  # Downsample waypoints
+                waypoint_text = waypoint.name if waypoints_text_enabled else None
                 _add_marker_with_colors(map_widget, waypoint.latitude, waypoint.longitude, 
-                                       waypoint.name or "Waypoint", "", 0,
+                                       waypoint_text, "", 0,
                                        waypoints_color_circle, waypoints_color_outside, waypoints_color_text)
     
     # Render track points (downsampled)
@@ -192,8 +201,9 @@ def _render_markers(map_widget, gpx_data, properties):
             for segment in track.segments:
                 for i, point in enumerate(segment.points):
                     if i % trackpoints_step == 0:  # Downsample
+                        trackpoint_text = f"Track Point {i}" if trackpoints_text_enabled else None
                         _add_marker_with_colors(map_widget, point.latitude, point.longitude,
-                                           f"Track Point {i}", "", 0,
+                                           trackpoint_text, "", 0,
                                            trackpoints_color_circle, trackpoints_color_outside, trackpoints_color_text)
     
     # Render route points (downsampled)
@@ -201,8 +211,9 @@ def _render_markers(map_widget, gpx_data, properties):
         for route in gpx_data.routes:
             for i, point in enumerate(route.points):
                 if i % routepoints_step == 0:  # Downsample
+                    routepoint_text = f"Route Point {i}" if routepoints_text_enabled else None
                     _add_marker_with_colors(map_widget, point.latitude, point.longitude,
-                                       f"Route Point {i}", "", 0,
+                                       routepoint_text, "", 0,
                                        routepoints_color_circle, routepoints_color_outside, routepoints_color_text)
 
 
@@ -268,8 +279,10 @@ def render_tracks_on_map(map_widget, entries, properties):
                 logger.info(f"Rendering GPX file: {os.path.basename(entry.get_path())} ({len(gpx_data.tracks)} tracks, {len(gpx_data.routes)} routes)")
                 
                 # Render tracks with line width
-                track_line_enabled = properties.get('track_line_enabled', True)
-                track_line_width = properties.get('track_line_width', 2)
+                rendering_settings = properties.get('dialogs.settings.rendering', {})
+                track_line = rendering_settings.get('track_line', {})
+                track_line_enabled = track_line.get('enabled', True)
+                track_line_width = track_line.get('width', 5)
                 
                 if track_line_enabled and gpx_data.tracks:
                     for track in gpx_data.tracks:

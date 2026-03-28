@@ -4,15 +4,18 @@ from src.ui.base import PersistentDialog
 import os
 
 class LoggingSettingsDialog(PersistentDialog):
-    def __init__(self, parent, properties, save_callback):
-        super().__init__(parent, properties)
+    def __init__(self, parent, properties, save_callback, modal=False):
+        super().__init__(parent, properties, modal=modal)
         
         self.save_callback = save_callback
         self.title("Logging Settings")
 
-        level = tk.StringVar(value=properties.get("log_level") or "INFO")
-        logfile = tk.StringVar(value=properties.get("log_file") or "app.log")
-        log_lines = tk.IntVar(value=properties.get("log_display_lines") or 10)
+        # Get logging settings from structured path
+        logging_settings = properties.get("dialogs.settings.logging", {})
+        
+        level = tk.StringVar(value=logging_settings.get("level") or "INFO")
+        logfile = tk.StringVar(value=logging_settings.get("file") or "app.log")
+        log_lines = tk.IntVar(value=logging_settings.get("display_lines") or 10)
 
         frame = ttk.Frame(self)
         frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -43,7 +46,10 @@ class LoggingSettingsDialog(PersistentDialog):
             if path:
                 logfile.set(path)
                 # Save immediately when file is selected
-                properties.set("log_file", path)
+                logging_settings = properties.get("dialogs.settings.logging", {})
+                logging_settings["file"] = path
+                properties.set("dialogs.settings.logging", logging_settings)
+                properties.save()
                 save_callback()
                 # Update log display
                 update_log_display()
@@ -191,9 +197,22 @@ class LoggingSettingsDialog(PersistentDialog):
 
         def ok():
             """Save settings and close dialog"""
-            properties.set("log_level", level.get())
-            properties.set("log_file", logfile.get())
-            properties.set("log_display_lines", log_lines.get())
+            # Get current logging settings
+            logging_settings = properties.get("dialogs.settings.logging", {})
+            
+            # Update settings
+            logging_settings["level"] = level.get()
+            logging_settings["file"] = logfile.get()
+            logging_settings["display_lines"] = log_lines.get()
+            
+            # Save structured settings
+            properties.set("dialogs.settings.logging", logging_settings)
+            properties.save()
+            
+            # Reconfigure logging with new settings
+            from app import reconfigure_logging
+            reconfigure_logging(properties)
+            
             save_callback()
             self._on_close()
 

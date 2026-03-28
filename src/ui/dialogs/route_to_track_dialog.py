@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 
 class RouteToTrackDialog(PersistentDialog):
 
-    def __init__(self, parent, entries, properties):
-        super().__init__(parent, properties, "RouteToTrackDialog")
+    def __init__(self, parent, entries, properties, modal=False):
+        super().__init__(parent, properties, "RouteToTrackDialog", modal=modal)
         
         self.title("Route to Track")
         self.entries = entries

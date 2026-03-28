@@ -30,14 +30,14 @@ class AppProperties:
         # Korrigiert nur Typen, entfernt aber keine benutzerdefinierten Keys
         DEFAULT_SCHEMA = {
             "session_files": dict,
-            "dialog_geometry": dict,
-            "log_level": str,
-            "log_file": str,
-            "log_display_lines": int,
-            "marker_enabled": bool,
+# "dialog_geometry": dict,  # OBSOLETE - use dialogs.geometry
+# "log_level": str,  # OBSOLETE - use dialogs.settings.logging.level
+# "log_file": str,  # OBSOLETE - use dialogs.settings.logging.file
+# "log_display_lines": int,  # OBSOLETE - use dialogs.settings.logging.display_lines
+# "marker_enabled": bool,  # OBSOLETE - no longer used
             "marker_step": int,
             "downsample_step": int,
-            "main_window_geometry": str
+# "main_window_geometry": str  # OBSOLETE - use app.main_window.geometry
         }
         
         for key in list(self.data.keys()):
@@ -94,13 +94,26 @@ class AppProperties:
     # -------------------------------------------------------------
 
     def get_dialog_geometry(self, dialog_name):
-        geo = self.data.get("dialog_geometry", {})
-        return geo.get(dialog_name)
+        """Get dialog geometry from structured path"""
+        return self.get(f"dialogs.geometry.{dialog_name}")
 
     def set_dialog_geometry(self, dialog_name, geometry):
-        geo = self.data.get("dialog_geometry", {})
-        geo[dialog_name] = geometry
-        self.data["dialog_geometry"] = geo
+        """Set dialog geometry to structured path without immediate save"""
+        key = f"dialogs.geometry.{dialog_name}"
+        if '.' in key:
+            keys = key.split('.')
+            current = self.data
+            for k in keys[:-1]:
+                if k not in current:
+                    current[k] = {}
+                current = current[k]
+            current[keys[-1]] = geometry
+        else:
+            self.data[key] = geometry
+        # Don't call save() here for dialog geometry to avoid loops
+    
+    def save_dialog_geometries(self):
+        """Save all dialog geometries to file"""
         self.save()
 
     # -------------------------------------------------------------
@@ -158,13 +171,30 @@ class AppProperties:
 
     def remove_file_from_session(self, ref_num):
         """Remove file from session files"""
-        session_files = self.data.get("session_files", {})
         ref_str = str(ref_num)
         
-        if ref_str in session_files:
-            del session_files[ref_str]
-            self.data["session_files"] = session_files
+        # Try both old and new paths for compatibility
+        session_files_old = self.data.get("session_files", {})
+        session_files_new = self.data.get("files", {}).get("session", {})
+        
+        removed = False
+        
+        # Check old path first
+        if ref_str in session_files_old:
+            del session_files_old[ref_str]
+            self.data["session_files"] = session_files_old
+            removed = True
+            logger.debug(f"Removed file reference {ref_num} from session_files (old path)")
+        
+        # Check new path
+        elif ref_str in session_files_new:
+            del session_files_new[ref_str]
+            self.data["files"]["session"] = session_files_new
+            removed = True
+            logger.debug(f"Removed file reference {ref_num} from files.session (new path)")
+        
+        if removed:
             self.save()
-            logger.debug(f"Removed file reference {ref_num} from session")
+            logger.debug(f"File reference {ref_num} removed successfully")
         else:
-            logger.warning(f"File reference {ref_num} not found in session")
+            logger.warning(f"File reference {ref_num} not found in any session path")

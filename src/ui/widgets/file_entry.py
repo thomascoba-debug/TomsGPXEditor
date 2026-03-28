@@ -172,17 +172,25 @@ class FileEntry(ttk.Frame):
     # ---------------------------------------------------------
 
     def _choose_color(self):
-
-        color = colorchooser.askcolor(self.color)[1]
-
-        if color:
-
-            self.color = color
-            self.color_btn.configure(bg=color)
-
-            self._save_color()
-
-            self._changed()
+        """Öffne den Farbwahl-Dialog"""
+        try:
+            logger.debug(f"_choose_color called, current color: {self.color}")
+            color = colorchooser.askcolor(self.color)[1]
+            logger.debug(f"colorchooser result: {color}")
+            
+            if color:
+                logger.debug(f"Setting color to: {color}")
+                self.color = color
+                self.color_btn.configure(bg=color)
+                self._save_color()
+                self._changed()
+                logger.debug("Color changed successfully")
+            else:
+                logger.debug("Color chooser cancelled")
+        except Exception as e:
+            logger.error(f"_choose_color failed: {e}")
+            import traceback
+            traceback.print_exc()
 
     # ---------------------------------------------------------
 

@@ -141,7 +141,7 @@ class TestEditControllerErrorHandling(GPXTestCase):
     
     def test_load_nonexistent_file(self):
         """Test loading non-existent GPX file"""
-        from edit_controller import GPXEditController
+        from src.application.services.gpx_service import GPXEditController
         
         controller = GPXEditController(None)  # Mock app
         
@@ -153,7 +153,7 @@ class TestEditControllerErrorHandling(GPXTestCase):
     
     def test_load_empty_file(self):
         """Test loading empty GPX file"""
-        from edit_controller import GPXEditController
+        from src.application.services.gpx_service import GPXEditController
         
         controller = GPXEditController(None)  # Mock app
         
@@ -165,7 +165,7 @@ class TestEditControllerErrorHandling(GPXTestCase):
     
     def test_load_invalid_xml(self):
         """Test loading invalid XML file"""
-        from edit_controller import GPXEditController
+        from src.application.services.gpx_service import GPXEditController
         
         controller = GPXEditController(None)  # Mock app
         
@@ -177,7 +177,7 @@ class TestEditControllerErrorHandling(GPXTestCase):
     
     def test_load_non_gpx_file(self):
         """Test loading file that doesn't start with GPX tags"""
-        from edit_controller import GPXEditController
+        from src.application.services.gpx_service import GPXEditController
         
         controller = GPXEditController(None)  # Mock app
         

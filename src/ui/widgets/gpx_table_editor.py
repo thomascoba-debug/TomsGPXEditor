@@ -139,7 +139,7 @@ class GPXTableEditor(tk.Toplevel):
             copied_gpx = copy.deepcopy(original_document.gpx)
             
             # Create new document with copied data
-            from edit_controller import GPXDocument
+            from src.application.services.gpx_service import GPXDocument
             copied_document = GPXDocument(copied_gpx, original_document.path)
             
             logger.debug(f"Created working copy of GPX document: {original_document.path}")

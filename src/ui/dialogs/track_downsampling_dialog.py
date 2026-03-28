@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 class TrackDownsamplingDialog(PersistentDialog):
 
-    def __init__(self, parent, entries, properties):
-        super().__init__(parent, properties, "TrackDownsamplingDialog")
+    def __init__(self, parent, entries, properties, modal=False):
+        super().__init__(parent, properties, "TrackDownsamplingDialog", modal=modal)
         
         self.title("Track Downsampling")
         self.entries = entries

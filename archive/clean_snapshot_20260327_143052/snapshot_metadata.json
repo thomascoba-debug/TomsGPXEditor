@@ -1,0 +1,36 @@
+{
+  "snapshot_name": "clean_snapshot_20260327_143052",
+  "created_at": "2026-03-27T14:30:52.357954",
+  "description": "Clean project state - all redundancies removed, structured properties implemented",
+  "features": {
+    "properties_json": "Clean and structured",
+    "property_paths": "All using new structured format (dialogs.*, app.*, files.*)",
+    "obsolete_entries": "All removed",
+    "dialog_geometries": "Migrated to dialogs.geometry.*",
+    "logging_settings": "Migrated to dialogs.settings.logging.*",
+    "rendering_settings": "Migrated to dialogs.settings.rendering.*",
+    "recent_files": "Migrated to app.recent_files.with_timestamps",
+    "window_geometry": "Migrated to app.main_window.geometry",
+    "properties_editor": "Hierarchical tree view, no infinite loops",
+    "all_dialogs": "Working with structured property paths"
+  },
+  "verified_components": [
+    "Main application startup",
+    "Properties loading/saving",
+    "Dialog geometries",
+    "Logging configuration",
+    "Recent files management",
+    "Rendering settings",
+    "Properties editor dialog"
+  ],
+  "file_checksums": {
+    "app.py": "68f7653d200dc2e5a6f33f661d94af4e2a9fee76311c649b161a398f3c738954",
+    "src/infrastructure/repositories/properties_repository.py": "7b3af152d448ce33b2ff16fcceea269c97281372c10d09a1b4b10e1057aa613e",
+    "src/ui/base.py": "3497f8e0b8294d1fc23318b525561cdde59f0263ccbecb73c536e8ecf73a89b8",
+    "src/ui/dialogs/settings_logging_dialog.py": "10e774b26f2da670048bfaa658efaacd8e85e1433acecab7ce6468e119130182",
+    "src/ui/dialogs/settings_rendering_dialog.py": "dc9448fc6ed9c1e7e225aba13d4bbeb8a7c22347a513b79351a51af72444ad10",
+    "src/ui/dialogs/settings_properties_dialog.py": "bf041b363c800ee2f8ded009c81472c7052d68df537b3927c1a10461db08b36c",
+    "src/application/services/recent_files_service.py": "b07ec9bf40f5da623afb1b97f055ee83b2382000518981f44e37c3acd0824d61",
+    "src/infrastructure/map_renderer.py": "7f78a8e3f542767aa369d9e8dfcce849086523ad250d2008e7236a7cf0f85f2d"
+  }
+}

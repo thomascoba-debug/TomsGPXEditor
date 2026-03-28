@@ -1,0 +1,184 @@
+{
+  "language_name": "English",
+  "language_code": "en",
+  "date_format": "%Y-%m-%d %H:%M:%S",
+  
+  "app": {
+    "title": "Toms GPX Editor",
+    "loading": "Loading...",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information",
+    "success": "Success"
+  },
+  
+  "menu": {
+    "file": "File",
+    "edit": "Edit",
+    "settings": "Settings",
+    "help": "Help",
+    "visibility": "Visibility",
+    "settings_choose": "Choose Settings",
+    
+    "file_open_gpx": "Open GPX",
+    "file_recent_files": "Recent Files",
+    "file_clear_recent": "Clear Recent Files",
+    "file_exit": "Exit",
+    
+    "edit_open_table_editor": "Open Track Table",
+    "edit_track_to_route": "Track to Route",
+    "edit_route_to_track": "Route to Track",
+    "edit_track_downsampling": "Track Downsampling",
+    
+    "settings_items": {
+      "logging": "Logging",
+      "marker": "Marker",
+      "rendering": "Rendering",
+      "properties": "Properties",
+      "language": "Language",
+      "restore_snapshot": "Restore Clean Snapshot"
+    }
+  },
+  
+  "buttons": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "save": "Save",
+    "delete": "Delete",
+    "add": "Add",
+    "remove": "Remove",
+    "browse": "Browse",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+    "update": "Update",
+    "refresh": "Refresh",
+    
+    "show_all": "Show All",
+    "hide_all": "Hide All",
+    "select_all": "Select All",
+    "deselect_all": "Deselect All",
+    "enable_editing": "Enable Editing",
+    "analyze_gpx": "Analyze GPX"
+  },
+  
+  "file_list": {
+    "header": {
+      "visible": "V",
+      "editable": "E",
+      "number": "Nr",
+      "filename": "Filename",
+      "type": "Type"
+    },
+    "types": {
+      "track": "Track",
+      "route": "Route",
+      "waypoint": "Waypoint",
+      "mixed": "Mixed",
+      "empty": "Empty",
+      "unknown": "Unknown",
+      "error": "Error",
+      "invalid": "Invalid"
+    }
+  },
+  
+  "dialogs": {
+    "marker": {
+      "title": "Marker Settings",
+      "master_enabled": "Marker Enabled",
+      "enabled": "Enabled",
+      "text": "Text",
+      "points": "Points",
+      "percent": "Percent",
+      "inner_circle": "Inner Circle",
+      "outside_circle": "Outside Circle",
+      "text_color": "Text Color",
+      "waypoints": "Waypoints",
+      "trackpoints": "Trackpoints",
+      "routepoints": "Routepoints"
+    },
+    
+    "rendering": {
+      "title": "Rendering Settings",
+      "track_line": "Track Line",
+      "route_line": "Route Line",
+      "line_width": "Line Width",
+      "line_style": "Line Style",
+      "line_color": "Line Color"
+    },
+    
+    "logging": {
+      "title": "Logging Settings",
+      "level": "Log Level",
+      "file": "Log File",
+      "display_lines": "Display Lines",
+      "levels": {
+        "debug": "Debug",
+        "info": "Info",
+        "warning": "Warning",
+        "error": "Error",
+        "critical": "Critical"
+      }
+    },
+    
+    "properties": {
+      "title": "Properties Editor",
+      "key": "Key",
+      "value": "Value",
+      "expand_all": "Expand All",
+      "collapse_all": "Collapse All"
+    }
+  },
+  
+  "messages": {
+    "file_not_found": "File not found: {path}",
+    "file_already_loaded": "File is already loaded: {filename}",
+    "invalid_gpx_file": "Invalid GPX file: {filename}",
+    "no_editable_files": "No editable files found",
+    "multiple_editable_files": "Multiple files are editable. Please select only one file.",
+    "gpx_load_error": "Error loading GPX file: {error}",
+    "settings_saved": "Settings saved",
+    "language_changed": "Language changed to: {language}",
+    "language_restart_note": "Note: Language changes will take effect after application restart.",
+    
+    "snapshot": {
+      "restore_confirm": "This will restore project to clean state from:\n{snapshot}\n\nAll current changes will be lost.\n\nDo you want to continue?",
+      "restore_started": "Clean snapshot restore started.\nThe application will restart automatically.",
+      "no_snapshot_found": "No clean snapshot found in archive/ directory.",
+      "restore_error": "Error starting restore: {error}"
+    },
+    
+    "conversion": {
+      "track_to_route_success": "Successfully converted {count} tracks to routes.",
+      "route_to_track_success": "Successfully converted {count} routes to tracks.",
+      "no_tracks_found": "No tracks found in selected files.",
+      "conversion_error": "Conversion error: {error}"
+    }
+  },
+  
+  "tooltips": {
+    "marker_enabled": "Enable/disable all markers on map",
+    "marker_text": "Enable/disable text display for markers",
+    "file_visible": "Visibility of GPX file on map",
+    "file_editable": "Editability of GPX file",
+    "percent_points": "Percentage of points to display",
+    "line_width": "Width of track/route lines",
+    "log_level": "Logging detail level",
+    "log_file": "File for log output"
+  },
+  
+  "logging": {
+    "app_initialized": "Application initialized successfully",
+    "app_shutdown": "Application shutting down",
+    "file_loaded": "GPX file loaded: {filename}",
+    "file_added": "GPX file added: {filename}",
+    "file_removed": "GPX file removed: {filename}",
+    "map_updated": "Map updated",
+    "settings_loaded": "Settings loaded",
+    "dialog_opened": "Dialog opened: {dialog}",
+    "language_loaded": "Translations loaded: {language}",
+    "translation_missing": "Translation missing for key: {key}",
+    "error_loading_translation": "Error loading translation for {language}: {error}"
+  }
+}

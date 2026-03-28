@@ -23,7 +23,8 @@ class RecentFilesFromSessionManager:
     def _load_recent_files_with_timestamps(self) -> deque:
         """Load recent files from session_files with timestamp tracking"""
         session_files = self.properties.get("session_files", {})
-        recent_files_data = self.properties.get("recent_files_with_timestamps", {})
+        # Use the new path: app.recent_files.with_timestamps instead of recent_files_with_timestamps
+        recent_files_data = self.properties.get("app.recent_files.with_timestamps", {})
         
         # Extract file paths with timestamps
         file_entries = []
@@ -48,7 +49,8 @@ class RecentFilesFromSessionManager:
         for file_path in self.recent_files:
             recent_files_data[file_path] = time.time()
         
-        self.properties.set("recent_files_with_timestamps", recent_files_data)
+        # Use the new path: app.recent_files.with_timestamps instead of recent_files_with_timestamps
+        self.properties.set("app.recent_files.with_timestamps", recent_files_data)
         self.properties.save()
     
     def add_file(self, file_path: str) -> None:
@@ -97,7 +99,8 @@ class RecentFilesFromSessionManager:
     def clear_recent_files(self) -> None:
         """Clear all recent files"""
         self.recent_files.clear()
-        self.properties.remove("recent_files_with_timestamps")
+        # Use the new path: app.recent_files.with_timestamps instead of recent_files_with_timestamps
+        self.properties.remove("app.recent_files.with_timestamps")
         self.properties.save()
         logger.debug("Cleared all recent files")
     
@@ -116,7 +119,8 @@ class RecentFilesFromSessionManager:
     def sync_with_session_files(self):
         """Sync recent files with current session files (maintains timestamps)"""
         # Load current timestamps
-        current_timestamps = self.properties.get("recent_files_with_timestamps", {})
+        # Use the new path: app.recent_files.with_timestamps instead of recent_files_with_timestamps
+        current_timestamps = self.properties.get("app.recent_files.with_timestamps", {})
         
         # Get current session files
         session_files = self.properties.get("session_files", {})
@@ -141,7 +145,8 @@ class RecentFilesFromSessionManager:
                 del current_timestamps[file_path]
         
         # Save updated timestamps
-        self.properties.set("recent_files_with_timestamps", current_timestamps)
+        # Use the new path: app.recent_files.with_timestamps instead of recent_files_with_timestamps
+        self.properties.set("app.recent_files.with_timestamps", current_timestamps)
         self.properties.save()
         
         logger.debug(f"Synced recent files with session files: {len(self.recent_files)} files")

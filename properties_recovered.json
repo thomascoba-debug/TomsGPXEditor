@@ -1,0 +1,91 @@
+{
+  "app": {
+    "main_window": {
+      "geometry": "1920x1040+0+0"
+    },
+    "recent_files": []
+  },
+  "dialogs": {
+    "geometry": {
+      "MarkerSettingsDialog": "333x659+306+29",
+      "LoggingSettingsDialog": "681x348+586+109",
+      "RenderingSettingsDialog": "423x387+692+119",
+      "PropertiesEditorDialog": "1360x391+171+224",
+      "TrackToRouteDialog": "621x480+633+58",
+      "RouteToTrackDialog": "607x462+639+74",
+      "TrackDownsamplingDialog": "423x465+527+102",
+      "LanguageSettingsDialog": "222x316+472+149"
+    },
+    "settings": {
+      "logging": {
+        "level": "WARNING",
+        "file": "app.log",
+        "display_lines": 1000
+      },
+      "rendering": {
+        "waypoints": {
+          "enabled": true,
+          "percent": 5.8,
+          "color_circle": "#9B261E",
+          "color_outside": "#C5542D",
+          "color_text": "#ff0000",
+          "text_enabled": false
+        },
+        "trackpoints": {
+          "enabled": true,
+          "percent": 0.1,
+          "color_circle": "#4169E1",
+          "color_outside": "#6495ED",
+          "color_text": "#0080c0",
+          "text_enabled": false
+        },
+        "routepoints": {
+          "enabled": true,
+          "percent": 7.0,
+          "color_circle": "#228B22",
+          "color_outside": "#32CD32",
+          "color_text": "#008000",
+          "text_enabled": true
+        },
+        "track_line": {
+          "enabled": true,
+          "width": 5
+        },
+        "route_line": {
+          "enabled": true,
+          "width": 4
+        }
+      },
+      "conversion": {
+        "track_to_route": {
+          "points_per_100km": 10
+        },
+        "route_to_track": {
+          "points_per_100km": 45
+        },
+        "downsample": {
+          "points_per_100km": 20,
+          "keep_waypoints": true,
+          "overwrite_original": false
+        }
+      },
+      "language": "de"
+    }
+  },
+  "files": {
+    "session": {
+      "7": {
+        "path": "W:/Navigation/Touren/test/Iseo - Wenns_downsampled.gpx",
+        "settings": {
+          "color": "#0080c0",
+          "visible": true,
+          "editable": true
+        }
+      },
+      "3": {
+        "path": "W:/Navigation/Touren/test/GW01_converted_tracks.gpx",
+        "settings": {}
+      }
+    }
+  }
+}

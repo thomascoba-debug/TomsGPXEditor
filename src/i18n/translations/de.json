@@ -1,0 +1,184 @@
+{
+  "language_name": "Deutsch",
+  "language_code": "de",
+  "date_format": "%d.%m.%Y %H:%M:%S",
+  
+  "app": {
+    "title": "Toms GPX Editor",
+    "loading": "Lade...",
+    "error": "Fehler",
+    "warning": "Warnung",
+    "info": "Information",
+    "success": "Erfolg"
+  },
+  
+  "menu": {
+    "file": "Datei",
+    "edit": "Bearbeiten", 
+    "settings": "Einstellungen",
+    "help": "Hilfe",
+    "visibility": "Sichtbarkeit",
+    "settings_choose": "Einstellungen wählen",
+    
+    "file_open_gpx": "GPX öffnen",
+    "file_recent_files": "Zuletzt verwendet",
+    "file_clear_recent": "Zuletzt verwendet löschen",
+    "file_exit": "Beenden",
+    
+    "edit_open_table_editor": "Track-Tabelle öffnen",
+    "edit_track_to_route": "Track zu Route",
+    "edit_route_to_track": "Route zu Track",
+    "edit_track_downsampling": "Track-Downsampling",
+    
+    "settings_items": {
+      "logging": "Protokollierung",
+      "marker": "Marker",
+      "rendering": "Darstellung",
+      "properties": "Eigenschaften",
+      "language": "Sprache",
+      "restore_snapshot": "Clean Snapshot wiederherstellen"
+    }
+  },
+  
+  "buttons": {
+    "ok": "OK",
+    "cancel": "Abbrechen",
+    "apply": "Anwenden",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen",
+    "browse": "Durchsuchen",
+    "yes": "Ja",
+    "no": "Nein",
+    "close": "Schließen",
+    "update": "Aktualisieren",
+    "refresh": "Aktualisieren",
+    
+    "show_all": "Alle anzeigen",
+    "hide_all": "Alle ausblenden",
+    "select_all": "Alle auswählen",
+    "deselect_all": "Alle abwählen",
+    "enable_editing": "Bearbeitung aktivieren",
+    "analyze_gpx": "GPX analysieren"
+  },
+  
+  "file_list": {
+    "header": {
+      "visible": "V",
+      "editable": "E",
+      "number": "Nr",
+      "filename": "Dateiname",
+      "type": "Typ"
+    },
+    "types": {
+      "track": "Track",
+      "route": "Route",
+      "waypoint": "Wegpunkt",
+      "mixed": "Gemischt",
+      "empty": "Leer",
+      "unknown": "Unbekannt",
+      "error": "Fehler",
+      "invalid": "Ungültig"
+    }
+  },
+  
+  "dialogs": {
+    "marker": {
+      "title": "Marker-Einstellungen",
+      "master_enabled": "Marker aktiviert",
+      "enabled": "Aktiviert",
+      "text": "Text",
+      "points": "Punkte",
+      "percent": "Prozent",
+      "inner_circle": "Innerer Kreis",
+      "outside_circle": "Äußerer Kreis",
+      "text_color": "Textfarbe",
+      "waypoints": "Wegpunkte",
+      "trackpoints": "Trackpunkte",
+      "routepoints": "Routenpunkte"
+    },
+    
+    "rendering": {
+      "title": "Darstellungseinstellungen",
+      "track_line": "Track-Linie",
+      "route_line": "Routen-Linie",
+      "line_width": "Linienbreite",
+      "line_style": "Linienstil",
+      "line_color": "Linienfarbe"
+    },
+    
+    "logging": {
+      "title": "Protokollierungseinstellungen",
+      "level": "Protokolllevel",
+      "file": "Protokolldatei",
+      "display_lines": "Angezeigte Zeilen",
+      "levels": {
+        "debug": "Debug",
+        "info": "Info",
+        "warning": "Warnung",
+        "error": "Fehler",
+        "critical": "Kritisch"
+      }
+    },
+    
+    "properties": {
+      "title": "Eigenschaften-Editor",
+      "key": "Schlüssel",
+      "value": "Wert",
+      "expand_all": "Alle aufklappen",
+      "collapse_all": "Alle zusammenklappen"
+    }
+  },
+  
+  "messages": {
+    "file_not_found": "Datei nicht gefunden: {path}",
+    "file_already_loaded": "Datei ist bereits geladen: {filename}",
+    "invalid_gpx_file": "Ungültige GPX-Datei: {filename}",
+    "no_editable_files": "Keine bearbeitbaren Dateien gefunden",
+    "multiple_editable_files": "Mehrere Dateien bearbeitbar. Bitte nur eine Datei auswählen.",
+    "gpx_load_error": "Fehler beim Laden der GPX-Datei: {error}",
+    "settings_saved": "Einstellungen gespeichert",
+    "language_changed": "Sprache geändert zu: {language}",
+    "language_restart_note": "Hinweis: Sprachänderungen werden nach einem Neustart der Anwendung wirksam.",
+    
+    "snapshot": {
+      "restore_confirm": "Dies stellt das Projekt auf den sauberen Zustand von:\n{snapshot}\n\nAlle aktuellen Änderungen gehen verloren.\n\nMöchten Sie fortfahren?",
+      "restore_started": "Clean Snapshot-Wiederherstellung gestartet.\nDie Anwendung wird neu gestartet.",
+      "no_snapshot_found": "Kein Clean Snapshot im archive/ Verzeichnis gefunden.",
+      "restore_error": "Fehler beim Starten der Wiederherstellung: {error}"
+    },
+    
+    "conversion": {
+      "track_to_route_success": "Erfolgreich {count} Tracks in Routen konvertiert.",
+      "route_to_track_success": "Erfolgreich {count} Routen in Tracks konvertiert.",
+      "no_tracks_found": "Keine Tracks in den ausgewählten Dateien gefunden.",
+      "conversion_error": "Fehler bei der Konvertierung: {error}"
+    }
+  },
+  
+  "tooltips": {
+    "marker_enabled": "Aktiviert/deaktiviert alle Marker auf der Karte",
+    "marker_text": "Aktiviert/deaktiviert die Textanzeige bei den Markern",
+    "file_visible": "Sichtbarkeit der GPX-Datei auf der Karte",
+    "file_editable": "Bearbeitbarkeit der GPX-Datei",
+    "percent_points": "Prozentsatz der angezeigten Punkte",
+    "line_width": "Breite der Track/Routen-Linien",
+    "log_level": "Detailgrad der Protokollierung",
+    "log_file": "Datei für Protokollausgabe"
+  },
+  
+  "logging": {
+    "app_initialized": "Anwendung initialisiert erfolgreich",
+    "app_shutdown": "Anwendung wird heruntergefahren",
+    "file_loaded": "GPX-Datei geladen: {filename}",
+    "file_added": "GPX-Datei hinzugefügt: {filename}",
+    "file_removed": "GPX-Datei entfernt: {filename}",
+    "map_updated": "Karte aktualisiert",
+    "settings_loaded": "Einstellungen geladen",
+    "dialog_opened": "Dialog geöffnet: {dialog}",
+    "language_loaded": "Übersetzungen geladen: {language}",
+    "translation_missing": "Übersetzung fehlt für Schlüssel: {key}",
+    "error_loading_translation": "Fehler beim Laden der Übersetzung für {language}: {error}"
+  }
+}

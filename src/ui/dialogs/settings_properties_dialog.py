@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 
 class PropertiesEditorDialog(PersistentDialog):
 
-    def __init__(self, parent, properties, save_callback):
+    def __init__(self, parent, properties, save_callback, modal=False):
         logger.debug(f"__init__ START: parent={type(parent).__name__}, properties keys={list(properties.data.keys())}, save_callback={save_callback.__name__ if hasattr(save_callback, '__name__') else type(save_callback)}")
-        super().__init__(parent, properties, "PropertiesEditorDialog")
+        super().__init__(parent, properties, "PropertiesEditorDialog", modal=modal)
         self.save_callback = save_callback
         self.title("Properties Editor")
         logger.debug(f"Dialog title gesetzt")
@@ -29,33 +29,72 @@ class PropertiesEditorDialog(PersistentDialog):
         frame.rowconfigure(0, weight=1)
         logger.debug(f"Frame erstellt und konfiguriert")
 
-        self.tree = ttk.Treeview(frame, columns=("key", "value"), show="headings", height=15)
-        self.tree.heading("key", text="Key")
+        # Treeview mit Scrollbars
+        tree_container = ttk.Frame(frame)
+        tree_container.grid(row=0, column=0, sticky="nsew", columnspan=4)
+        tree_container.columnconfigure(0, weight=1)
+        tree_container.rowconfigure(0, weight=1)
+        
+        self.tree = ttk.Treeview(tree_container, columns=("value",), show="tree", height=15)
+        self.tree.heading("#0", text="Key")  # Tree column shows key
         self.tree.heading("value", text="Value")
-        self.tree.column("key", width=150)
-        self.tree.column("value", width=250)
-        self.tree.grid(row=0, column=0, sticky="nsew", columnspan=4)
+        self.tree.column("#0", width=250, minwidth=100)  # Tree column for keys
+        self.tree.column("value", width=350, minwidth=100)  # Value column
+        
+        # Scrollbars
+        v_scrollbar = ttk.Scrollbar(tree_container, orient="vertical", command=self.tree.yview)
+        h_scrollbar = ttk.Scrollbar(tree_container, orient="horizontal", command=self.tree.xview)
+        self.tree.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
+        
+        # Grid layout
+        self.tree.grid(row=0, column=0, sticky="nsew")
+        v_scrollbar.grid(row=0, column=1, sticky="ns")
+        h_scrollbar.grid(row=1, column=0, sticky="ew")
         logger.debug(f"Treeview erstellt mit 2 Spalten (key, value), height=15")
 
-        # Treeview mit ALLEN Properties füllen (keine Ausnahmen mehr)
-        logger.debug(f"Starte Treeview-Initialisierung mit properties.data: {properties.data}")
+        # Treeview mit ALLEN Properties füllen (extrem einfache Version)
         count = 0
-        for key, value in properties.data.items():
-            # Speichere Original-Typ
-            self.original_types[key] = type(value)
-            logger.debug(f"Füge Property hinzu: key='{key}', value={repr(value)[:100]}, type={type(value).__name__}")
+        
+        def add_simple_items(parent, data, prefix="", depth=0):
+            """Einfache Funktion ohne jegliche Komplexität"""
+            nonlocal count
+            if depth > 5:  # Tiefe-Limit
+                return
             
-            # Format value für Anzeige
-            if isinstance(value, dict):
-                display_value = f"{{dict}} {len(value)} items"
-            elif isinstance(value, list):
-                display_value = f"[list] {len(value)} items"
-            else:
-                display_value = str(value)
-            
-            self.tree.insert("", "end", values=(key, display_value))
-            count += 1
-        logger.debug(f"Treeview-Initialisierung abgeschlossen: {count} Properties eingefügt")
+            for key, value in data.items():
+                # Speichere Original-Typ nur für Top-Level
+                if not prefix:
+                    self.original_types[key] = type(value)
+                
+                # Einfache Wert-Anzeige
+                if isinstance(value, dict):
+                    display_value = f"{{dict}} {len(value)} items"
+                    item = self.tree.insert(parent, "end", text=f"{prefix}{key}", values=(display_value,), open=True)
+                    # Tiefer gehen für alle Dicts mit Tiefe-Limit
+                    if depth < 4 and len(value) > 0:
+                        add_simple_items(item, value, f"{prefix}{key}.", depth + 1)
+                elif isinstance(value, list):
+                    display_value = f"[list] {len(value)} items"
+                    self.tree.insert(parent, "end", text=f"{prefix}{key}", values=(display_value,))
+                else:
+                    display_value = str(value)[:100]
+                    self.tree.insert(parent, "end", text=f"{prefix}{key}", values=(display_value,))
+                count += 1
+        
+        try:
+            add_simple_items("", properties.data)
+        except Exception as e:
+            # Fallback: Zeige nur Top-Level
+            for key, value in properties.data.items():
+                self.original_types[key] = type(value)
+                if isinstance(value, dict):
+                    display_value = f"{{dict}} {len(value)} items"
+                elif isinstance(value, list):
+                    display_value = f"[list] {len(value)} items"
+                else:
+                    display_value = str(value)[:100]
+                self.tree.insert("", "end", text=key, values=(display_value,))
+                count += 1
 
         self.tree.bind('<Double-1>', self._on_double_click)
         logger.debug(f"Double-Click Event für Treeview gebunden")

@@ -6,13 +6,18 @@ logger = logging.getLogger(__name__)
 
 class PersistentDialog(tk.Toplevel):
 
-    def __init__(self, parent, properties, dialog_name=None):
+    def __init__(self, parent, properties, dialog_name=None, modal=False):
 
         super().__init__(parent)
         self.properties = properties
 
         # Dialog-Name explizit setzen, falls übergeben, sonst Klassenname
         self.dialog_name = dialog_name if dialog_name else self.__class__.__name__
+
+        # Make modal if requested
+        if modal:
+            self.transient(parent)  # Keep dialog on top of parent
+            self.grab_set()  # Make dialog modal
 
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 

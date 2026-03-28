@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 
 class MarkerSettingsDialog(PersistentDialog):
 
-    def __init__(self, parent, properties, save_callback):
-        super().__init__(parent, properties, "MarkerSettingsDialog")
+    def __init__(self, parent, properties, save_callback, modal=False):
+        super().__init__(parent, properties, "MarkerSettingsDialog", modal=modal)
         
         self.save_callback = save_callback
         self.title("Marker Settings")
@@ -18,26 +18,29 @@ class MarkerSettingsDialog(PersistentDialog):
         # Store variables as class attributes
         self.marker_enabled = tk.BooleanVar(value=properties.get("marker_enabled", True))
         
-        # Waypoints Einstellungen - 3 Farben + %
+        # Waypoints Einstellungen - 3 Farben + % + Text Enabled
         self.waypoints_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.waypoints.enabled', True))
-        self.waypoints_percent = tk.IntVar(value=properties.get('dialogs.settings.rendering.waypoints.percent', 100))  # % statt Step
+        self.waypoints_percent = tk.DoubleVar(value=properties.get('dialogs.settings.rendering.waypoints.percent', 100.0))  # Float für 0.1 Schritte
         self.waypoints_color_circle = tk.StringVar(value=properties.get('dialogs.settings.rendering.waypoints.color_circle', "#9B261E"))
         self.waypoints_color_outside = tk.StringVar(value=properties.get('dialogs.settings.rendering.waypoints.color_outside', "#C5542D"))
         self.waypoints_color_text = tk.StringVar(value=properties.get('dialogs.settings.rendering.waypoints.color_text', "#652A22"))
+        self.waypoints_text_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.waypoints.text_enabled', True))
         
-        # Track Points Einstellungen - 3 Farben + %
+        # Track Points Einstellungen - 3 Farben + % + Text Enabled
         self.trackpoints_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.trackpoints.enabled', True))
-        self.trackpoints_percent = tk.IntVar(value=properties.get('dialogs.settings.rendering.trackpoints.percent', 50))  # % statt Step
+        self.trackpoints_percent = tk.DoubleVar(value=properties.get('dialogs.settings.rendering.trackpoints.percent', 50.0))  # Float für 0.1 Schritte
         self.trackpoints_color_circle = tk.StringVar(value=properties.get('dialogs.settings.rendering.trackpoints.color_circle', "#4169E1"))
         self.trackpoints_color_outside = tk.StringVar(value=properties.get('dialogs.settings.rendering.trackpoints.color_outside', "#6495ED"))
         self.trackpoints_color_text = tk.StringVar(value=properties.get('dialogs.settings.rendering.trackpoints.color_text', "#FFFFFF"))
+        self.trackpoints_text_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.trackpoints.text_enabled', True))
         
-        # Route Points Einstellungen - 3 Farben + %
+        # Route Points Einstellungen - 3 Farben + % + Text Enabled
         self.routepoints_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.routepoints.enabled', True))
-        self.routepoints_percent = tk.IntVar(value=properties.get('dialogs.settings.rendering.routepoints.percent', 50))  # % statt Step
+        self.routepoints_percent = tk.DoubleVar(value=properties.get('dialogs.settings.rendering.routepoints.percent', 50.0))  # Float für 0.1 Schritte
         self.routepoints_color_circle = tk.StringVar(value=properties.get('dialogs.settings.rendering.routepoints.color_circle', "#228B22"))
         self.routepoints_color_outside = tk.StringVar(value=properties.get('dialogs.settings.rendering.routepoints.color_outside', "#32CD32"))
         self.routepoints_color_text = tk.StringVar(value=properties.get('dialogs.settings.rendering.routepoints.color_text', "#FFFFFF"))
+        self.routepoints_text_enabled = tk.BooleanVar(value=properties.get('dialogs.settings.rendering.routepoints.text_enabled', True))
 
         frame = ttk.Frame(self)
         frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -58,17 +61,20 @@ class MarkerSettingsDialog(PersistentDialog):
         # Waypoints Sektion
         self._create_point_type_section(frame, "Waypoints", 1, 
                                        self.waypoints_enabled, self.waypoints_percent,
-                                       self.waypoints_color_circle, self.waypoints_color_outside, self.waypoints_color_text)
+                                       self.waypoints_color_circle, self.waypoints_color_outside, self.waypoints_color_text,
+                                       self.waypoints_text_enabled)
         
         # Track Points Sektion
         self._create_point_type_section(frame, "Track Points", 2,
                                        self.trackpoints_enabled, self.trackpoints_percent,
-                                       self.trackpoints_color_circle, self.trackpoints_color_outside, self.trackpoints_color_text)
+                                       self.trackpoints_color_circle, self.trackpoints_color_outside, self.trackpoints_color_text,
+                                       self.trackpoints_text_enabled)
         
         # Route Points Sektion
         self._create_point_type_section(frame, "Route Points", 3,
                                        self.routepoints_enabled, self.routepoints_percent,
-                                       self.routepoints_color_circle, self.routepoints_color_outside, self.routepoints_color_text)
+                                       self.routepoints_color_circle, self.routepoints_color_outside, self.routepoints_color_text,
+                                       self.routepoints_text_enabled)
 
         # Buttons
         btn_frame = ttk.Frame(frame)
@@ -76,7 +82,7 @@ class MarkerSettingsDialog(PersistentDialog):
 
         def ok():
             """Save settings and close dialog"""
-            properties.set("marker_enabled", self.marker_enabled.get())
+# properties.set("marker_enabled", self.marker_enabled.get())  # OBSOLETE - no longer used
             
             # Waypoints
             properties.set('dialogs.settings.rendering.waypoints.enabled', self.waypoints_enabled.get())
@@ -84,6 +90,7 @@ class MarkerSettingsDialog(PersistentDialog):
             properties.set('dialogs.settings.rendering.waypoints.color_circle', self.waypoints_color_circle.get())
             properties.set('dialogs.settings.rendering.waypoints.color_outside', self.waypoints_color_outside.get())
             properties.set('dialogs.settings.rendering.waypoints.color_text', self.waypoints_color_text.get())
+            properties.set('dialogs.settings.rendering.waypoints.text_enabled', self.waypoints_text_enabled.get())
             
             # Track Points
             properties.set('dialogs.settings.rendering.trackpoints.enabled', self.trackpoints_enabled.get())
@@ -91,6 +98,7 @@ class MarkerSettingsDialog(PersistentDialog):
             properties.set('dialogs.settings.rendering.trackpoints.color_circle', self.trackpoints_color_circle.get())
             properties.set('dialogs.settings.rendering.trackpoints.color_outside', self.trackpoints_color_outside.get())
             properties.set('dialogs.settings.rendering.trackpoints.color_text', self.trackpoints_color_text.get())
+            properties.set('dialogs.settings.rendering.trackpoints.text_enabled', self.trackpoints_text_enabled.get())
             
             # Route Points
             properties.set('dialogs.settings.rendering.routepoints.enabled', self.routepoints_enabled.get())
@@ -98,6 +106,7 @@ class MarkerSettingsDialog(PersistentDialog):
             properties.set('dialogs.settings.rendering.routepoints.color_circle', self.routepoints_color_circle.get())
             properties.set('dialogs.settings.rendering.routepoints.color_outside', self.routepoints_color_outside.get())
             properties.set('dialogs.settings.rendering.routepoints.color_text', self.routepoints_color_text.get())
+            properties.set('dialogs.settings.rendering.routepoints.text_enabled', self.routepoints_text_enabled.get())
             
             save_callback()
             self._on_close()
@@ -109,8 +118,8 @@ class MarkerSettingsDialog(PersistentDialog):
         ttk.Button(btn_frame, text="OK", command=ok).pack(side="left", padx=5)
         ttk.Button(btn_frame, text="Cancel", command=cancel).pack(side="left", padx=5)
     
-    def _create_point_type_section(self, parent, title, row, enabled_var, percent_var, color_circle_var, color_outside_var, color_text_var):
-        """Erstellt eine Sektion für einen Punkt-Typ mit 3 Farben und %"""
+    def _create_point_type_section(self, parent, title, row, enabled_var, percent_var, color_circle_var, color_outside_var, color_text_var, text_enabled_var):
+        """Erstellt eine Sektion für einen Punkt-Typ mit 3 Farben, % und Text Enabled"""
         
         section_frame = ttk.LabelFrame(parent, text=title)
         section_frame.grid(row=row, column=0, columnspan=3, sticky="ew", pady=5)
@@ -121,6 +130,11 @@ class MarkerSettingsDialog(PersistentDialog):
         enabled_cb.grid(row=0, column=0, sticky="w", padx=5, pady=2)
         self._create_tooltip(enabled_cb, "Aktiviert/deaktiviert die Anzeige dieses Punkt-Typs auf der Karte")
         
+        # Row 0: Text Enabled Checkbox (neben Enabled)
+        text_enabled_cb = ttk.Checkbutton(section_frame, text="Text", variable=text_enabled_var)
+        text_enabled_cb.grid(row=0, column=1, sticky="w", padx=5, pady=2)
+        self._create_tooltip(text_enabled_cb, "Aktiviert/deaktiviert die Textanzeige bei den Markern")
+        
         # Row 1: % Label, Entry, Slider (engeres Layout)
         percent_label = ttk.Label(section_frame, text="Points:")
         percent_label.grid(row=1, column=0, sticky="w", padx=5, pady=2)
@@ -129,35 +143,38 @@ class MarkerSettingsDialog(PersistentDialog):
         # % Entry für genaue Eingabe
         percent_entry = ttk.Entry(section_frame, textvariable=percent_var, width=8)
         percent_entry.grid(row=1, column=1, sticky="w", padx=5, pady=2)
-        self._create_tooltip(percent_entry, "Ganzzahliger Prozentsatz (1-100)")
+        self._create_tooltip(percent_entry, "Dezimaler Prozentsatz (0.1-100)")
         
-        # Validierung für % Entry (nur ganze Zahlen 1-100)
+        # Validierung für % Entry (Dezimalzahlen 0.1-100, gerundet auf 1 Stelle)
         def validate_percent_input(*args):
             try:
                 value = percent_var.get()
-                if value < 1:
-                    percent_var.set(1)
+                if value < 0.1:
+                    percent_var.set(0.1)
                 elif value > 100:
                     percent_var.set(100)
+                else:
+                    # Auf eine Nachkommastelle runden
+                    percent_var.set(round(value, 1))
             except:
-                percent_var.set(50)
+                percent_var.set(50.0)
         
         percent_var.trace('w', validate_percent_input)
         
-        # Key-Press Validierung für nur Zahlen
+        # Key-Press Validierung für Zahlen und Dezimalpunkt
         def validate_percent_keypress(event):
-            if event.char and not event.char.isdigit() and event.keysym not in ['BackSpace', 'Delete', 'Left', 'Right', 'Home', 'End']:
+            if event.char and not event.char.isdigit() and event.char not in ['.'] and event.keysym not in ['BackSpace', 'Delete', 'Left', 'Right', 'Home', 'End']:
                 return "break"
             return None
         
         percent_entry.bind('<Key>', validate_percent_keypress)
         
-        # Slider mit % Anzeige (kürzer) - ganzzahlige Konvertierung
-        percent_slider = ttk.Scale(section_frame, from_=1, to=100, orient=tk.HORIZONTAL, 
+        # Slider mit % Anzeige (0.1-100, 0.1 Schritte, gerundet)
+        percent_slider = ttk.Scale(section_frame, from_=0.1, to=100, orient=tk.HORIZONTAL, 
                                   variable=percent_var, length=120,
-                                  command=lambda value: percent_var.set(int(float(value))))
+                                  command=lambda value: percent_var.set(round(float(value), 1)))
         percent_slider.grid(row=1, column=2, sticky="w", padx=5, pady=2)
-        self._create_tooltip(percent_slider, "Visuelle Einstellung des Prozentsatzes")
+        self._create_tooltip(percent_slider, "Visuelle Einstellung des Prozentsatzes (0.1-100, gerundet)")
         
         # % Label neben Slider
         percent_value_label = ttk.Label(section_frame, text="%")
@@ -237,12 +254,17 @@ class MarkerSettingsDialog(PersistentDialog):
 
     def _pick_color(self, color_var, color_btn):
         """Öffne Farbauswahl-Dialog"""
+        from src.ui.utils.color_utils import pick_color, update_color_button
+        
         try:
-            color = tk.colorchooser.askcolor(initialcolor=color_var.get())[1]
-            if color:
-                color_var.set(color)
-                color_btn.configure(bg=color)
+            current_color = color_var.get()
+            new_color = pick_color(parent=self, initial_color=current_color)
+            
+            if new_color:
+                color_var.set(new_color)
+                update_color_button(color_btn, new_color)
                 self._update_preview()
+            
             # Halte Dialog im Vordergrund
             self.lift()
         except Exception as e:
