@@ -1,0 +1,122 @@
+[
+  {
+    "test": "Main App Import",
+    "status": "PASS",
+    "details": "TomsGPXEditor imported successfully",
+    "timestamp": 1774794835.1122997
+  },
+  {
+    "test": "GPX File Manager Import",
+    "status": "PASS",
+    "details": "GPXFileManager imported successfully",
+    "timestamp": 1774794835.1123157
+  },
+  {
+    "test": "Color Utils Import",
+    "status": "PASS",
+    "details": "All color utilities imported successfully",
+    "timestamp": 1774794835.1123228
+  },
+  {
+    "test": "Property Keys Import",
+    "status": "PASS",
+    "details": "Property keys imported successfully",
+    "timestamp": 1774794835.112328
+  },
+  {
+    "test": "Properties: Root logging section",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.120228
+  },
+  {
+    "test": "Properties: dialogs.settings.logging exists",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.1202369
+  },
+  {
+    "test": "Properties: files.session exists",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.120239
+  },
+  {
+    "test": "Properties: app.recent_files exists",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.1202407
+  },
+  {
+    "test": "Color Validation: #FF0000",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.1202567
+  },
+  {
+    "test": "Color Validation: #00FF00",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.120261
+  },
+  {
+    "test": "Color Validation: #0000FF",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.1202629
+  },
+  {
+    "test": "Color Validation: #FFFFFF",
+    "status": "PASS",
+    "details": "",
+    "timestamp": 1774794835.1202643
+  },
+  {
+    "test": "Color Validation: FF0000",
+    "status": "PASS",
+    "details": "Invalid color correctly rejected",
+    "timestamp": 1774794835.120266
+  },
+  {
+    "test": "Color Validation: #FF00",
+    "status": "PASS",
+    "details": "Invalid color correctly rejected",
+    "timestamp": 1774794835.120269
+  },
+  {
+    "test": "Color Validation: #GGGGGG",
+    "status": "PASS",
+    "details": "Invalid color correctly rejected",
+    "timestamp": 1774794835.1202772
+  },
+  {
+    "test": "Color Validation: ",
+    "status": "PASS",
+    "details": "Invalid color correctly rejected",
+    "timestamp": 1774794835.1202798
+  },
+  {
+    "test": "Color Validation: None",
+    "status": "PASS",
+    "details": "Invalid color correctly rejected",
+    "timestamp": 1774794835.120286
+  },
+  {
+    "test": "PaginationManager Created",
+    "status": "PASS",
+    "details": "PaginationManager class exists",
+    "timestamp": 1774794835.1709363
+  },
+  {
+    "test": "PropertyKeys Class",
+    "status": "PASS",
+    "details": "PropertyKeys class properly removed",
+    "timestamp": 1774794835.1709633
+  },
+  {
+    "test": "Constants Available",
+    "status": "PASS",
+    "details": "Required constants are available",
+    "timestamp": 1774794835.170971
+  }
+]

@@ -13,6 +13,7 @@ import os
 import tkinter as tk
 from tkinter import ttk
 from typing import Dict, Any, Callable
+from src.ui.utils.dialog_utils import create_tooltip
 
 from src.infrastructure.repositories.properties_repository import AppProperties
 
@@ -29,16 +30,6 @@ class FileEntryBuilder:
         self.properties = None  # Will be set in create_file_entry
         self.button_update_callback = button_update_callback
         self.editable_update_callback = editable_update_callback
-    
-    @classmethod
-    def create_from_container(cls, parent_frame, row: int, container):
-        """Create FileEntryBuilder from DI container"""
-        return cls(
-            parent_frame=parent_frame,
-            row=row,
-            button_update_callback=container.get('button_update_callback'),
-            editable_update_callback=container.get('editable_update_callback')
-        )
         
     def create_file_entry(self, path: str, ref_num: int, file_analysis: Dict[str, Any], 
                        settings: Dict[str, Any], properties: AppProperties):
@@ -126,11 +117,13 @@ class FileEntryBuilder:
         logger.debug("Color button created")
         
         # Filename Label
-        widgets['filename_label'] = ttk.Label(
+        filename_label = ttk.Label(
             self.parent_frame,
             text=os.path.basename(path)
         )
-        widgets['filename_label'].grid(row=self.row, column=4, sticky="w", padx=3)
+        filename_label.grid(row=self.row, column=4, sticky="w", padx=3)
+        create_tooltip(filename_label, path)  # Show full path as tooltip
+        widgets['filename_label'] = filename_label
         
         # File Type Label
         file_type_text = self._get_file_type_text(file_analysis)

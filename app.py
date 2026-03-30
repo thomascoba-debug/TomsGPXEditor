@@ -9,19 +9,20 @@ Diese Datei enthält nur noch:
 """
 
 import os
+from src.i18n import t
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from tkinterdnd2 import DND_FILES, TkinterDnD
+from src.ui.utils.dialog_utils import create_tooltip
 import logging
 
 # Import new architecture controllers
 from src.infrastructure.repositories.properties_repository import AppProperties
 from src.infrastructure.error_handler import safe_execute, GPXEditorException, validate_gpx_data
-from src.infrastructure.di_container import configure_container, get_container
-from src.infrastructure.container_config import configure_container as setup_container
 from src.infrastructure.state_manager import get_state_manager, ApplicationState
 from src.infrastructure.resource_manager import get_resource_manager
 from src.infrastructure.shutdown_manager import initialize_graceful_shutdown, get_shutdown_manager, ShutdownPriority
+from src.infrastructure.properties_monitor import PropertiesMonitor
 
 # Internationalization
 from src.i18n import initialize_language_manager, t
@@ -34,7 +35,6 @@ from src.application.services.recent_files_service import RecentFilesFromSession
 from src.application.services.gpx_service import GPXEditController
 
 # UI Components
-from src.ui.widgets.progress_dialog import ProgressManager
 from src.ui.widgets.context_menu import AutoSaveManager, KeyboardShortcutManager
 
 # Configure logger
@@ -86,13 +86,18 @@ class TomsGPXEditor(TkinterDnD.Tk):
         
         # Add initialization flag
         self._initialized = False
+        self._shutting_down = False  # Prevent multiple shutdowns
         
         # Initialize infrastructure components first
         self._initialize_infrastructure()
         
-        # Initialize core components from container
-        self.properties = self.container.get('properties')
-        self.recent_files_manager = self.container.get('recent_files_manager')
+        # Initialize core components directly
+        self.properties = AppProperties("properties.json")
+        
+        # Check properties for issues at startup
+        PropertiesMonitor.startup_check(self)  # Pass self as parent window
+        
+        self.recent_files_manager = RecentFilesFromSessionManager(self.properties, max_files=10)
         
         # Initialize controllers
         self.gpx_file_manager = None
@@ -101,14 +106,13 @@ class TomsGPXEditor(TkinterDnD.Tk):
         self.gpx_service = GPXEditController(self)
         
         # Initialize language manager
-        initialize_language_manager(self.container.get('properties'))
+        initialize_language_manager(self.properties)
         
         # Set window title after language manager is initialized
         self.title(t("app.title"))
         
         # Initialize UI managers
-        self.progress_manager = ProgressManager(self)
-        self.auto_save_manager = AutoSaveManager(self.container.get('properties'), self._save_all)
+        self.auto_save_manager = AutoSaveManager(self.properties, self._save_all)
         self.keyboard_manager = KeyboardShortcutManager(self)
         
         # Restore window geometry
@@ -148,7 +152,8 @@ class TomsGPXEditor(TkinterDnD.Tk):
             logger.debug("Application already in ready state")
         
         # Schedule session file loading after app is fully ready
-        self.after(1000, self._safe_load_session_files)
+        logger.info("Application ready - loading GPX files...")
+        self.after(100, self._safe_load_session_files)
         
         # Handle window close (only if window still exists)
         try:
@@ -175,9 +180,6 @@ class TomsGPXEditor(TkinterDnD.Tk):
             
             # Initialize resource manager
             resource_manager = get_resource_manager()
-            
-            # Initialize dependency injection container
-            self.container = setup_container(self)
             
             # Initialize graceful shutdown
             initialize_graceful_shutdown()
@@ -257,10 +259,11 @@ class TomsGPXEditor(TkinterDnD.Tk):
             self.map_widget = TkinterMapView(right)
             self.map_widget.pack(fill="both", expand=True)
             
-            # Set basic position and zoom with error handling
+            # Set basic position and zoom immediately for fast startup
             try:
-                self.map_widget.set_position(51.0, 10.0)
-                self.map_widget.set_zoom(5)
+                self.map_widget.set_position(51.0, 10.0)  # Germany center
+                self.map_widget.set_zoom(6)  # Reasonable default zoom
+                logger.debug("Initial map position set for fast startup")
             except Exception as e:
                 logger.warning(f"Could not set initial map position/zoom: {e}")
             
@@ -272,11 +275,6 @@ class TomsGPXEditor(TkinterDnD.Tk):
                                       foreground="red", justify="center")
             self.map_widget.pack(fill="both", expand=True)
             # Continue with fallback widget
-        
-        # Register UI components in container after they are created
-        from src.infrastructure.container_config import ContainerConfig
-        config = ContainerConfig(self.container)
-        config.configure_ui_components_after_build(self)
         
         # Initialize controllers after map widget is created
         self._initialize_controllers()
@@ -297,12 +295,28 @@ class TomsGPXEditor(TkinterDnD.Tk):
     def _initialize_controllers(self):
         """Initialize business logic controllers"""
         try:
-            # Initialize controllers using factory methods to avoid circular dependencies
-            self.gpx_file_manager = GPXFileManager.create_from_container(self.container)
-            self.map_controller = MapController.create_from_container(self.container)
-            self.dialog_controller = DialogController.create_from_container(self.container)
+            # Initialize controllers directly without container
+            self.gpx_file_manager = GPXFileManager(
+                properties=self.properties,
+                map_widget=self.map_widget,
+                main_grid=self.main_grid,
+                button_update_callback=self._update_conversion_buttons,
+                editable_update_callback=self._update_conversion_buttons,
+                recent_files_manager=self.recent_files_manager
+            )
             
-            logger.info("Business logic controllers initialized successfully")
+            self.map_controller = MapController(
+                map_widget=self.map_widget,
+                properties=self.properties
+            )
+            
+            self.dialog_controller = DialogController(
+                parent=self,
+                properties=self.properties,
+                save_callback=self._save_properties
+            )
+            
+            logger.info("Business logic initialized successfully")
             
         except Exception as e:
             logger.error(f"Failed to initialize controllers: {e}", exc_info=True)
@@ -317,20 +331,36 @@ class TomsGPXEditor(TkinterDnD.Tk):
         visibility_frame = ttk.LabelFrame(btn_frame, text=t("menu.visibility"))
         visibility_frame.pack(side="top", padx=(0, 0), fill="x", pady=(0, 5))
         
-        ttk.Button(visibility_frame, text=t("buttons.show_all"), command=self._select_all).pack(side="left", padx=2)
-        ttk.Button(visibility_frame, text=t("buttons.hide_all"), command=self._deselect_all).pack(side="left", padx=2)
-        ttk.Button(visibility_frame, text=t("buttons.update"), command=self._update_map).pack(side="left", padx=2)
+        show_all_btn = ttk.Button(visibility_frame, text=t("buttons.show_all"), command=self._select_all)
+        show_all_btn.pack(side="left", padx=2)
+        create_tooltip(show_all_btn, t("tooltips.show_all"))
+        
+        hide_all_btn = ttk.Button(visibility_frame, text=t("buttons.hide_all"), command=self._deselect_all)
+        hide_all_btn.pack(side="left", padx=2)
+        create_tooltip(hide_all_btn, t("tooltips.hide_all"))
+        
+        update_btn = ttk.Button(visibility_frame, text=t("buttons.update"), command=self._update_map)
+        update_btn.pack(side="left", padx=2)
+        create_tooltip(update_btn, t("tooltips.update"))
         
         # Edit controls
         edit_frame = ttk.LabelFrame(btn_frame, text=t("menu.edit"))
         edit_frame.pack(side="top", fill="x")
         
-        ttk.Button(edit_frame, text=t("buttons.select_all"), command=self._select_all_edit).pack(side="left", padx=2)
-        ttk.Button(edit_frame, text=t("buttons.deselect_all"), command=self._deselect_all_edit).pack(side="left", padx=2)
-        ttk.Button(edit_frame, text=t("buttons.delete"), command=self._delete_selected).pack(side="left", padx=2)
+        select_all_edit_btn = ttk.Button(edit_frame, text=t("buttons.select_all"), command=self._select_all_edit)
+        select_all_edit_btn.pack(side="left", padx=2)
+        create_tooltip(select_all_edit_btn, t("tooltips.select_all"))
+        
+        deselect_all_edit_btn = ttk.Button(edit_frame, text=t("buttons.deselect_all"), command=self._deselect_all_edit)
+        deselect_all_edit_btn.pack(side="left", padx=2)
+        create_tooltip(deselect_all_edit_btn, t("tooltips.deselect_all"))
+        
+        delete_btn = ttk.Button(edit_frame, text=t("buttons.delete"), command=self._delete_selected)
+        delete_btn.pack(side="left", padx=2)
+        create_tooltip(delete_btn, t("tooltips.delete_selected"))
         
         # GPX Analysis section
-        analysis_frame = ttk.LabelFrame(btn_frame, text="GPX Analysis")
+        analysis_frame = ttk.LabelFrame(btn_frame, text=t("menu.edit") + " " + t("buttons.analyze_gpx"))
         analysis_frame.pack(side="top", fill="x", pady=(10, 0))
         
         self.analyze_btn = ttk.Button(
@@ -340,6 +370,7 @@ class TomsGPXEditor(TkinterDnD.Tk):
             state="disabled"  # Initially disabled
         )
         self.analyze_btn.pack(side="left", padx=2)
+        create_tooltip(self.analyze_btn, t("tooltips.analyze_gpx"))
         
         # Text display for analysis results
         self.analysis_text = tk.Text(analysis_frame, height=8, width=50, wrap=tk.WORD)
@@ -434,17 +465,17 @@ class TomsGPXEditor(TkinterDnD.Tk):
         """Build the File menu"""
         file_menu = tk.Menu(menubar, tearoff=0)
         
-        file_menu.add_command(label="Open GPX", command=self._open_file_dialog)
+        file_menu.add_command(label=t("menu.file_open_gpx"), command=self._open_file_dialog)
         
         # Recent files submenu
         self.recent_files_menu = tk.Menu(file_menu, tearoff=0)
         self._update_recent_files_menu()
-        file_menu.add_cascade(label="Recent Files", menu=self.recent_files_menu)
+        file_menu.add_cascade(label=t("menu.file_recent_files"), menu=self.recent_files_menu)
         
         file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self._on_close)
+        file_menu.add_command(label=t("menu.file_exit"), command=self._on_close)
         
-        menubar.add_cascade(label="File", menu=file_menu)
+        menubar.add_cascade(label=t("menu.file"), menu=file_menu)
     
     # Menu and UI event handlers
     def _open_file_dialog(self):
@@ -691,14 +722,35 @@ class TomsGPXEditor(TkinterDnD.Tk):
         try:
             if self.winfo_exists() and hasattr(self, 'gpx_file_manager'):
                 logger.info("Loading session files safely...")
-                self._load_session_files()
-                self._update_conversion_buttons()
-                logger.info("Session files loaded successfully")
+                # Show map immediately, then load files in background
+                self._show_map_immediately()
+                self.after(50, self._load_session_files_background)
+                logger.info("Session files loading initiated")
             else:
                 logger.warning("App not ready for session loading")
         except Exception as e:
             logger.error(f"Safe session loading failed: {e}")
             # Don't crash the app
+    
+    def _show_map_immediately(self):
+        """Show map immediately with basic position"""
+        try:
+            if hasattr(self, 'map_controller') and self.map_controller:
+                # Set basic map position without GPX data
+                self.map_widget.set_position(51.0, 10.0)  # Germany center
+                self.map_widget.set_zoom(6)
+                logger.info("Map displayed immediately")
+        except Exception as e:
+            logger.error(f"Failed to show map immediately: {e}")
+    
+    def _load_session_files_background(self):
+        """Load session files in background"""
+        try:
+            self._load_session_files()
+            self._update_conversion_buttons()
+            logger.info("Session files loaded successfully")
+        except Exception as e:
+            logger.error(f"Background session loading failed: {e}")
     
     def _save_properties(self):
         """Save properties and update map"""
@@ -747,20 +799,30 @@ class TomsGPXEditor(TkinterDnD.Tk):
         self.after(0, set_geom)
     
     def _on_close(self):
-        """Handle window close event with graceful shutdown"""
+        """Handle window close event with immediate force quit"""
+        if self._shutting_down:
+            logger.debug("Shutdown already in progress, ignoring duplicate call")
+            return
+            
+        self._shutting_down = True
+        logger.info("Application shutdown initiated")
+        
+        # Force quit immediately - skip everything else
+        self._force_quit()
+        
+        # This code will never be reached due to force quit above
         try:
-            # Set application state to shutting down
-            state_manager = get_state_manager()
-            state_manager.state = ApplicationState.SHUTTING_DOWN
-            
-            logger.info("Initiating graceful shutdown...")
-            
             # Save window geometry
             geom = self.geometry()
             logger.debug(f"Saving window geometry: {geom}")
             self.properties.set("app.main_window.geometry", geom)
             
-            # Use graceful shutdown system
+            # Force save properties immediately (critical for language setting)
+            if hasattr(self, 'properties'):
+                self.properties.save()
+                logger.debug("Properties saved immediately on close")
+            
+            # Use graceful shutdown system with timeout
             shutdown_manager = get_shutdown_manager()
             shutdown_manager.shutdown()
             
@@ -768,15 +830,35 @@ class TomsGPXEditor(TkinterDnD.Tk):
             logger.error(f"Error during shutdown: {e}", exc_info=True)
             # Force close if graceful shutdown fails
             try:
-                self.properties.save()
+                if hasattr(self, 'properties'):
+                    self.properties.save()
             except:
                 pass
+            finally:
+                self.destroy()
+    
+    def _force_quit(self):
+        """Force quit the application if it's still running"""
+        logger.info("Force quitting application")
+        try:
+            # Stop all event loops immediately
+            self.quit()
             self.destroy()
+        except:
+            pass
+        finally:
+            # Hard exit - no exceptions
+            import os
+            os._exit(0)
     
     def _cleanup_on_shutdown(self):
         """Cleanup handler for graceful shutdown"""
         try:
             logger.info("Application cleanup started")
+            
+            # Check properties for issues at shutdown
+            if hasattr(self, 'properties'):
+                PropertiesMonitor.shutdown_check(self)  # Pass self as parent window
             
             # Save properties
             if hasattr(self, 'properties'):

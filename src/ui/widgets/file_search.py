@@ -3,6 +3,7 @@ Search and filter functionality for GPX files
 """
 
 import tkinter as tk
+from src.i18n import t
 from tkinter import ttk
 import os
 import re
@@ -32,7 +33,7 @@ class FileSearchFrame(ttk.Frame):
         search_frame.pack(fill="x", padx=5, pady=5)
         
         # Search entry
-        ttk.Label(search_frame, text="Search:").pack(side="left", padx=(0, 5))
+        ttk.Label(search_frame, text=t("buttons.search")).pack(side="left", padx=(0, 5))
         
         self.search_entry = ttk.Entry(
             search_frame, 
@@ -44,14 +45,14 @@ class FileSearchFrame(ttk.Frame):
         # Clear search button
         self.clear_button = ttk.Button(
             search_frame,
-            text="Clear",
+            text=t("buttons.clear"),
             command=self.clear_search,
             width=8
         )
         self.clear_button.pack(side="left", padx=(0, 10))
         
         # Filter dropdown
-        ttk.Label(search_frame, text="Filter:").pack(side="left", padx=(0, 5))
+        ttk.Label(search_frame, text=t("buttons.filter")).pack(side="left", padx=(0, 5))
         
         self.filter_combo = ttk.Combobox(
             search_frame,
@@ -295,12 +296,12 @@ class AdvancedSearchDialog(tk.Toplevel):
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(fill="x", pady=(10, 0))
         
-        ttk.Button(button_frame, text="Search", command=self.perform_search).pack(side="left", padx=5)
-        ttk.Button(button_frame, text="Clear", command=self.clear_search).pack(side="left", padx=5)
-        ttk.Button(button_frame, text="Close", command=self.destroy).pack(side="right", padx=5)
+        ttk.Button(button_frame, text=t("menu.file_open_gpx"), command=self.perform_search).pack(side="left", padx=5)
+        ttk.Button(button_frame, text=t("buttons.clear"), command=self.clear_search).pack(side="left", padx=5)
+        ttk.Button(button_frame, text=t("buttons.close"), command=self.destroy).pack(side="right", padx=5)
         
         # Status label
-        self.status_label = ttk.Label(main_frame, text="")
+        self.status_label = ttk.Label(main_frame, text=t("messages.ready"))
         self.status_label.pack(fill="x", pady=(5, 0))
     
     def perform_search(self):
@@ -308,7 +309,7 @@ class AdvancedSearchDialog(tk.Toplevel):
         search_term = self.search_entry.get().strip()
         
         if not search_term:
-            self.status_label.config(text="Please enter a search term")
+            self.status_label.config(text=t("messages.please_enter_search_term"))
             return
         
         # Clear previous results

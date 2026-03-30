@@ -1,6 +1,8 @@
 import tkinter as tk
+from src.i18n import t
 from tkinter import ttk, filedialog, messagebox
 from src.ui.base import PersistentDialog
+from src.ui.utils.dialog_utils import create_tooltip
 import os
 import logging
 import gpxpy
@@ -15,7 +17,7 @@ class TrackToRouteDialog(PersistentDialog):
     def __init__(self, parent, entries, properties, modal=False):
         super().__init__(parent, properties, "TrackToRouteDialog", modal=modal)
         
-        self.title("Track to Route")
+        self.title(t("menu.edit_track_to_route"))
         self.entries = entries
         self.properties = properties
         self.selected_files = {}  # Track selected files
@@ -24,16 +26,16 @@ class TrackToRouteDialog(PersistentDialog):
         frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Title
-        title_label = ttk.Label(frame, text="Convert Tracks to Routes", font=("Arial", 12, "bold"))
+        title_label = ttk.Label(frame, text=t("menu.edit_track_to_route"), font=("Arial", 12, "bold"))
         title_label.pack(pady=(0, 10))
         
         # Info text
-        info_text = "Select GPX files and configure downsampling before conversion."
+        info_text = t("conversion.track_to_route_info")
         info_label = ttk.Label(frame, text=info_text)
         info_label.pack(pady=(0, 10))
         
         # Files list with checkboxes
-        files_frame = ttk.LabelFrame(frame, text="Select GPX Files")
+        files_frame = ttk.LabelFrame(frame, text=t("dialogs.selected_files"))
         files_frame.pack(fill="both", expand=True, pady=(0, 10))
         
         # Create scrollable frame
@@ -71,24 +73,26 @@ class TrackToRouteDialog(PersistentDialog):
                     variable=var
                 )
                 checkbox.pack(side="left")
+                create_tooltip(checkbox, t("tooltips.select_file_for_conversion", filename=os.path.basename(entry.path)))
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
         # Downsampling settings
-        downsample_frame = ttk.LabelFrame(frame, text="Downsampling Settings")
+        downsample_frame = ttk.LabelFrame(frame, text=t("conversion.downsampling_settings"))
         downsample_frame.pack(fill="x", pady=(0, 10))
         
         # Points per 100km
         points_frame = ttk.Frame(downsample_frame)
         points_frame.pack(fill="x", padx=10, pady=5)
         
-        ttk.Label(points_frame, text="Points per 100km:").pack(side="left")
+        ttk.Label(points_frame, text=t("conversion.points_per_100km")).pack(side="left")
         
         # Entry for points
         self.points_var = tk.IntVar(value=100)
         points_entry = ttk.Entry(points_frame, textvariable=self.points_var, width=10)
         points_entry.pack(side="left", padx=(10, 5))
+        create_tooltip(points_entry, t("tooltips.points_per_100km"))
         
         # Slider for points
         self.points_slider = ttk.Scale(
@@ -100,6 +104,7 @@ class TrackToRouteDialog(PersistentDialog):
             command=self._on_slider_change
         )
         self.points_slider.pack(side="left", fill="x", expand=True, padx=5)
+        create_tooltip(self.points_slider, t("tooltips.point_density_conversion"))
         
         # Sync entry and slider
         points_entry.bind('<Return>', self._on_entry_change)
@@ -115,7 +120,7 @@ class TrackToRouteDialog(PersistentDialog):
         # Select All button
         select_all_button = ttk.Button(
             button_frame, 
-            text="Select All",
+            text=t("buttons.select_all"),
             command=self._select_all
         )
         select_all_button.pack(side="left", padx=(0, 5))
@@ -123,7 +128,7 @@ class TrackToRouteDialog(PersistentDialog):
         # Deselect All button
         deselect_all_button = ttk.Button(
             button_frame, 
-            text="Deselect All",
+            text=t("buttons.deselect_all"),
             command=self._deselect_all
         )
         deselect_all_button.pack(side="left", padx=(0, 5))
@@ -131,7 +136,7 @@ class TrackToRouteDialog(PersistentDialog):
         # Remove button
         remove_button = ttk.Button(
             button_frame, 
-            text="Remove Selected",
+            text=t("buttons.delete"),
             command=self._remove_selected
         )
         remove_button.pack(side="left", padx=(0, 5))
@@ -139,7 +144,7 @@ class TrackToRouteDialog(PersistentDialog):
         # Downsample button
         downsample_button = ttk.Button(
             button_frame, 
-            text="Downsample Tracks",
+            text=t("buttons.convert"),
             command=self._downsample_tracks
         )
         downsample_button.pack(side="left", padx=(0, 5))
@@ -147,13 +152,13 @@ class TrackToRouteDialog(PersistentDialog):
         # Convert button
         convert_button = ttk.Button(
             button_frame, 
-            text="Convert to Routes",
+            text=t("buttons.convert"),
             command=self._convert_to_routes
         )
         convert_button.pack(side="left", padx=(0, 5))
         
         # Close button
-        close_button = ttk.Button(button_frame, text="Close", command=self._on_close)
+        close_button = ttk.Button(button_frame, text=t("buttons.cancel"), command=self._on_close)
         close_button.pack(side="right")
         
         # Store button references

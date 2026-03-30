@@ -1,6 +1,9 @@
+from src.constants.property_keys import DIALOGS_SETTINGS_LOGGING
+from src.i18n import t
 import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext
 from src.ui.base import PersistentDialog
+from src.ui.utils.dialog_utils import create_tooltip
 import os
 
 class LoggingSettingsDialog(PersistentDialog):
@@ -8,10 +11,10 @@ class LoggingSettingsDialog(PersistentDialog):
         super().__init__(parent, properties, modal=modal)
         
         self.save_callback = save_callback
-        self.title("Logging Settings")
+        self.title(t("dialogs.logging.title"))
 
         # Get logging settings from structured path
-        logging_settings = properties.get("dialogs.settings.logging", {})
+        logging_settings = properties.get(DIALOGS_SETTINGS_LOGGING, {})
         
         level = tk.StringVar(value=logging_settings.get("level") or "INFO")
         logfile = tk.StringVar(value=logging_settings.get("file") or "app.log")
@@ -23,32 +26,33 @@ class LoggingSettingsDialog(PersistentDialog):
         # Configure frame to allow expansion
         frame.grid_columnconfigure(1, weight=1)  # Make entry column expandable
 
-        ttk.Label(frame, text="Log Level").grid(row=0, column=0)
-
+        ttk.Label(frame, text=t("dialogs.logging.level")).grid(row=0, column=0)
+        
         level_box = ttk.Combobox(
             frame,
             textvariable=level,
             values=["DEBUG", "INFO", "WARNING", "ERROR"]
         )
-
         level_box.grid(row=0, column=1)
-
-        ttk.Label(frame, text="Log File").grid(row=1, column=0)
-
+        create_tooltip(level_box, t("tooltips.settings_logging"))
+        
+        ttk.Label(frame, text=t("dialogs.logging.file")).grid(row=1, column=0)
+        
         entry = ttk.Entry(frame, textvariable=logfile)
         entry.grid(row=1, column=1, sticky="ew")  # Make entry expand
+        create_tooltip(entry, t("tooltips.settings_logging"))
 
         def browse():
             path = filedialog.asksaveasfilename(
                 parent=self,  # Explicitly set parent
-                title="Select Log File"
+                title=t("dialogs.logging.select_file")
             )
             if path:
                 logfile.set(path)
                 # Save immediately when file is selected
-                logging_settings = properties.get("dialogs.settings.logging", {})
+                logging_settings = properties.get(DIALOGS_SETTINGS_LOGGING, {})
                 logging_settings["file"] = path
-                properties.set("dialogs.settings.logging", logging_settings)
+                properties.set(DIALOGS_SETTINGS_LOGGING, logging_settings)
                 properties.save()
                 save_callback()
                 # Update log display
@@ -56,9 +60,9 @@ class LoggingSettingsDialog(PersistentDialog):
                 # Dialog stays open for further changes
             # Don't close dialog regardless of user choice
 
-        ttk.Button(frame, text="Browse", command=browse).grid(row=1, column=2)
+        ttk.Button(frame, text=t("buttons.browse"), command=browse).grid(row=1, column=2)
 
-        ttk.Label(frame, text="Log Lines to Display").grid(row=2, column=0)
+        ttk.Label(frame, text=t("dialogs.logging.display_lines")).grid(row=2, column=0)
         
         lines_entry = ttk.Entry(frame, textvariable=log_lines, width=10)
         lines_entry.grid(row=2, column=1, sticky="w")
@@ -198,7 +202,7 @@ class LoggingSettingsDialog(PersistentDialog):
         def ok():
             """Save settings and close dialog"""
             # Get current logging settings
-            logging_settings = properties.get("dialogs.settings.logging", {})
+            logging_settings = properties.get(DIALOGS_SETTINGS_LOGGING, {})
             
             # Update settings
             logging_settings["level"] = level.get()
@@ -206,7 +210,7 @@ class LoggingSettingsDialog(PersistentDialog):
             logging_settings["display_lines"] = log_lines.get()
             
             # Save structured settings
-            properties.set("dialogs.settings.logging", logging_settings)
+            properties.set(DIALOGS_SETTINGS_LOGGING, logging_settings)
             
             # Use save_callback which handles save and reconfigure_logging
             save_callback()

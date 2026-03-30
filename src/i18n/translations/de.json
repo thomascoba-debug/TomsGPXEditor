@@ -2,94 +2,93 @@
   "language_name": "Deutsch",
   "language_code": "de",
   "date_format": "%d.%m.%Y %H:%M:%S",
-  
   "app": {
-    "title": "Toms GPX Editor",
-    "loading": "Lade...",
-    "error": "Fehler",
-    "warning": "Warnung",
-    "info": "Information",
-    "success": "Erfolg"
+    "title": "Toms GPX Editor"
   },
-  
   "menu": {
     "file": "Datei",
-    "edit": "Bearbeiten", 
-    "settings": "Einstellungen",
-    "help": "Hilfe",
-    "visibility": "Sichtbarkeit",
-    "settings_choose": "Einstellungen wählen",
-    
-    "file_open_gpx": "GPX öffnen",
-    "file_recent_files": "Zuletzt verwendet",
-    "file_clear_recent": "Zuletzt verwendet löschen",
+    "file_open_gpx": "GPX-Datei öffnen",
+    "file_recent_files": "Zuletzt verwendete Dateien",
     "file_exit": "Beenden",
-    
-    "edit_open_table_editor": "Track-Tabelle öffnen",
+    "edit": "Bearbeiten",
+    "edit_open_table_editor": "Track-Tabelle",
     "edit_track_to_route": "Track zu Route",
     "edit_route_to_track": "Route zu Track",
-    "edit_track_downsampling": "Track-Downsampling",
-    
+    "edit_track_downsampling": "Track Downsampling",
+    "edit_delete_selected": "Ausgewählte löschen",
+    "edit_select_all": "Alle auswählen",
+    "edit_deselect_all": "Alle abwählen",
+    "settings": "Einstellungen",
     "settings_items": {
-      "logging": "Protokollierung",
-      "marker": "Marker",
-      "rendering": "Darstellung",
-      "properties": "Eigenschaften",
       "language": "Sprache",
-      "restore_snapshot": "Clean Snapshot wiederherstellen"
-    }
+      "logging": "Protokollierung",
+      "rendering": "Darstellung",
+      "marker": "Marker",
+      "properties": "Eigenschaften",
+      "restore_snapshot": "Snapshot wiederherstellen"
+    },
+    "visibility": "Sichtbarkeit",
+    "info": "Information"
   },
-  
   "buttons": {
     "ok": "OK",
     "cancel": "Abbrechen",
     "apply": "Anwenden",
     "save": "Speichern",
+    "load": "Laden",
     "delete": "Löschen",
     "add": "Hinzufügen",
     "remove": "Entfernen",
-    "browse": "Durchsuchen",
-    "yes": "Ja",
-    "no": "Nein",
-    "close": "Schließen",
-    "update": "Aktualisieren",
-    "refresh": "Aktualisieren",
-    
     "show_all": "Alle anzeigen",
     "hide_all": "Alle ausblenden",
+    "update": "Aktualisieren",
     "select_all": "Alle auswählen",
     "deselect_all": "Alle abwählen",
-    "enable_editing": "Bearbeitung aktivieren",
-    "analyze_gpx": "GPX analysieren"
+    "search": "Suchen",
+    "clear": "Löschen",
+    "filter": "Filter",
+    "browse": "Durchsuchen",
+    "analyze_gpx": "GPX analysieren",
+    "convert": "Konvertieren"
   },
-  
+  "conversion": {
+    "points_per_100km": "Punkte pro 100km",
+    "downsampling_settings": "Downsampling-Einstellungen",
+    "select_file_for_conversion": "Wähle {filename} für Konvertierung",
+    "route_to_track_info": "Ausgewählte editierbare Dateien werden von Routen zu Tracks konvertiert.",
+    "track_to_route_info": "Ausgewählte editierbare Dateien werden von Tracks zu Routen konvertiert.",
+    "file_info": "{filename} ({route_count} Routen, {total_points} Punkte)"
+  },
   "file_list": {
     "header": {
-      "visible": "V",
+      "visible": "S",
       "editable": "E",
       "number": "Nr",
       "filename": "Dateiname",
       "type": "Typ"
-    },
-    "types": {
-      "track": "Track",
-      "route": "Route",
-      "waypoint": "Wegpunkt",
-      "mixed": "Gemischt",
-      "empty": "Leer",
-      "unknown": "Unbekannt",
-      "error": "Fehler",
-      "invalid": "Ungültig"
     }
   },
-  
   "dialogs": {
+    "track_table": {
+      "title": "Track-Tabelle Editor",
+      "delete_selected": "Ausgewählte löschen",
+      "save_changes": "Änderungen speichern",
+      "cancel": "Abbrechen",
+      "columns": {
+        "lat": "Breitengrad",
+        "lon": "Längengrad",
+        "ele": "Höhe",
+        "time": "Zeit",
+        "name": "Name",
+        "desc": "Beschreibung"
+      }
+    },
     "marker": {
       "title": "Marker-Einstellungen",
       "master_enabled": "Marker aktiviert",
       "enabled": "Aktiviert",
       "text": "Text",
-      "points": "Punkte",
+      "points": "Punkte:",
       "percent": "Prozent",
       "inner_circle": "Innerer Kreis",
       "outside_circle": "Äußerer Kreis",
@@ -98,21 +97,32 @@
       "trackpoints": "Trackpunkte",
       "routepoints": "Routenpunkte"
     },
-    
     "rendering": {
       "title": "Darstellungseinstellungen",
       "track_line": "Track-Linie",
       "route_line": "Routen-Linie",
       "line_width": "Linienbreite",
       "line_style": "Linienstil",
-      "line_color": "Linienfarbe"
+      "line_color": "Linienfarbe",
+      "enabled": "Aktiviert",
+      "downsampling": {
+        "title": "Leistungsoptimierung",
+        "enabled": "Downsampling aktivieren",
+        "enabled_tooltip": "Reduziert die Anzahl der Punkte für schnellere Darstellung bei großen GPX-Dateien",
+        "step": "Downsample Schritt",
+        "step_tooltip": "Gibt an, jeder wievielte Punkt beibehalten wird (1 = alle Punkte, 2 = jeder zweite Punkt)",
+        "max_points": "Max. Punkte pro Segment",
+        "max_points_tooltip": "Maximale Anzahl von Punkten pro Segment nach der Reduzierung",
+        "threshold": "Downsampling-Schwelle",
+        "threshold_tooltip": "Ab wie vielen Punkten eine Reduzierung durchgeführt wird"
+      }
     },
-    
     "logging": {
       "title": "Protokollierungseinstellungen",
       "level": "Protokolllevel",
       "file": "Protokolldatei",
       "display_lines": "Angezeigte Zeilen",
+      "select_file": "Log-Datei auswählen",
       "levels": {
         "debug": "Debug",
         "info": "Info",
@@ -121,64 +131,114 @@
         "critical": "Kritisch"
       }
     },
-    
     "properties": {
       "title": "Eigenschaften-Editor",
       "key": "Schlüssel",
       "value": "Wert",
       "expand_all": "Alle aufklappen",
-      "collapse_all": "Alle zusammenklappen"
+      "collapse_all": "Alle zuklappen",
+      "add_key": "Schlüssel hinzufügen",
+      "delete_key": "Schlüssel löschen",
+      "save": "Speichern",
+      "reload": "Neu laden",
+      "selected_files": "Ausgewählte Dateien",
+      "save_downsampled_file": "Downsampled GPX-Datei speichern"
+    },
+    "dialogs": {
+      "selected_files": "Ausgewählte Dateien",
+      "save_downsampled_file": "Downsampled GPX-Datei speichern"
     }
   },
-  
   "messages": {
-    "file_not_found": "Datei nicht gefunden: {path}",
-    "file_already_loaded": "Datei ist bereits geladen: {filename}",
-    "invalid_gpx_file": "Ungültige GPX-Datei: {filename}",
-    "no_editable_files": "Keine bearbeitbaren Dateien gefunden",
-    "multiple_editable_files": "Mehrere Dateien bearbeitbar. Bitte nur eine Datei auswählen.",
-    "gpx_load_error": "Fehler beim Laden der GPX-Datei: {error}",
-    "settings_saved": "Einstellungen gespeichert",
     "language_changed": "Sprache geändert zu: {language}",
     "language_restart_note": "Hinweis: Sprachänderungen werden nach einem Neustart der Anwendung wirksam.",
-    
-    "snapshot": {
-      "restore_confirm": "Dies stellt das Projekt auf den sauberen Zustand von:\n{snapshot}\n\nAlle aktuellen Änderungen gehen verloren.\n\nMöchten Sie fortfahren?",
-      "restore_started": "Clean Snapshot-Wiederherstellung gestartet.\nDie Anwendung wird neu gestartet.",
-      "no_snapshot_found": "Kein Clean Snapshot im archive/ Verzeichnis gefunden.",
-      "restore_error": "Fehler beim Starten der Wiederherstellung: {error}"
-    },
-    
-    "conversion": {
-      "track_to_route_success": "Erfolgreich {count} Tracks in Routen konvertiert.",
-      "route_to_track_success": "Erfolgreich {count} Routen in Tracks konvertiert.",
-      "no_tracks_found": "Keine Tracks in den ausgewählten Dateien gefunden.",
-      "conversion_error": "Fehler bei der Konvertierung: {error}"
+    "file_not_found": "Datei nicht gefunden",
+    "invalid_gpx": "Ungültige GPX-Datei",
+    "save_success": "Erfolgreich gespeichert",
+    "save_error": "Fehler beim Speichern",
+    "load_success": "Erfolgreich geladen",
+    "load_error": "Fehler beim Laden",
+    "no_selection": "Keine Auswahl",
+    "please_select_file": "Bitte wähle mindestens eine Datei zum Entfernen aus.",
+    "remove_files_confirm": "{count} Datei(en) aus der Liste entfernen?",
+    "remove_files_info": "Dies löscht nicht die tatsächlichen Dateien, sondern entfernt sie nur aus diesem Dialog.",
+    "no_files_selected": "Keine Dateien ausgewählt",
+    "ready": "Bereit",
+    "please_enter_search_term": "Bitte geben Sie einen Suchbegriff ein",
+    "starting": "Starte...",
+    "complete": "Abgeschlossen!",
+    "files_selected": "{selected} von {total} Datei(en) für Konvertierung ausgewählt"
+  },
+  "tooltips": {
+    "file_open": "GPX-Datei öffnen",
+    "file_exit": "Anwendung beenden",
+    "edit_track_table": "Track-Tabelle bearbeiten",
+    "settings_language": "Spracheinstellungen ändern",
+    "settings_logging": "Protokollierungseinstellungen ändern - Log-Level, Datei und Anzeige konfigurieren",
+    "settings_rendering": "Darstellungseinstellungen ändern",
+    "settings_marker": "Marker-Einstellungen ändern",
+    "settings_properties": "Anwendungseigenschaften bearbeiten",
+    "show_all": "Alle GPX-Dateien anzeigen",
+    "hide_all": "Alle GPX-Dateien ausblenden",
+    "update": "Karte aktualisieren",
+    "select_all": "Alle Dateien zum Bearbeiten auswählen",
+    "deselect_all": "Alle Dateien von der Bearbeitung abwählen",
+    "delete_selected": "Ausgewählte Dateien entfernen",
+    "analyze_gpx": "GPX-Dateien analysieren",
+    "select_file_for_conversion": "Wähle {filename} für Konvertierung",
+    "points_per_100km": "Anzahl der Wegpunkte pro 100km einstellen",
+    "point_density_conversion": "Punkte-Dichte für die Konvertierung anpassen",
+    "marker_enabled": "Aktiviert/deaktiviert die Anzeige dieses Punkt-Typs auf der Karte",
+    "marker_text": "Aktiviert/deaktiviert die Textanzeige bei den Markern",
+    "marker_percent": "Prozentsatz der angezeigten Punkte",
+    "percent_decimal": "Dezimaler Prozentsatz (0.1-100)",
+    "marker_inner_circle_color": "Farbe des inneren Marker-Kreises",
+    "marker_outer_circle_color": "Farbe des äußeren Marker-Kreises",
+    "marker_text_color": "Farbe des Markertextes",
+    "marker_preview": "Live-Vorschau des Markers mit allen 3 Farben",
+    "percent_slider": "Visuelle Einstellung des Prozentsatzes (0.1-100, gerundet)",
+    "percent": "Prozentsatz",
+    "convert": "Konvertieren der ausgewählten Dateien",
+    "convert_files": "Konvertieren der ausgewählten Dateien",
+    "cancel": "Dialog schließen ohne zu konvertieren"
+  },
+  "logging": {
+    "levels": {
+      "debug": "Debug",
+      "info": "Info",
+      "warning": "Warnung",
+      "error": "Fehler",
+      "critical": "Kritisch"
     }
   },
-  
-  "tooltips": {
-    "marker_enabled": "Aktiviert/deaktiviert alle Marker auf der Karte",
-    "marker_text": "Aktiviert/deaktiviert die Textanzeige bei den Markern",
-    "file_visible": "Sichtbarkeit der GPX-Datei auf der Karte",
-    "file_editable": "Bearbeitbarkeit der GPX-Datei",
-    "percent_points": "Prozentsatz der angezeigten Punkte",
-    "line_width": "Breite der Track/Routen-Linien",
-    "log_level": "Detailgrad der Protokollierung",
-    "log_file": "Datei für Protokollausgabe"
+  "button": {
+    "ok": "OK",
+    "cancel": "Abbrechen",
+    "apply": "Anwenden",
+    "save": "Speichern",
+    "load": "Laden",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen"
   },
-  
-  "logging": {
-    "app_initialized": "Anwendung initialisiert erfolgreich",
-    "app_shutdown": "Anwendung wird heruntergefahren",
-    "file_loaded": "GPX-Datei geladen: {filename}",
-    "file_added": "GPX-Datei hinzugefügt: {filename}",
-    "file_removed": "GPX-Datei entfernt: {filename}",
-    "map_updated": "Karte aktualisiert",
-    "settings_loaded": "Einstellungen geladen",
-    "dialog_opened": "Dialog geöffnet: {dialog}",
-    "language_loaded": "Übersetzungen geladen: {language}",
-    "translation_missing": "Übersetzung fehlt für Schlüssel: {key}",
-    "error_loading_translation": "Fehler beim Laden der Übersetzung für {language}: {error}"
+  "action": {
+    "save": "Speichern",
+    "load": "Laden",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen",
+    "edit": "Bearbeiten",
+    "cancel": "Abbrechen",
+    "apply": "Anwenden"
+  },
+  "dialog": {
+    "ok": "OK",
+    "cancel": "Abbrechen",
+    "apply": "Anwenden",
+    "save": "Speichern",
+    "load": "Laden",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen"
   }
 }

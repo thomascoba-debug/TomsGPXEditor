@@ -1,6 +1,8 @@
 import tkinter as tk
+from src.i18n import t
 from tkinter import ttk, filedialog, messagebox
 from src.ui.base import PersistentDialog
+from src.ui.utils.dialog_utils import create_tooltip
 import os
 import logging
 import gpxpy
@@ -14,7 +16,7 @@ class RouteToTrackDialog(PersistentDialog):
     def __init__(self, parent, entries, properties, modal=False):
         super().__init__(parent, properties, "RouteToTrackDialog", modal=modal)
         
-        self.title("Route to Track")
+        self.title(t("menu.edit_route_to_track"))
         self.entries = entries
         self.properties = properties
         
@@ -22,16 +24,16 @@ class RouteToTrackDialog(PersistentDialog):
         frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Title
-        title_label = ttk.Label(frame, text="Convert Routes to Tracks", font=("Arial", 12, "bold"))
+        title_label = ttk.Label(frame, text=t("menu.edit_route_to_track"), font=("Arial", 12, "bold"))
         title_label.pack(pady=(0, 10))
         
         # Info text
-        info_text = "Selected editable files will be converted from routes to tracks."
+        info_text = t("conversion.route_to_track_info")
         info_label = ttk.Label(frame, text=info_text)
         info_label.pack(pady=(0, 10))
         
         # Files list
-        files_frame = ttk.LabelFrame(frame, text="Selected Files")
+        files_frame = ttk.LabelFrame(frame, text=t("dialogs.selected_files"))
         files_frame.pack(fill="both", expand=True, pady=(0, 10))
         
         # Create scrollable frame
@@ -73,7 +75,7 @@ class RouteToTrackDialog(PersistentDialog):
                         # File info
                         route_count = len(gpx.routes)
                         total_points = sum(len(route.points) for route in gpx.routes)
-                        file_info = f"{os.path.basename(entry.path)} ({route_count} routes, {total_points} points)"
+                        file_info = t("conversion.file_info", filename=os.path.basename(entry.path), route_count=route_count, total_points=total_points)
                         
                         checkbox = ttk.Checkbutton(
                             file_frame, 
@@ -90,7 +92,7 @@ class RouteToTrackDialog(PersistentDialog):
         scrollbar.pack(side="right", fill="y")
         
         # Status label
-        self.status_label = ttk.Label(frame, text="", foreground="blue")
+        self.status_label = ttk.Label(frame, text=t("messages.ready"), foreground="blue")
         self.status_label.pack(pady=(0, 10))
         
         # Buttons
@@ -100,38 +102,43 @@ class RouteToTrackDialog(PersistentDialog):
         # Select All button
         select_all_button = ttk.Button(
             button_frame, 
-            text="Select All",
+            text=t("buttons.select_all"),
             command=self._select_all
         )
         select_all_button.pack(side="left", padx=(0, 5))
+        create_tooltip(select_all_button, t("tooltips.select_all"))
         
         # Deselect All button
         deselect_all_button = ttk.Button(
             button_frame, 
-            text="Deselect All",
+            text=t("buttons.deselect_all"),
             command=self._deselect_all
         )
         deselect_all_button.pack(side="left", padx=(0, 5))
+        create_tooltip(deselect_all_button, t("tooltips.deselect_all"))
         
         # Remove button
         remove_button = ttk.Button(
             button_frame, 
-            text="Remove Selected",
+            text=t("buttons.delete"),
             command=self._remove_selected
         )
         remove_button.pack(side="left", padx=(0, 5))
+        create_tooltip(remove_button, t("tooltips.delete_selected"))
         
         # Convert button
         convert_button = ttk.Button(
             button_frame, 
-            text="Convert to Tracks",
+            text=t("buttons.convert"),
             command=self._convert_to_tracks
         )
         convert_button.pack(side="left", padx=(0, 5))
+        create_tooltip(convert_button, t("tooltips.convert"))
         
         # Close button
-        close_button = ttk.Button(button_frame, text="Close", command=self._on_close)
+        close_button = ttk.Button(button_frame, text=t("buttons.cancel"), command=self._on_close)
         close_button.pack(side="right")
+        create_tooltip(close_button, t("tooltips.cancel"))
         
         # Store button references
         self.convert_button = convert_button
@@ -162,14 +169,14 @@ class RouteToTrackDialog(PersistentDialog):
         selected_files = [path for path, var in self.selected_files.items() if var.get()]
         
         if not selected_files:
-            messagebox.showwarning("No Selection", "Please select at least one file to remove.")
+            messagebox.showwarning(t("messages.no_selection"), t("messages.please_select_file"))
             return
         
         # Confirm removal
         result = messagebox.askyesno(
-            "Remove Files",
-            f"Remove {len(selected_files)} file(s) from the list?\n\n"
-            "This will not delete the actual files, just remove them from this dialog.",
+            t("buttons.delete"),
+            f"{t('messages.remove_files_confirm', count=len(selected_files))}\n\n"
+            f"{t('messages.remove_files_info')}",
             icon="question"
         )
         
@@ -224,11 +231,11 @@ class RouteToTrackDialog(PersistentDialog):
         total_count = len(self.selected_files)
         
         if selected_count == 0:
-            self.status_label.config(text="No files selected", foreground="red")
+            self.status_label.config(text=t("messages.no_files_selected"), foreground="red")
             self.convert_button.config(state="disabled")
         else:
             self.status_label.config(
-                text=f"{selected_count} of {total_count} file(s) selected for conversion", 
+                text=t("messages.files_selected", selected=selected_count, total=total_count), 
                 foreground="green"
             )
             self.convert_button.config(state="normal")
@@ -238,7 +245,7 @@ class RouteToTrackDialog(PersistentDialog):
         selected_files = [path for path, var in self.selected_files.items() if var.get()]
         
         if not selected_files:
-            messagebox.showwarning("No Selection", "Please select at least one file for conversion.")
+            messagebox.showwarning(t("messages.no_selection"), t("messages.please_select_file"))
             return
         
         try:

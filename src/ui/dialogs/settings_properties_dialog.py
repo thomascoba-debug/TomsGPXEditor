@@ -4,7 +4,9 @@ Shows all application properties in a read-only format
 """
 
 import tkinter as tk
+from src.i18n import t
 from tkinter import ttk
+from src.ui.utils.dialog_utils import create_tooltip
 import logging
 
 from src.ui.base import PersistentDialog
@@ -20,7 +22,7 @@ class PropertiesEditorDialog(PersistentDialog):
         super().__init__(parent, properties, "PropertiesEditorDialog", modal=modal)
         
         self.save_callback = save_callback
-        self.title("Properties Viewer")
+        self.title(t("dialogs.properties.title"))
         logger.debug(f"Dialog title gesetzt")
         
         # Store original data for reference (not used in view-only)
@@ -31,7 +33,7 @@ class PropertiesEditorDialog(PersistentDialog):
         frame.pack(fill="both", expand=True, padx=10, pady=10)
         
         # Add title
-        title_label = ttk.Label(frame, text="Application Properties", font=("TkDefaultFont", 12, "bold"))
+        title_label = ttk.Label(frame, text=t("dialogs.properties.title"), font=("TkDefaultFont", 12, "bold"))
         title_label.pack(anchor="w", pady=(0, 10))
         
         # Create treeview container that can expand
@@ -43,8 +45,8 @@ class PropertiesEditorDialog(PersistentDialog):
         self.tree = ttk.Treeview(tree_container, columns=columns, show="tree headings", height=20)
         
         # Configure columns
-        self.tree.heading("#0", text="Property Key")
-        self.tree.heading("value", text="Value")
+        self.tree.heading("#0", text=t("dialogs.properties.key"))
+        self.tree.heading("value", text=t("dialogs.properties.value"))
         
         self.tree.column("#0", width=200)
         self.tree.column("value", width=400)
@@ -65,7 +67,7 @@ class PropertiesEditorDialog(PersistentDialog):
         btn_frame.pack(fill="x", side="bottom", pady=(10, 0))
         btn_frame.columnconfigure(0, weight=1)
         
-        ttk.Button(btn_frame, text="Close", command=self._close).grid(row=0, column=0, padx=5)
+        ttk.Button(btn_frame, text=t("buttons.cancel"), command=self._close).grid(row=0, column=0, padx=5)
         
         logger.debug(f"Properties Viewer Dialog completed")
     

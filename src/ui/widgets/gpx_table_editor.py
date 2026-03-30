@@ -1,4 +1,6 @@
 import tkinter as tk
+from src.ui.base import PersistentDialog
+from src.i18n import t
 from tkinter import ttk
 from tkinter import messagebox
 import logging
@@ -12,13 +14,13 @@ from src.application.services.command_service import CommandManager, PointMoveCo
 logger = logging.getLogger(__name__)
 
 
-class GPXTableEditor(tk.Toplevel):
+class GPXTableEditor(PersistentDialog):
     
-    def __init__(self, parent, document, update_callback, save_callback):
-        super().__init__(parent)
+    def __init__(self, parent, document, update_callback, save_callback, properties):
+        super().__init__(parent, properties, "GPXTableEditor", modal=False)
         
-        self.title("Track Table Editor")
-        self.geometry("800x600")
+        self.title(t("dialogs.track_table.title"))
+        # Geometry will be restored by PersistentDialog
         
         self.original_document = document
         self.update_callback = update_callback
@@ -124,10 +126,10 @@ class GPXTableEditor(tk.Toplevel):
         self.redo_button = ttk.Button(undo_frame, text="↷ Redo", command=self.redo_action, state="disabled")
         self.redo_button.pack(side="left", padx=2)
         
-        ttk.Button(button_frame, text="Apply Changes", command=self.apply_changes).pack(side="left", padx=5)
-        ttk.Button(button_frame, text="Cancel", command=self.cancel_changes).pack(side="left", padx=5)
-        ttk.Button(button_frame, text="Delete Point", command=self.delete_point).pack(side="left", padx=5)
-        ttk.Button(button_frame, text="Close", command=self.close_editor).pack(side="right", padx=5)
+        ttk.Button(button_frame, text=t("buttons.apply"), command=self.apply_changes).pack(side="left", padx=5)
+        ttk.Button(button_frame, text=t("buttons.cancel"), command=self.cancel_changes).pack(side="left", padx=5)
+        ttk.Button(button_frame, text=t("buttons.delete"), command=self.delete_point).pack(side="left", padx=5)
+        ttk.Button(button_frame, text=t("buttons.close"), command=self.close_editor).pack(side="right", padx=5)
         
         # Setup keyboard shortcuts
         self.setup_keyboard_shortcuts()
@@ -661,14 +663,17 @@ class GPXTableEditor(tk.Toplevel):
     
     def close_editor(self):
         """Close the editor with confirmation if there are changes"""
-        if self.has_changes:
-            if messagebox.askyesno("Unsaved Changes", "You have unsaved changes. Do you want to save them before closing?"):
+        if hasattr(self, 'has_changes') and self.has_changes:
+            if messagebox.askyesno("Ungespeicherte Änderungen", "Sie haben ungespeicherte Änderungen. Möchten Sie diese vor dem Schließen speichern?"):
                 self.apply_changes()
                 return
-            elif messagebox.askyesno("Discard Changes", "Do you want to discard all changes and close?"):
-                self.destroy()
+            elif messagebox.askyesno("Änderungen verwerfen", "Möchten Sie alle Änderungen verwerfen und schließen?"):
+                self._on_close()
                 return
-            else:
-                return  # User cancelled the close
         else:
-            self.destroy()
+            self._on_close()
+
+    def _on_close(self):
+        """Handle dialog close - save geometry and destroy"""
+        # Save geometry (handled by PersistentDialog base class)
+        super()._on_close()

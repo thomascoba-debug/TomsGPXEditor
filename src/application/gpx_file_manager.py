@@ -1,3 +1,6 @@
+
+from src.constants.property_keys import SESSION_FILES
+from src.constants.property_keys import FILES_SESSION, DIALOGS_SETTINGS
 """
 GPX File Manager - Zentrale Verwaltung von GPX-Dateien
 
@@ -17,7 +20,6 @@ from tkinter import ttk
 
 from src.infrastructure.repositories.properties_repository import AppProperties
 from src.infrastructure.map_renderer import GPXCache
-from src.ui.widgets.file_entry import FileEntry
 
 logger = logging.getLogger(__name__)
 
@@ -29,23 +31,11 @@ class GPXFileManager:
         self.properties = properties
         self.map_widget = map_widget
         self.main_grid = main_grid
-        self.entries: List[FileEntry] = []
+        self.entries = []  # FileEntryBuilder creates entries
         self.current_row = 2  # Start nach Header
         self.button_update_callback = button_update_callback
         self.editable_update_callback = editable_update_callback
         self.recent_files_manager = recent_files_manager
-    
-    @classmethod
-    def create_from_container(cls, container):
-        """Create GPXFileManager from DI container"""
-        return cls(
-            properties=container.get('properties'),
-            map_widget=container.get('map_widget'),
-            main_grid=container.get('main_grid'),
-            button_update_callback=container.get('button_update_callback'),
-            editable_update_callback=container.get('editable_update_callback'),
-            recent_files_manager=container.get('recent_files_manager')
-        )
         
     def load_gpx_file(self, path: str) -> Optional[Dict[str, Any]]:
         """Analysiere eine GPX-Datei und gib Metadaten zurück"""
@@ -147,7 +137,7 @@ class GPXFileManager:
                 'waypoint_count': 0
             }
     
-    def add_file_to_ui(self, path: str) -> Optional[FileEntry]:
+    def add_file_to_ui(self, path: str):
         """Füge eine GPX-Datei zur UI hinzu"""
         # Prüfe auf Duplikate
         existing_paths = [entry.get_path() for entry in self.entries]
@@ -166,14 +156,14 @@ class GPXFileManager:
         
         # Erstelle UI-Widgets
         from src.ui.widgets.file_entry_builder import FileEntryBuilder
-        from src.infrastructure.di_container import DIContainer
         
-        # Create a mini-container for FileEntryBuilder
-        mini_container = DIContainer()
-        mini_container.register_singleton('button_update_callback', self.button_update_callback)
-        mini_container.register_singleton('editable_update_callback', self.editable_update_callback)
-        
-        builder = FileEntryBuilder.create_from_container(self.main_grid, self.current_row, mini_container)
+        # Create FileEntryBuilder with direct callbacks
+        builder = FileEntryBuilder(
+            parent_frame=self.main_grid,
+            row=self.current_row,
+            button_update_callback=self.button_update_callback,
+            editable_update_callback=self.editable_update_callback
+        )
         entry = builder.create_file_entry(path, ref_num, file_analysis, settings, self.properties)
         
         if entry:
@@ -192,7 +182,7 @@ class GPXFileManager:
         
         return entry
     
-    def remove_file_from_ui(self, entry: FileEntry) -> None:
+    def remove_file_from_ui(self, entry) -> None:
         """Entferne eine Datei aus der UI"""
         if entry in self.entries:
             self.entries.remove(entry)
@@ -203,15 +193,15 @@ class GPXFileManager:
             
             logger.info(f"Removed GPX file: {os.path.basename(entry.get_path())}")
     
-    def get_all_entries(self) -> List[FileEntry]:
+    def get_all_entries(self):
         """Gib alle Einträge zurück"""
         return self.entries.copy()
     
-    def get_editable_entries(self) -> List[FileEntry]:
+    def get_editable_entries(self):
         """Gib alle editierbaren Einträge zurück"""
         return [entry for entry in self.entries if entry.is_editable()]
     
-    def get_visible_entries(self) -> List[FileEntry]:
+    def get_visible_entries(self):
         """Gib alle sichtbaren Einträge zurück"""
         return [entry for entry in self.entries if entry.is_visible()]
     
@@ -224,9 +214,9 @@ class GPXFileManager:
         logger.info("Cleared all GPX file entries")
     
     def load_session_files(self) -> None:
-        """Lade Session-Dateien"""
+        """Lade Session-Dateien mit Optimierung für große Dateien"""
         try:
-            session_files = self.properties.get("files.session") or self.properties.get("session_files") or {}
+            session_files = self.properties.get('files.session') or self.properties.data.get('files', {}).get('session', {})
             loaded_count = 0
             
             # Sortiere Reference-Nummern
@@ -242,9 +232,14 @@ class GPXFileManager:
                     
                     if os.path.exists(file_path):
                         try:
+                            # Check file size for optimization
+                            file_size = os.path.getsize(file_path)
+                            logger.debug(f"Loading session file: {file_path} ({file_size/1024:.1f} KB)")
+                            
                             entry = self.add_file_to_ui(file_path)
                             if entry:
                                 loaded_count += 1
+                                logger.debug(f"Successfully loaded session file {loaded_count}")
                         except Exception as e:
                             logger.error(f"Failed to load session file {file_path}: {str(e)}")
                             # Continue with other files

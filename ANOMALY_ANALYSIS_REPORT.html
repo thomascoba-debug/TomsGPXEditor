@@ -1,0 +1,2207 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TomsGPXEditor - Anomaly Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background: #f0f0f0; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .summary { display: flex; gap: 20px; margin: 20px 0; }
+        .stat { background: #e8f4f8; padding: 15px; border-radius: 5px; text-align: center; }
+        .section { margin: 20px 0; }
+        .issue { margin: 10px 0; padding: 10px; border-left: 3px solid #ff6b6b; }
+        .issue.high { border-left-color: #ff6b6b; }
+        .issue.medium { border-left-color: #ffa500; }
+        .issue.low { border-left-color: #90ee90; }
+        .severity { font-weight: bold; padding: 2px 8px; border-radius: 3px; }
+        .severity.high { background: #ff6b6b; color: white; }
+        .severity.medium { background: #ffa500; color: white; }
+        .severity.low { background: #90ee90; color: black; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Cross-Reference Anomaly Analysis</h1>
+        <p>Generated on: 2026-03-28</p>
+        
+        <div class="summary">
+            <div class="stat">
+                <h3>265</h3>
+                <p>Total Issues</p>
+            </div>
+            <div class="stat">
+                <h3>1</h3>
+                <p>High Severity</p>
+            </div>
+            <div class="stat">
+                <h3>218</h3>
+                <p>Medium Severity</p>
+            </div>
+            <div class="stat">
+                <h3>46</h3>
+                <p>Low Severity</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Most Common Issues</h2>
+        <table>
+            <tr><th>Issue Type</th><th>Count</th></tr>
+            <tr><td>potentially_unused_function</td><td>165</td></tr><tr><td>parameterless_function</td><td>34</td></tr><tr><td>potentially_unused_class</td><td>34</td></tr><tr><td>empty_class</td><td>12</td></tr><tr><td>duplicate_method_names</td><td>7</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Files With Most Issues</h2>
+        <table>
+            <tr><th>File</th><th>Issue Count</th></tr>
+            <tr><td>W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</td><td>20</td></tr><tr><td>W:\TomsGPXEditor\src\application\event_bus.py</td><td>19</td></tr><tr><td>W:\TomsGPXEditor\src\application\test_event_bus.py</td><td>18</td></tr><tr><td>W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</td><td>14</td></tr><tr><td>W:\TomsGPXEditor\src\ui\widgets\context_menu.py</td><td>14</td></tr>
+        </table>
+    </div>
+
+    
+                <div class="section">
+                    <h2>Architectural Issues</h2>
+                
+                    <div class="issue high">
+                        <span class="severity high">HIGH</span>
+                        <h3>GPXTableEditor</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\gpx_table_editor.py</p>
+                        <p><strong>Description:</strong> Class has 23 methods (too many responsibilities)</p>
+                        <p><strong>Suggestion:</strong> Consider splitting into smaller, focused classes</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>Event</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileLoadedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileRemovedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileEditableChangedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileVisibleChangedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileColorChangedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ConversionCompletedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>PropertyKeys</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>Defaults</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>GPXEditorException</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\error_handler.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ShutdownPriority</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ApplicationState</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Class has no methods</p>
+                        <p><strong>Suggestion:</strong> Consider using @dataclass or removing if unused</p>
+                    </div>
+                    </div>
+                <div class="section">
+                    <h2>Code Smells</h2>
+                
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>_add_marker_with_colors</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\map_renderer.py</p>
+                        <p><strong>Description:</strong> Function has 9 parameters</p>
+                        <p><strong>Suggestion:</strong> Consider using parameter objects or configuration classes</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>_create_point_type_section</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function has 10 parameters</p>
+                        <p><strong>Suggestion:</strong> Consider using parameter objects or configuration classes</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>_create_entry_object</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_entry_builder.py</p>
+                        <p><strong>Description:</strong> Function has 8 parameters</p>
+                        <p><strong>Suggestion:</strong> Consider using parameter objects or configuration classes</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>get_event_bus</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>build_app_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>build_dialogs_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>build_conversion_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>build_rendering_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>build_logging_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>get_app_core</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>initialize_app_core</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>get_language_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\i18n\language_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>wrapper</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\error_handler.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>get_resource_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\resource_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>get_shutdown_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>initialize_graceful_shutdown</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>wrapper</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>get_stability_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\stability_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>run_stability_check</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\stability_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>create_stability_backup</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\stability_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>get_state_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>set_geom</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\base.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>browse</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>on_lines_change</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>update_log_display</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>clear_log_file</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>ok</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>cancel</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>ok</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>cancel</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>validate_percent_input</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>update_preview</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>ok</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_rendering_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>cancel</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_rendering_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>on_visible_change</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_entry_builder.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>on_editable_change</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_entry_builder.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>worker</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function has no parameters</p>
+                        <p><strong>Suggestion:</strong> Consider if this should be a method or utility function</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>__init__</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Method '__init__' exists in 39 classes: DialogController, EventBus, GPXFileManager, MapController, AppCore, LanguageManager, JSONValidator, PropertiesManager, ResourceManager, ShutdownManager, StabilityManager, StateManager, PersistentDialog, RouteToTrackDialog, LanguageSettingsDialog, LoggingSettingsDialog, MarkerSettingsDialog, PropertiesEditorDialog, RenderingSettingsDialog, TrackDownsamplingDialog, TrackToRouteDialog, ContextMenuManager, AutoSaveManager, KeyboardShortcutManager, QuickActionsManager, FileEntryBuilder, SimpleEntry, FileSearchFrame, AdvancedSearchDialog, GPXTableEditor, ProgressDialog, ProgressManager, AppProperties, PointMoveCommand, PointEditCommand, CommandManager, GPXDocument, GPXEditController, RecentFilesFromSessionManager</p>
+                        <p><strong>Suggestion:</strong> Consider if these methods should be in a common base class</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>_on_close</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Method '_on_close' exists in 5 classes: PersistentDialog, RouteToTrackDialog, MarkerSettingsDialog, TrackDownsamplingDialog, TrackToRouteDialog</p>
+                        <p><strong>Suggestion:</strong> Consider if these methods should be in a common base class</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>__post_init__</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Method '__post_init__' exists in 4 classes: GPXFile, GPXRoute, GPXTrack, GPXTrackSegment</p>
+                        <p><strong>Suggestion:</strong> Consider if these methods should be in a common base class</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>_update_analysis</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Method '_update_analysis' exists in 4 classes: GPXFile, GPXRoute, GPXTrack, GPXTrackSegment</p>
+                        <p><strong>Suggestion:</strong> Consider if these methods should be in a common base class</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>from_gpxpy</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Method 'from_gpxpy' exists in 4 classes: GPXFile, GPXRoute, GPXTrack, GPXTrackSegment</p>
+                        <p><strong>Suggestion:</strong> Consider if these methods should be in a common base class</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>to_gpxpy</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Method 'to_gpxpy' exists in 4 classes: GPXFile, GPXRoute, GPXTrack, GPXTrackSegment</p>
+                        <p><strong>Suggestion:</strong> Consider if these methods should be in a common base class</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>undo</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Method 'undo' exists in 4 classes: Command, PointMoveCommand, PointEditCommand, CommandManager</p>
+                        <p><strong>Suggestion:</strong> Consider if these methods should be in a common base class</p>
+                    </div>
+                    </div>
+                <div class="section">
+                    <h2>Dependency Anomalies</h2>
+                
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>W:\TomsGPXEditor\src\application\dialog_controller.py</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> File has 21 dependencies</p>
+                        <p><strong>Suggestion:</strong> Consider reducing dependencies or splitting the file</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>W:\TomsGPXEditor\src\application\dialog_controller.py</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Imported 7 items from module 'tkinter.messagebox'</p>
+                        <p><strong>Suggestion:</strong> Consider importing the module and using module.prefix</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>W:\TomsGPXEditor\src\application\test_event_bus.py</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Imported 6 items from module 'event_bus'</p>
+                        <p><strong>Suggestion:</strong> Consider importing the module and using module.prefix</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>W:\TomsGPXEditor\src\config\app_config_old.py</h3>
+                        <p><strong>File:</strong> Unknown</p>
+                        <p><strong>Description:</strong> Imported 9 items from module 'src.constants.property_keys'</p>
+                        <p><strong>Suggestion:</strong> Consider importing the module and using module.prefix</p>
+                    </div>
+                    </div>
+                <div class="section">
+                    <h2>Naming Anomalies</h2>
+                
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>data</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\properties_manager.py</p>
+                        <p><strong>Description:</strong> Function name 'data' contains generic term 'data'</p>
+                        <p><strong>Suggestion:</strong> Use more descriptive names</p>
+                    </div>
+                    
+                    <div class="issue low">
+                        <span class="severity low">LOW</span>
+                        <h3>load_data</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\gpx_table_editor.py</p>
+                        <p><strong>Description:</strong> Function name 'load_data' contains generic term 'data'</p>
+                        <p><strong>Suggestion:</strong> Use more descriptive names</p>
+                    </div>
+                    </div>
+                <div class="section">
+                    <h2>Dead Code</h2>
+                
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>show_settings_dialog</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\dialog_controller.py</p>
+                        <p><strong>Description:</strong> Function 'show_settings_dialog' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>create_settings_menu</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\dialog_controller.py</p>
+                        <p><strong>Description:</strong> Function 'create_settings_menu' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>create_edit_menu</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\dialog_controller.py</p>
+                        <p><strong>Description:</strong> Function 'create_edit_menu' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>update_track_editor_button</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\dialog_controller.py</p>
+                        <p><strong>Description:</strong> Function 'update_track_editor_button' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>subscribe</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'subscribe' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>subscribe_async</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'subscribe_async' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>unsubscribe</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'unsubscribe' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>publish</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'publish' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>clear_listeners</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'clear_listeners' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_listener_count</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'get_listener_count' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_all_entries</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\gpx_file_manager.py</p>
+                        <p><strong>Description:</strong> Function 'get_all_entries' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_editable_entries</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\gpx_file_manager.py</p>
+                        <p><strong>Description:</strong> Function 'get_editable_entries' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_visible_entries</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\gpx_file_manager.py</p>
+                        <p><strong>Description:</strong> Function 'get_visible_entries' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>clear_all_entries</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\gpx_file_manager.py</p>
+                        <p><strong>Description:</strong> Function 'clear_all_entries' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>load_session_files</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\gpx_file_manager.py</p>
+                        <p><strong>Description:</strong> Function 'load_session_files' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>update_map</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\map_controller.py</p>
+                        <p><strong>Description:</strong> Function 'update_map' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>update_visibility_only</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\map_controller.py</p>
+                        <p><strong>Description:</strong> Function 'update_visibility_only' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_zoom_level</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\map_controller.py</p>
+                        <p><strong>Description:</strong> Function 'set_zoom_level' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_current_position</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\map_controller.py</p>
+                        <p><strong>Description:</strong> Function 'get_current_position' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_current_zoom</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\map_controller.py</p>
+                        <p><strong>Description:</strong> Function 'get_current_zoom' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>setup_method</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'setup_method' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_subscribe_and_publish_sync</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_subscribe_and_publish_sync' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_subscribe_and_publish_async</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_subscribe_and_publish_async' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_multiple_handlers</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_multiple_handlers' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_unsubscribe</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_unsubscribe' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_handler_exception</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_handler_exception' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_different_event_types</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_different_event_types' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_get_listener_count</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_get_listener_count' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_clear_listeners</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_clear_listeners' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_get_event_bus_creates_instance</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_get_event_bus_creates_instance' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_set_event_bus</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_set_event_bus' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_file_loaded_event</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_file_loaded_event' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_file_editable_changed_event</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'test_file_editable_changed_event' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>failing_handler</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'failing_handler' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>working_handler</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Function 'working_handler' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_backup_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\config\app_config.py</p>
+                        <p><strong>Description:</strong> Function 'get_backup_path' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_log_level</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\config\app_config.py</p>
+                        <p><strong>Description:</strong> Function 'get_log_level' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_backup_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\config\app_config_old.py</p>
+                        <p><strong>Description:</strong> Function 'get_backup_path' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_log_level</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\config\app_config_old.py</p>
+                        <p><strong>Description:</strong> Function 'get_log_level' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>build_app_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function 'build_app_path' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>build_dialogs_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function 'build_dialogs_path' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>build_rendering_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function 'build_rendering_path' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>build_logging_path</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Function 'build_logging_path' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_app_core</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function 'get_app_core' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>initialize_app_core</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function 'initialize_app_core' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_properties</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function 'get_properties' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_setting</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function 'get_setting' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_setting</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function 'set_setting' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>run_maintenance</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\core\app_core.py</p>
+                        <p><strong>Description:</strong> Function 'run_maintenance' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>initialize_language_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\i18n\language_manager.py</p>
+                        <p><strong>Description:</strong> Function 'initialize_language_manager' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_language</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\i18n\language_manager.py</p>
+                        <p><strong>Description:</strong> Function 'get_language' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_available_languages</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\i18n\language_manager.py</p>
+                        <p><strong>Description:</strong> Function 'get_available_languages' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>handle_file_error</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\error_handler.py</p>
+                        <p><strong>Description:</strong> Function 'handle_file_error' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>decorator</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\error_handler.py</p>
+                        <p><strong>Description:</strong> Function 'decorator' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>wrapper</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\error_handler.py</p>
+                        <p><strong>Description:</strong> Function 'wrapper' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>clear_cache</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\map_renderer_optimized.py</p>
+                        <p><strong>Description:</strong> Function 'clear_cache' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>remove_from_cache</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\map_renderer_optimized.py</p>
+                        <p><strong>Description:</strong> Function 'remove_from_cache' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>remove</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\properties_manager.py</p>
+                        <p><strong>Description:</strong> Function 'remove' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>enable_validation</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\properties_manager.py</p>
+                        <p><strong>Description:</strong> Function 'enable_validation' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>force_validation</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\properties_manager.py</p>
+                        <p><strong>Description:</strong> Function 'force_validation' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>data</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\properties_manager.py</p>
+                        <p><strong>Description:</strong> Function 'data' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_resource_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\resource_manager.py</p>
+                        <p><strong>Description:</strong> Function 'get_resource_manager' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>register_resource</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\resource_manager.py</p>
+                        <p><strong>Description:</strong> Function 'register_resource' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>cleanup_all</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\resource_manager.py</p>
+                        <p><strong>Description:</strong> Function 'cleanup_all' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>managed_file</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\resource_manager.py</p>
+                        <p><strong>Description:</strong> Function 'managed_file' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>managed_temp_file</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\resource_manager.py</p>
+                        <p><strong>Description:</strong> Function 'managed_temp_file' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>shutdown_handler</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function 'shutdown_handler' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>initialize_graceful_shutdown</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function 'initialize_graceful_shutdown' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>is_shutting_down</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function 'is_shutting_down' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>decorator</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function 'decorator' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>signal_handler</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function 'signal_handler' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>wrapper</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Function 'wrapper' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>create_stability_backup</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\stability_manager.py</p>
+                        <p><strong>Description:</strong> Function 'create_stability_backup' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>cleanup_old_backups</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\stability_manager.py</p>
+                        <p><strong>Description:</strong> Function 'cleanup_old_backups' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_state_manager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Function 'get_state_manager' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>state</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Function 'state' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>register_state_change_callback</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Function 'register_state_change_callback' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>unregister_state_change_callback</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Function 'unregister_state_change_callback' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>is_ready</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Function 'is_ready' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>is_shutting_down</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Function 'is_shutting_down' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_geom</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\base.py</p>
+                        <p><strong>Description:</strong> Function 'set_geom' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>browse</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'browse' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>on_lines_change</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'on_lines_change' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>start_resize</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'start_resize' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>on_resize</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'on_resize' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>stop_resize</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'stop_resize' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>clear_log_file</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'clear_log_file' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ok</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'ok' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>cancel</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_logging_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'cancel' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ok</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'ok' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>cancel</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'cancel' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>validate_percent_input</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'validate_percent_input' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>validate_percent_keypress</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'validate_percent_keypress' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>on_enter</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'on_enter' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>on_leave</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_marker_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'on_leave' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ok</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_rendering_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'ok' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>cancel</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\dialogs\settings_rendering_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'cancel' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>validate_color</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\utils\color_utils.py</p>
+                        <p><strong>Description:</strong> Function 'validate_color' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>create_file_context_menu</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'create_file_context_menu' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>create_main_context_menu</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'create_main_context_menu' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_auto_save_enabled</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'set_auto_save_enabled' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_auto_save_interval</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'set_auto_save_interval' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_auto_save_status</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'get_auto_save_status' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>unregister_shortcut</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'unregister_shortcut' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_shortcuts_list</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'get_shortcuts_list' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>setup_default_shortcuts</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'setup_default_shortcuts' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>create_quick_actions_bar</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'create_quick_actions_bar' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>update_quick_actions</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Function 'update_quick_actions' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>clear_search</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Function 'clear_search' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_search_term</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Function 'get_search_term' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_filter_type</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Function 'get_filter_type' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>search_files</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Function 'search_files' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>highlight_search_term</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Function 'highlight_search_term' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_results</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Function 'get_results' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>on_page_size_changed</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\gpx_table_editor.py</p>
+                        <p><strong>Description:</strong> Function 'on_page_size_changed' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>close_editor</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\gpx_table_editor.py</p>
+                        <p><strong>Description:</strong> Function 'close_editor' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>update_progress</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'update_progress' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_indeterminate</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'set_indeterminate' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_determinate</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'set_determinate' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_max_value</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'set_max_value' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>show_cancel_button</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'show_cancel_button' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>cancel</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'cancel' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>was_cancelled</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'was_cancelled' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>auto_close</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'auto_close' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>run_with_progress</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'run_with_progress' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>close_dialog</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'close_dialog' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>worker</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Function 'worker' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>remove</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'remove' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_dialog_geometry</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'get_dialog_geometry' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_dialog_geometry</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'set_dialog_geometry' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>save_dialog_geometries</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'save_dialog_geometries' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_or_create_file_reference</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'get_or_create_file_reference' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_file_path_by_reference</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'get_file_path_by_reference' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_main_window_geometry</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'get_main_window_geometry' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>set_main_window_geometry</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'set_main_window_geometry' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>remove_file_from_session</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Function 'remove_file_from_session' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_gpx_file_creation</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_gpx_file_creation' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_gpx_file_analysis_empty</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_gpx_file_analysis_empty' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_gpx_file_analysis_tracks_only</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_gpx_file_analysis_tracks_only' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_gpx_file_analysis_routes_only</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_gpx_file_analysis_routes_only' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_gpx_file_analysis_mixed</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_gpx_file_analysis_mixed' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_display_name</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_display_name' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_file_metadata</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_file_metadata' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_from_gpxpy</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_from_gpxpy' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_track_creation</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_track_creation' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_track_analysis_empty</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_track_analysis_empty' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_track_analysis_with_segments</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_track_analysis_with_segments' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_segment_creation_empty</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_segment_creation_empty' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_segment_creation_with_points</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_segment_creation_with_points' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_route_creation</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_route_creation' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_route_analysis_empty</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_route_analysis_empty' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>test_route_analysis_with_waypoints</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Function 'test_route_analysis_with_waypoints' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>execute_command</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\command_service.py</p>
+                        <p><strong>Description:</strong> Function 'execute_command' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>redo</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\command_service.py</p>
+                        <p><strong>Description:</strong> Function 'redo' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_undo_description</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\command_service.py</p>
+                        <p><strong>Description:</strong> Function 'get_undo_description' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_redo_description</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\command_service.py</p>
+                        <p><strong>Description:</strong> Function 'get_redo_description' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>clear_history</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\command_service.py</p>
+                        <p><strong>Description:</strong> Function 'clear_history' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>analyze_gpx_file</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\gpx_service.py</p>
+                        <p><strong>Description:</strong> Function 'analyze_gpx_file' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_first_segment</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\gpx_service.py</p>
+                        <p><strong>Description:</strong> Function 'get_first_segment' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>add_file</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\recent_files_service.py</p>
+                        <p><strong>Description:</strong> Function 'add_file' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>reload_recent_files</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\recent_files_service.py</p>
+                        <p><strong>Description:</strong> Function 'reload_recent_files' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>remove_file</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\recent_files_service.py</p>
+                        <p><strong>Description:</strong> Function 'remove_file' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>get_recent_files</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\recent_files_service.py</p>
+                        <p><strong>Description:</strong> Function 'get_recent_files' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>clear_recent_files</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\recent_files_service.py</p>
+                        <p><strong>Description:</strong> Function 'clear_recent_files' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>sync_with_session_files</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\recent_files_service.py</p>
+                        <p><strong>Description:</strong> Function 'sync_with_session_files' has no recorded calls</p>
+                        <p><strong>Suggestion:</strong> Verify if this function is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>DialogController</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\dialog_controller.py</p>
+                        <p><strong>Description:</strong> Class 'DialogController' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>Event</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'Event' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileRemovedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'FileRemovedEvent' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileVisibleChangedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'FileVisibleChangedEvent' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileColorChangedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'FileColorChangedEvent' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ConversionCompletedEvent</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'ConversionCompletedEvent' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>GPXFileManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\gpx_file_manager.py</p>
+                        <p><strong>Description:</strong> Class 'GPXFileManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>MapController</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\map_controller.py</p>
+                        <p><strong>Description:</strong> Class 'MapController' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>TestEventBus</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'TestEventBus' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>TestGlobalEventBus</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'TestGlobalEventBus' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>TestEventTypes</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\test_event_bus.py</p>
+                        <p><strong>Description:</strong> Class 'TestEventTypes' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>AppConfig</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\config\app_config_old.py</p>
+                        <p><strong>Description:</strong> Class 'AppConfig' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>PropertyKeys</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Class 'PropertyKeys' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>Defaults</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\constants\property_keys.py</p>
+                        <p><strong>Description:</strong> Class 'Defaults' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>GPXCache</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\map_renderer_optimized.py</p>
+                        <p><strong>Description:</strong> Class 'GPXCache' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>PropertiesManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\properties_manager.py</p>
+                        <p><strong>Description:</strong> Class 'PropertiesManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ShutdownPriority</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\shutdown_manager.py</p>
+                        <p><strong>Description:</strong> Class 'ShutdownPriority' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ApplicationState</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\state_manager.py</p>
+                        <p><strong>Description:</strong> Class 'ApplicationState' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>PersistentDialog</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\base.py</p>
+                        <p><strong>Description:</strong> Class 'PersistentDialog' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ContextMenuManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Class 'ContextMenuManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>AutoSaveManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Class 'AutoSaveManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>KeyboardShortcutManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Class 'KeyboardShortcutManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>QuickActionsManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\context_menu.py</p>
+                        <p><strong>Description:</strong> Class 'QuickActionsManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileSearchFrame</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Class 'FileSearchFrame' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>FileSearchEngine</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Class 'FileSearchEngine' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>AdvancedSearchDialog</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\file_search.py</p>
+                        <p><strong>Description:</strong> Class 'AdvancedSearchDialog' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>ProgressManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\progress_dialog.py</p>
+                        <p><strong>Description:</strong> Class 'ProgressManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>TestGPXFile</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Class 'TestGPXFile' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>TestGPXTrack</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Class 'TestGPXTrack' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>TestGPXTrackSegment</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Class 'TestGPXTrackSegment' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>TestGPXRoute</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\domain\entities\test_gpx_entities.py</p>
+                        <p><strong>Description:</strong> Class 'TestGPXRoute' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>Command</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\command_service.py</p>
+                        <p><strong>Description:</strong> Class 'Command' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>PointEditCommand</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\command_service.py</p>
+                        <p><strong>Description:</strong> Class 'PointEditCommand' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>RecentFilesFromSessionManager</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\services\recent_files_service.py</p>
+                        <p><strong>Description:</strong> Class 'RecentFilesFromSessionManager' might not be referenced</p>
+                        <p><strong>Suggestion:</strong> Verify if this class is actually used</p>
+                    </div>
+                    </div>
+                <div class="section">
+                    <h2>Complexity Anomalies</h2>
+                
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>DialogController</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\application\dialog_controller.py</p>
+                        <p><strong>Description:</strong> Class has 17 methods (high complexity)</p>
+                        <p><strong>Suggestion:</strong> Consider splitting into smaller classes</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>GPXTableEditor</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\ui\widgets\gpx_table_editor.py</p>
+                        <p><strong>Description:</strong> Class has 23 methods (high complexity)</p>
+                        <p><strong>Suggestion:</strong> Consider splitting into smaller classes</p>
+                    </div>
+                    
+                    <div class="issue medium">
+                        <span class="severity medium">MEDIUM</span>
+                        <h3>AppProperties</h3>
+                        <p><strong>File:</strong> W:\TomsGPXEditor\src\infrastructure\repositories\properties_repository.py</p>
+                        <p><strong>Description:</strong> Class has 17 methods (high complexity)</p>
+                        <p><strong>Suggestion:</strong> Consider splitting into smaller classes</p>
+                    </div>
+                    </div>
+</body>
+</html>
+        

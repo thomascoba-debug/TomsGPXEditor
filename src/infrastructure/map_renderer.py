@@ -264,8 +264,8 @@ def render_tracks_on_map(map_widget, entries, properties):
         # Direkte Sichtbarkeits-Prüfung statt entry.is_visible()
         is_visible = False
         try:
-            # Hole Sichtbarkeit aus Properties mit neuer Struktur
-            session_files = properties.get("files.session") or properties.data.get('session_files', {})
+            # Hole Sichtbarkeit aus Properties - verwende die korrekte Struktur
+            session_files = properties.get('files.session') or properties.data.get('files', {}).get('session', {})
             for ref_num, file_info in session_files.items():
                 if file_info.get('path') == entry.get_path():
                     is_visible = file_info.get('settings', {}).get('visible', True)
@@ -284,11 +284,25 @@ def render_tracks_on_map(map_widget, entries, properties):
                 track_line_enabled = track_line.get('enabled', True)
                 track_line_width = track_line.get('width', 5)
                 
+                # Get downsampling settings
+                downsampling_settings = rendering_settings.get('downsampling', {})
+                downsampling_enabled = downsampling_settings.get('enabled', True)
+                max_points = downsampling_settings.get('max_points', 500)
+                threshold = downsampling_settings.get('threshold', 1000)
+                
                 if track_line_enabled and gpx_data.tracks:
                     for track in gpx_data.tracks:
                         for segment in track.segments:
                             if len(segment.points) > 1:
                                 coordinates = [(p.latitude, p.longitude) for p in segment.points]
+                                
+                                # Downsample large segments for performance if enabled
+                                if downsampling_enabled and len(coordinates) > threshold:
+                                    # Keep every nth point for large segments
+                                    step = max(1, len(coordinates) // max_points)
+                                    coordinates = coordinates[::step]
+                                    logger.debug(f"Downsampled track segment from {len(segment.points)} to {len(coordinates)} points")
+                                
                                 if coordinates:
                                     map_widget.set_path(coordinates, 
                                                         color=entry.get_color(),

@@ -2,6 +2,10 @@ import json
 import os
 import logging
 
+from src.constants.property_keys import SESSION_FILES
+from src.constants.property_keys import FILES_SESSION, DIALOGS_SETTINGS
+from src.infrastructure.properties_validator import PropertiesValidator
+
 # Configure logger
 logger = logging.getLogger(__name__)
 
@@ -18,6 +22,12 @@ class AppProperties:
                 with open(self.file_path, "r", encoding="utf-8") as f:
                     loaded = json.load(f)
                 self.data.update(loaded)
+                
+                # Auto-validate and clean
+                self.data, was_changed = PropertiesValidator.validate_and_clean(self.data)
+                if was_changed:
+                    logger.info("Auto-cleaned properties.json - saving fixed version")
+                    self.save()
             except json.JSONDecodeError as e:
                 logger.error(f"JSON decode error: {e}")
                 logger.error(f"File content: {open(self.file_path, 'r', encoding='utf-8').read()}")
@@ -29,7 +39,7 @@ class AppProperties:
     def _clean(self):
         # Korrigiert nur Typen, entfernt aber keine benutzerdefinierten Keys
         DEFAULT_SCHEMA = {
-            "session_files": dict,
+            "files.session": dict,
 # "dialog_geometry": dict,  # OBSOLETE - use dialogs.geometry
 # "log_level": str,  # OBSOLETE - use dialogs.settings.logging.level
 # "log_file": str,  # OBSOLETE - use dialogs.settings.logging.file
@@ -57,7 +67,7 @@ class AppProperties:
                 elif typ == str and not isinstance(value, str):
                     self.data[key] = ""
         
-        self.save()
+        # Don't auto-save in _clean to avoid permission issues
 
     def save(self):
         with open(self.file_path, "w", encoding="utf-8") as f:
@@ -147,7 +157,7 @@ class AppProperties:
 
     def get_or_create_file_reference(self, file_path):
         """Get existing reference number or create new one for file path"""
-        session_files = self.get("files.session") or self.data.get("session_files", {})
+        session_files = self.get('files.session') or self.data.get('files', {}).get('session', {})
         
         # Look for existing reference
         for ref_num, file_data in session_files.items():
@@ -159,31 +169,37 @@ class AppProperties:
         while str(new_ref) in session_files:
             new_ref += 1
         session_files[str(new_ref)] = {"path": file_path, "settings": {}}
-        self.set("files.session", session_files)
+        # Save to the correct location
+        if 'files' not in self.data:
+            self.data['files'] = {}
+        self.data['files']['session'] = session_files
         return new_ref
     
     def get_file_settings_by_reference(self, ref_num):
         """Get file settings by reference number"""
-        session_files = self.get("files.session") or self.data.get("session_files", {})
+        session_files = self.get('files.session') or self.data.get('files', {}).get('session', {})
         file_data = session_files.get(str(ref_num))
         return file_data.get("settings") if file_data else None
     
     def save_file_settings_by_reference(self, ref_num, settings):
         """Save file settings by reference number"""
-        session_files = self.get("files.session") or self.data.get("session_files", {})
+        session_files = self.get('files.session') or self.data.get('files', {}).get('session', {})
         ref_str = str(ref_num)
         
         if ref_str not in session_files:
             session_files[ref_str] = {"path": "", "settings": {}}
         
         session_files[ref_str]["settings"] = settings
-        self.set("files.session", session_files)
+        # Save to the correct location
+        if 'files' not in self.data:
+            self.data['files'] = {}
+        self.data['files']['session'] = session_files
 
     # -------------------------------------------------------------
 
     def get_file_path_by_reference(self, ref_num):
         """Get file path by reference number"""
-        session_files = self.data.get("session_files", {})
+        session_files = self.data.get('files', {}).get('session', {})
         file_data = session_files.get(str(ref_num))
         return file_data.get("path") if file_data else None
 
@@ -200,28 +216,16 @@ class AppProperties:
         """Remove file from session files"""
         ref_str = str(ref_num)
         
-        # Try both old and new paths for compatibility
-        session_files_old = self.data.get("session_files", {})
-        session_files_new = self.data.get("files", {}).get("session", {})
+        # Use the new structure
+        session_files = self.data.get("files", {}).get("session", {})
         
-        removed = False
-        
-        # Check old path first
-        if ref_str in session_files_old:
-            del session_files_old[ref_str]
-            self.data["session_files"] = session_files_old
-            removed = True
-            logger.debug(f"Removed file reference {ref_num} from session_files (old path)")
-        
-        # Check new path
-        elif ref_str in session_files_new:
-            del session_files_new[ref_str]
-            self.data["files"]["session"] = session_files_new
-            removed = True
-            logger.debug(f"Removed file reference {ref_num} from files.session (new path)")
-        
-        if removed:
+        if ref_str in session_files:
+            del session_files[ref_str]
+            # Update the data structure
+            if 'files' not in self.data:
+                self.data['files'] = {}
+            self.data['files']['session'] = session_files
+            logger.debug(f"Removed file reference {ref_num} from files.session")
             self.save()
-            logger.debug(f"File reference {ref_num} removed successfully")
         else:
-            logger.warning(f"File reference {ref_num} not found in any session path")
+            logger.warning(f"File reference {ref_num} not found in session files")

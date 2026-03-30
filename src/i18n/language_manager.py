@@ -11,6 +11,7 @@ This module provides:
 import json
 import os
 import logging
+import sys
 from typing import Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
@@ -25,20 +26,38 @@ class LanguageManager:
         self.translations: Dict[str, Dict[str, str]] = {}
         self.fallback_translations: Dict[str, str] = {}
         
+        # Try to load saved language from properties
+        try:
+            saved_language = self.properties.get("dialogs.settings.language", "de")
+            self.current_language = saved_language
+            logger.info(f"Loaded saved language: {self.current_language}")
+        except Exception as e:
+            logger.warning(f"Could not load saved language, using default: {e}")
+        
         # Load default language
         self._load_language(self.current_language)
     
     def _load_language(self, language_code: str) -> None:
         """Lade Übersetzungen für eine Sprache"""
         try:
-            translation_file = os.path.join(
-                "src", "i18n", "translations", f"{language_code}.json"
-            )
+            # Check if we're running in a PyInstaller bundle
+            if getattr(sys, 'frozen', False):
+                # Running in PyInstaller bundle
+                base_path = sys._MEIPASS
+                translation_file = os.path.join(
+                    base_path, "src", "i18n", "translations", f"{language_code}.json"
+                )
+            else:
+                # Running in normal Python environment
+                translation_file = os.path.join(
+                    "src", "i18n", "translations", f"{language_code}.json"
+                )
             
             if os.path.exists(translation_file):
                 with open(translation_file, 'r', encoding='utf-8') as f:
                     self.translations = json.load(f)
-                logger.info(f"Loaded translations for language: {language_code}")
+                logger.info(f"Loaded translations for language: {language_code} from {translation_file}")
+                logger.debug(f"Available top-level keys: {list(self.translations.keys())}")
             else:
                 logger.warning(f"Translation file not found: {translation_file}")
                 self.translations = {}
@@ -54,16 +73,28 @@ class LanguageManager:
     def _load_fallback(self) -> None:
         """Lade Fallback-Übersetzungen (Englisch)"""
         try:
-            fallback_file = os.path.join(
-                "src", "i18n", "translations", "en.json"
-            )
+            # Check if we're running in a PyInstaller bundle
+            if getattr(sys, 'frozen', False):
+                # Running in PyInstaller bundle
+                base_path = sys._MEIPASS
+                fallback_file = os.path.join(
+                    base_path, "src", "i18n", "translations", "en.json"
+                )
+            else:
+                # Running in normal Python environment - use absolute path
+                base_path = os.path.abspath(".")
+                fallback_file = os.path.join(
+                    base_path, "src", "i18n", "translations", "en.json"
+                )
+            
+            logger.info(f"Attempting to load fallback translation file: {fallback_file}")
             
             if os.path.exists(fallback_file):
                 with open(fallback_file, 'r', encoding='utf-8') as f:
                     self.fallback_translations = json.load(f)
-                logger.debug("Loaded fallback translations (English)")
+                logger.info("Loaded fallback translations (English)")
             else:
-                logger.warning("Fallback translation file not found")
+                logger.warning(f"Fallback translation file not found: {fallback_file}")
                 self.fallback_translations = {}
                 
         except Exception as e:
@@ -128,26 +159,51 @@ class LanguageManager:
     def get_available_languages(self) -> Dict[str, str]:
         """Gib verfügbare Sprachen zurück"""
         languages = {}
-        translations_dir = os.path.join("src", "i18n", "translations")
+        
+        # Check if we're running in a PyInstaller bundle
+        if getattr(sys, 'frozen', False):
+            # Running in PyInstaller bundle
+            base_path = sys._MEIPASS
+            translations_dir = os.path.join(base_path, "src", "i18n", "translations")
+        else:
+            # Running in normal Python environment - use absolute path
+            base_path = os.path.abspath(".")
+            translations_dir = os.path.join(base_path, "src", "i18n", "translations")
+        
+        logger.info(f"Scanning for translation files in: {translations_dir}")
         
         if os.path.exists(translations_dir):
             for file in os.listdir(translations_dir):
                 if file.endswith('.json'):
                     lang_code = file[:-5]  # Entferne .json
                     try:
-                        with open(os.path.join(translations_dir, file), 'r', encoding='utf-8') as f:
+                        file_path = os.path.join(translations_dir, file)
+                        with open(file_path, 'r', encoding='utf-8') as f:
                             lang_data = json.load(f)
                             languages[lang_code] = lang_data.get('language_name', lang_code.title())
+                            logger.info(f"Found language: {lang_code} - {languages[lang_code]}")
                     except Exception as e:
                         logger.error(f"Error loading language info for {lang_code}: {e}")
+        else:
+            logger.warning(f"Translations directory not found: {translations_dir}")
         
         return languages
     
     def initialize_from_settings(self) -> None:
         """Initialisiere Sprache aus den Settings"""
         saved_language = self.properties.get("dialogs.settings.language", "de")
+        logger.info(f"Language from settings: {saved_language}")
+        
+        # Try to set the saved language
         if saved_language != self.current_language:
+            logger.info(f"Setting language from settings: {saved_language}")
             self.set_language(saved_language)
+        else:
+            # Load current language if it's already set
+            logger.info(f"Loading current language: {self.current_language}")
+            self._load_language(self.current_language)
+            if self.current_language != "en":
+                self._load_fallback()
 
 
 # Global instance für einfachen Zugriff

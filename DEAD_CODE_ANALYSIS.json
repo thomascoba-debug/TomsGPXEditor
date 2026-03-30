@@ -1,0 +1,398 @@
+{
+  "metadata": {
+    "total_unused_functions": 50,
+    "total_unused_classes": 25,
+    "analysis_date": "2026-03-29"
+  },
+  "unused_functions": [
+    {
+      "name": "clear_all_entries",
+      "file": "W:/TomsGPXEditor/src\\application\\gpx_file_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "failing_handler",
+      "file": "W:/TomsGPXEditor/src\\application\\test_event_bus.py",
+      "type": "function"
+    },
+    {
+      "name": "working_handler",
+      "file": "W:/TomsGPXEditor/src\\application\\test_event_bus.py",
+      "type": "function"
+    },
+    {
+      "name": "clear_history",
+      "file": "W:/TomsGPXEditor/src\\application\\services\\command_service.py",
+      "type": "function"
+    },
+    {
+      "name": "analyze_gpx_file",
+      "file": "W:/TomsGPXEditor/src\\application\\services\\gpx_service.py",
+      "type": "function"
+    },
+    {
+      "name": "clear_recent_files",
+      "file": "W:/TomsGPXEditor/src\\application\\services\\recent_files_service.py",
+      "type": "function"
+    },
+    {
+      "name": "sync_with_session_files",
+      "file": "W:/TomsGPXEditor/src\\application\\services\\recent_files_service.py",
+      "type": "function"
+    },
+    {
+      "name": "build_app_path",
+      "file": "W:/TomsGPXEditor/src\\constants\\property_keys.py",
+      "type": "function"
+    },
+    {
+      "name": "build_dialogs_path",
+      "file": "W:/TomsGPXEditor/src\\constants\\property_keys.py",
+      "type": "function"
+    },
+    {
+      "name": "build_rendering_path",
+      "file": "W:/TomsGPXEditor/src\\constants\\property_keys.py",
+      "type": "function"
+    },
+    {
+      "name": "build_logging_path",
+      "file": "W:/TomsGPXEditor/src\\constants\\property_keys.py",
+      "type": "function"
+    },
+    {
+      "name": "handle_file_error",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\error_handler.py",
+      "type": "function"
+    },
+    {
+      "name": "decorator",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\shutdown_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "wrapper",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\shutdown_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "clear_cache",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\map_renderer_optimized.py",
+      "type": "function"
+    },
+    {
+      "name": "enable_validation",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\properties_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "force_validation",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\properties_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "data",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\properties_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "register_resource",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\resource_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "cleanup_all",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\resource_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "managed_file",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\resource_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "managed_temp_file",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\resource_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "shutdown_handler",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\shutdown_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "is_shutting_down",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\state_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "signal_handler",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\shutdown_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "state",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\state_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "register_state_change_callback",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\state_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "unregister_state_change_callback",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\state_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "is_ready",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\state_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "browse",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_logging_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "on_lines_change",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_logging_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "start_resize",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_logging_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "on_resize",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_logging_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "stop_resize",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_logging_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "clear_log_file",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_logging_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "ok",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_rendering_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "cancel",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\progress_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "validate_percent_input",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_marker_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "validate_percent_keypress",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_marker_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "on_enter",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_marker_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "on_leave",
+      "file": "W:/TomsGPXEditor/src\\ui\\dialogs\\settings_marker_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "unregister_shortcut",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\context_menu.py",
+      "type": "function"
+    },
+    {
+      "name": "clear_search",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\file_search.py",
+      "type": "function"
+    },
+    {
+      "name": "search_files",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\file_search.py",
+      "type": "function"
+    },
+    {
+      "name": "highlight_search_term",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\file_search.py",
+      "type": "function"
+    },
+    {
+      "name": "on_page_size_changed",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\pagination_manager.py",
+      "type": "function"
+    },
+    {
+      "name": "close_editor",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\gpx_table_editor.py",
+      "type": "function"
+    },
+    {
+      "name": "run_with_progress",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\progress_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "close_dialog",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\progress_dialog.py",
+      "type": "function"
+    },
+    {
+      "name": "worker",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\progress_dialog.py",
+      "type": "function"
+    }
+  ],
+  "unused_classes": [
+    {
+      "name": "DialogController",
+      "file": "W:/TomsGPXEditor/src\\application\\dialog_controller.py",
+      "type": "class"
+    },
+    {
+      "name": "FileVisibleChangedEvent",
+      "file": "W:/TomsGPXEditor/src\\application\\event_bus.py",
+      "type": "class"
+    },
+    {
+      "name": "FileColorChangedEvent",
+      "file": "W:/TomsGPXEditor/src\\application\\event_bus.py",
+      "type": "class"
+    },
+    {
+      "name": "ConversionCompletedEvent",
+      "file": "W:/TomsGPXEditor/src\\application\\event_bus.py",
+      "type": "class"
+    },
+    {
+      "name": "GPXFileManager",
+      "file": "W:/TomsGPXEditor/src\\application\\gpx_file_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "MapController",
+      "file": "W:/TomsGPXEditor/src\\application\\map_controller.py",
+      "type": "class"
+    },
+    {
+      "name": "TestEventBus",
+      "file": "W:/TomsGPXEditor/src\\application\\test_event_bus.py",
+      "type": "class"
+    },
+    {
+      "name": "TestGlobalEventBus",
+      "file": "W:/TomsGPXEditor/src\\application\\test_event_bus.py",
+      "type": "class"
+    },
+    {
+      "name": "TestEventTypes",
+      "file": "W:/TomsGPXEditor/src\\application\\test_event_bus.py",
+      "type": "class"
+    },
+    {
+      "name": "Command",
+      "file": "W:/TomsGPXEditor/src\\application\\services\\command_service.py",
+      "type": "class"
+    },
+    {
+      "name": "AppCore",
+      "file": "W:/TomsGPXEditor/src\\core\\app_core.py",
+      "type": "class"
+    },
+    {
+      "name": "TestGPXFile",
+      "file": "W:/TomsGPXEditor/src\\domain\\entities\\test_gpx_entities.py",
+      "type": "class"
+    },
+    {
+      "name": "TestGPXTrack",
+      "file": "W:/TomsGPXEditor/src\\domain\\entities\\test_gpx_entities.py",
+      "type": "class"
+    },
+    {
+      "name": "TestGPXTrackSegment",
+      "file": "W:/TomsGPXEditor/src\\domain\\entities\\test_gpx_entities.py",
+      "type": "class"
+    },
+    {
+      "name": "TestGPXRoute",
+      "file": "W:/TomsGPXEditor/src\\domain\\entities\\test_gpx_entities.py",
+      "type": "class"
+    },
+    {
+      "name": "PropertiesManager",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\properties_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "ResourceManager",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\resource_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "ShutdownPriority",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\shutdown_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "ShutdownManager",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\shutdown_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "StabilityManager",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\stability_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "ApplicationState",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\state_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "StateManager",
+      "file": "W:/TomsGPXEditor/src\\infrastructure\\state_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "SimpleEntry",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\file_entry_builder.py",
+      "type": "class"
+    },
+    {
+      "name": "PaginationManager",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\pagination_manager.py",
+      "type": "class"
+    },
+    {
+      "name": "ProgressDialog",
+      "file": "W:/TomsGPXEditor/src\\ui\\widgets\\progress_dialog.py",
+      "type": "class"
+    }
+  ],
+  "recommendations": [
+    {
+      "type": "functions",
+      "count": 50,
+      "action": "Review and remove truly unused functions"
+    },
+    {
+      "type": "classes",
+      "count": 25,
+      "action": "Review and remove truly unused classes"
+    }
+  ]
+}

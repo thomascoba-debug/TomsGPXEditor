@@ -28,49 +28,36 @@ logger = logging.getLogger(__name__)
 
 
 class DialogController:
-    """Zentrale Steuerung aller Dialoge"""
+    """Central control of all dialogs"""
     
     def __init__(self, parent, properties: AppProperties, save_callback: Callable):
         self.parent = parent
         self.properties = properties
         self.save_callback = save_callback
         
-        # Initialize language manager
-        from src.i18n import get_language_manager
-        self.language_manager = get_language_manager()
-    
-    @classmethod
-    def create_from_container(cls, container):
-        """Create DialogController from DI container"""
-        return cls(
-            parent=container.get('app'),
-            properties=container.get('properties'),
-            save_callback=container.get('app')._save_properties
-        )
-        
     def show_settings_dialog(self) -> None:
-        """Öffne den Settings-Dialog mit Sprachauswahl"""
+        """Open the settings dialog with language selection"""
         try:
-            # Erstelle ein temporäres Dialog-Fenster für Settings-Auswahl
+            # Create a temporary dialog window for settings selection
             settings_window = tk.Toplevel(self.parent)
-            settings_window.title(self.language_manager.t("menu.settings"))
+            settings_window.title(t("menu.settings"))
             settings_window.geometry("300x200")
             settings_window.resizable(False, False)
             
-            # Centeriere das Fenster
+            # Center the window
             settings_window.transient(self.parent)
             settings_window.grab_set()
             
             frame = ttk.Frame(settings_window)
             frame.pack(fill="both", expand=True, padx=20, pady=20)
             
-            # Settings-Auswahl
-            ttk.Label(frame, text=self.language_manager.t("menu.settings_choose"), font=("TkDefaultFont", 12, "bold")).pack(pady=(0, 10))
+            # Settings selection
+            ttk.Label(frame, text=t("menu.settings_choose"), font=("TkDefaultFont", 12, "bold")).pack(pady=(0, 10))
             
             # Logging Settings
             logging_btn = ttk.Button(
                 frame,
-                text=self.language_manager.t("menu.settings_items.logging"),
+                text=t("menu.settings_items.logging"),
                 command=lambda: (settings_window.destroy(), self.show_logging_dialog()),
                 width=20
             )
@@ -79,7 +66,7 @@ class DialogController:
             # Marker Settings
             marker_btn = ttk.Button(
                 frame,
-                text=self.language_manager.t("menu.settings_items.marker"),
+                text=t("menu.settings_items.marker"),
                 command=lambda: (settings_window.destroy(), self.show_marker_dialog()),
                 width=20
             )
@@ -88,7 +75,7 @@ class DialogController:
             # Rendering Settings
             rendering_btn = ttk.Button(
                 frame,
-                text=self.language_manager.t("menu.settings_items.rendering"),
+                text=t("menu.settings_items.rendering"),
                 command=lambda: (settings_window.destroy(), self.show_rendering_dialog()),
                 width=20
             )
@@ -97,7 +84,7 @@ class DialogController:
             # Properties Editor
             properties_btn = ttk.Button(
                 frame,
-                text=self.language_manager.t("menu.settings_items.properties"),
+                text=t("menu.settings_items.properties"),
                 command=lambda: (settings_window.destroy(), self.show_properties_editor_dialog()),
                 width=20
             )
@@ -106,7 +93,7 @@ class DialogController:
             # Language Settings
             language_btn = ttk.Button(
                 frame,
-                text=self.language_manager.t("menu.settings_items.language"),
+                text=t("menu.settings_items.language"),
                 command=lambda: (settings_window.destroy(), self.show_language_dialog()),
                 width=20
             )
@@ -118,7 +105,7 @@ class DialogController:
             # Close Button
             close_btn = ttk.Button(
                 frame,
-                text=self.language_manager.t("buttons.close"),
+                text=t("buttons.close"),
                 command=settings_window.destroy,
                 width=20
             )
@@ -234,28 +221,28 @@ class DialogController:
             settings_menu = tk.Menu(menubar, tearoff=0)
             
             # Logging
-            logging_label = self.language_manager.t("menu.settings_items.logging")
+            logging_label = t("menu.settings_items.logging")
             settings_menu.add_command(
                 label=logging_label,
                 command=self.show_logging_dialog
             )
             
             # Marker
-            marker_label = self.language_manager.t("menu.settings_items.marker")
+            marker_label = t("menu.settings_items.marker")
             settings_menu.add_command(
                 label=marker_label,
                 command=self.show_marker_dialog
             )
             
             # Rendering
-            rendering_label = self.language_manager.t("menu.settings_items.rendering")
+            rendering_label = t("menu.settings_items.rendering")
             settings_menu.add_command(
                 label=rendering_label,
                 command=self.show_rendering_dialog
             )
             
             # Properties Editor
-            properties_label = self.language_manager.t("menu.settings_items.properties")
+            properties_label = t("menu.settings_items.properties")
             settings_menu.add_command(
                 label=properties_label,
                 command=self.show_properties_editor_dialog
@@ -264,7 +251,7 @@ class DialogController:
             # Language (mit insert-Methode zum Testen)
             try:
                 # Teste insert-Methode anstelle von add_command
-                language_label = "Language / Sprache"
+                language_label = t("menu.settings_items.language")
                 
                 # Füge am Ende vor dem Separator ein
                 insert_position = settings_menu.index("end") - 1  # Vor dem Separator
@@ -281,7 +268,7 @@ class DialogController:
             settings_menu.add_separator()
             
             # Restore Clean Snapshot
-            restore_label = self.language_manager.t("menu.settings_items.restore_snapshot")
+            restore_label = t("menu.settings_items.restore_snapshot")
             settings_menu.add_command(
                 label=restore_label,
                 command=self._restore_clean_snapshot
@@ -289,7 +276,7 @@ class DialogController:
             
             # Prüfe Menu-Einträge vor dem Hinzufügen
             
-            settings_label = self.language_manager.t("menu.settings")
+            settings_label = t("menu.settings")
             menubar.add_cascade(label=settings_label, menu=settings_menu)
             
             # Prüfe Menu-Einträge nach dem Hinzufügen
@@ -315,7 +302,7 @@ class DialogController:
             
             # Open Track Table Editor
             edit_menu.add_command(
-                label="Open Track Table Editor",
+                label=t("menu.edit_open_table_editor"),
                 command=lambda: self._open_table_editor(self._get_current_entries())
             )
             # Store reference to menu and index for later updates
@@ -326,14 +313,14 @@ class DialogController:
             
             # Track to Route
             edit_menu.add_command(
-                label="Track to Route",
+                label=t("menu.edit_track_to_route"),
                 command=lambda: self.show_track_to_route_dialog(self._get_current_entries())
             )
             self.track_to_route_index = 2  # After separator
             
             # Route to Track
             edit_menu.add_command(
-                label="Route to Track", 
+                label=t("menu.edit_route_to_track"), 
                 command=lambda: self.show_route_to_track_dialog(self._get_current_entries())
             )
             self.route_to_track_index = 3
@@ -342,12 +329,12 @@ class DialogController:
             
             # Track Downsampling
             edit_menu.add_command(
-                label="Track Downsampling",
+                label=t("menu.edit_track_downsampling"),
                 command=lambda: self.show_track_downsampling_dialog(self._get_current_entries())
             )
             self.track_downsampling_index = 5  # After second separator
             
-            menubar.add_cascade(label="Edit", menu=edit_menu)
+            menubar.add_cascade(label=t("menu.edit"), menu=edit_menu)
             logger.debug("Edit menu created successfully")
             
         except Exception as e:
@@ -433,7 +420,8 @@ class DialogController:
                     self.parent,
                     document,
                     self.save_callback,
-                    lambda doc: gpx_service.save_document(doc)
+                    lambda doc: gpx_service.save_document(doc),
+                    self.properties
                 )
                 logger.debug(f"Track table editor opened for: {selected.get_path()}")
                 

@@ -5,8 +5,11 @@ Eigenständiger Dialog für das Downsampling von GPX-Tracks
 """
 
 import tkinter as tk
+from src.i18n import t
 from tkinter import ttk, filedialog, messagebox
 from src.ui.base import PersistentDialog
+from src.ui.utils.dialog_utils import create_tooltip
+from src.constants.property_keys import build_conversion_path
 import os
 import logging
 import gpxpy
@@ -20,7 +23,7 @@ class TrackDownsamplingDialog(PersistentDialog):
     def __init__(self, parent, entries, properties, modal=False):
         super().__init__(parent, properties, "TrackDownsamplingDialog", modal=modal)
         
-        self.title("Track Downsampling")
+        self.title(t("menu.edit_track_downsampling"))
         self.entries = entries
         self.properties = properties
         self.selected_files = {}  # Track selected files
@@ -157,38 +160,43 @@ class TrackDownsamplingDialog(PersistentDialog):
         # Select All button
         select_all_button = ttk.Button(
             button_frame, 
-            text="Select All",
+            text=t("buttons.select_all"),
             command=self._select_all
         )
         select_all_button.pack(side="left", padx=(0, 5))
+        create_tooltip(select_all_button, t("tooltips.select_all"))
         
         # Deselect All button
         deselect_all_button = ttk.Button(
             button_frame, 
-            text="Deselect All",
+            text=t("buttons.deselect_all"),
             command=self._deselect_all
         )
         deselect_all_button.pack(side="left", padx=(0, 5))
+        create_tooltip(deselect_all_button, t("tooltips.deselect_all"))
         
         # Remove button
         remove_button = ttk.Button(
             button_frame, 
-            text="Remove Selected",
+            text=t("buttons.delete"),
             command=self._remove_selected
         )
         remove_button.pack(side="left", padx=(0, 5))
+        create_tooltip(remove_button, t("tooltips.delete_selected"))
         
         # Downsample button
         downsample_button = ttk.Button(
             button_frame, 
-            text="Downsample Selected Files",
+            text=t("buttons.convert"),
             command=self._downsample_files
         )
         downsample_button.pack(side="left", padx=(0, 5))
+        create_tooltip(downsample_button, t("tooltips.convert"))
         
         # Close button
-        close_button = ttk.Button(button_frame, text="Close", command=self._on_close)
+        close_button = ttk.Button(button_frame, text=t("buttons.cancel"), command=self._on_close)
         close_button.pack(side="right")
+        create_tooltip(close_button, t("tooltips.cancel"))
         
         # Store button references
         self.select_all_button = select_all_button
@@ -217,13 +225,15 @@ class TrackDownsamplingDialog(PersistentDialog):
     def _load_settings(self):
         """Load saved settings"""
         try:
-            points_per_100km = self.properties.get("downsample_points_per_100km", 20)
+            # Use structured property paths
+            downsample_path = build_conversion_path("downsample")
+            points_per_100km = self.properties.get(f"{downsample_path}.points_per_100km", 20)
             self.points_var.set(points_per_100km)
             
-            keep_waypoints = self.properties.get("downsample_keep_waypoints", True)
+            keep_waypoints = self.properties.get(f"{downsample_path}.keep_waypoints", True)
             self.keep_waypoints_var.set(keep_waypoints)
             
-            overwrite_original = self.properties.get("downsample_overwrite_original", False)
+            overwrite_original = self.properties.get(f"{downsample_path}.overwrite_original", False)
             self.overwrite_original_var.set(overwrite_original)
             
             logger.debug(f"Loaded downsampling settings: points={points_per_100km}, keep_waypoints={keep_waypoints}, overwrite={overwrite_original}")
@@ -234,9 +244,11 @@ class TrackDownsamplingDialog(PersistentDialog):
     def _save_settings(self):
         """Save current settings"""
         try:
-            self.properties.set("downsample_points_per_100km", self.points_var.get())
-            self.properties.set("downsample_keep_waypoints", self.keep_waypoints_var.get())
-            self.properties.set("downsample_overwrite_original", self.overwrite_original_var.get())
+            # Use structured property paths
+            downsample_path = build_conversion_path("downsample")
+            self.properties.set(f"{downsample_path}.points_per_100km", self.points_var.get())
+            self.properties.set(f"{downsample_path}.keep_waypoints", self.keep_waypoints_var.get())
+            self.properties.set(f"{downsample_path}.overwrite_original", self.overwrite_original_var.get())
             
             logger.debug(f"Saved downsampling settings: points={self.points_var.get()}, keep_waypoints={self.keep_waypoints_var.get()}, overwrite={self.overwrite_original_var.get()}")
             
@@ -260,14 +272,17 @@ class TrackDownsamplingDialog(PersistentDialog):
         selected_files = [path for path, var in self.selected_files.items() if var.get()]
         
         if not selected_files:
-            messagebox.showwarning("No Selection", "Please select at least one file to remove.")
+            messagebox.showwarning(
+                t("messages.no_selection"),
+                t("messages.please_select_file")
+            )
             return
         
         # Confirm removal
         result = messagebox.askyesno(
-            "Remove Files",
-            f"Remove {len(selected_files)} file(s) from the list?\n\n"
-            "This will not delete the actual files, just remove them from this dialog.",
+            t("buttons.delete"),
+            f"{t('messages.remove_files_confirm', count=len(selected_files))}\n\n"
+            f"{t('messages.remove_files_info')}",
             icon="question"
         )
         
@@ -398,7 +413,7 @@ class TrackDownsamplingDialog(PersistentDialog):
                         
                         save_path = filedialog.asksaveasfilename(
                             parent=self,
-                            title="Save Downsampled GPX File",
+                            title=t("dialogs.save_downsampled_file"),
                             initialdir=original_dir,
                             initialfile=suggested_name,
                             defaultextension=".gpx",

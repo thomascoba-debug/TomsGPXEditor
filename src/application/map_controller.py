@@ -14,7 +14,6 @@ from tkintermapview import TkinterMapView
 
 from src.infrastructure.repositories.properties_repository import AppProperties
 from src.infrastructure.map_renderer import GPXCache, render_tracks_on_map
-from src.ui.widgets.file_entry import FileEntry
 
 logger = logging.getLogger(__name__)
 
@@ -25,16 +24,8 @@ class MapController:
     def __init__(self, map_widget: TkinterMapView, properties: AppProperties):
         self.map_widget = map_widget
         self.properties = properties
-    
-    @classmethod
-    def create_from_container(cls, container):
-        """Create MapController from DI container"""
-        return cls(
-            map_widget=container.get('map_widget'),
-            properties=container.get('properties')
-        )
         
-    def update_map(self, entries: List[FileEntry]) -> None:
+    def update_map(self, entries) -> None:
         """Aktualisiere die Karte mit allen Einträgen"""
         try:
             logger.debug(f"Updating map with {len(entries)} entries")
@@ -85,7 +76,7 @@ class MapController:
             logger.error(f"Error updating map: {e}", exc_info=True)
             # Don't re-raise, just log and continue
     
-    def update_visibility_only(self, entries: List[FileEntry]) -> None:
+    def update_visibility_only(self, entries) -> None:
         """Schnelle Sichtbarkeits-Update ohne kompletten Neuaufbau"""
         try:
             logger.debug(f"Fast visibility update with {len(entries)} entries")
@@ -103,7 +94,7 @@ class MapController:
         except Exception as e:
             logger.error(f"Error updating visibility: {e}", exc_info=True)
     
-    def fit_to_gpx(self, entries: List[FileEntry]) -> None:
+    def fit_to_gpx(self, entries) -> None:
         """Zentriere die Karte auf alle sichtbaren GPX-Daten"""
         try:
             all_coords = []
@@ -125,7 +116,7 @@ class MapController:
             logger.error(f"Error fitting map to GPX: {e}", exc_info=True)
             self._set_default_position()
     
-    def _is_entry_visible(self, entry: FileEntry) -> bool:
+    def _is_entry_visible(self, entry) -> bool:
         """Prüfe ob ein Eintrag sichtbar ist"""
         try:
             # Prüfe neuen Pfad zuerst
@@ -146,7 +137,7 @@ class MapController:
             logger.warning(f"Error checking visibility for {entry.get_path()}: {e}")
             return True
     
-    def _get_entry_coordinates(self, entry: FileEntry) -> List[Tuple[float, float]]:
+    def _get_entry_coordinates(self, entry) -> List[Tuple[float, float]]:
         """Hole alle Koordinaten eines Eintrags"""
         coords = []
         

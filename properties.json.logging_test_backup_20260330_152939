@@ -1,0 +1,101 @@
+{
+  "app": {
+    "main_window": {
+      "geometry": "1764x951+0+0"
+    },
+    "recent_files": {
+      "test_file1.gpx": 1234567890,
+      "test_file2.gpx": 1234567891,
+      "test_file3.gpx": 1234567892,
+      "test_file4.gpx": 1234567893
+    }
+  },
+  "dialogs": {
+    "geometry": {
+      "MarkerSettingsDialog": "333x659+547+52",
+      "LoggingSettingsDialog": "681x348+559+57",
+      "RenderingSettingsDialog": "208x224+548+54",
+      "PropertiesEditorDialog": "1360x784+308+54",
+      "TrackToRouteDialog": "719x510+547+52",
+      "RouteToTrackDialog": "607x462+549+53",
+      "TrackDownsamplingDialog": "695x465+547+53",
+      "LanguageSettingsDialog": "222x316+547+55",
+      "GPXTableEditor": "951x620+547+62"
+    },
+    "settings": {
+      "logging": {
+        "level": "WARNING",
+        "file": "app.log",
+        "display_lines": 100
+      },
+      "rendering": {
+        "track_line": {
+          "enabled": true,
+          "width": 10
+        },
+        "route_line": {
+          "enabled": true,
+          "width": 8
+        }
+      },
+      "conversion": {
+        "track_to_route": {
+          "points_per_100km": 100
+        },
+        "route_to_track": {
+          "points_per_100km": 45
+        },
+        "downsample": {
+          "points_per_100km": 20,
+          "keep_waypoints": true,
+          "overwrite_original": false
+        }
+      },
+      "language": "en"
+    }
+  },
+  "files": {
+    "session": {
+      "1": {
+        "path": "W:/Navigation/Touren/2026/GW_Thulba_GW_240km.gpx",
+        "settings": {
+          "visible": false,
+          "editable": false,
+          "color": "#00ff80"
+        }
+      },
+      "2": {
+        "path": "W:/Navigation/Touren/2026/GW_BS_GW_196km.gpx",
+        "settings": {
+          "visible": true,
+          "editable": false,
+          "color": "#ff0000"
+        }
+      },
+      "3": {
+        "path": "W:/Navigation/Touren/test/GW01.gpx",
+        "settings": {
+          "visible": false,
+          "editable": false,
+          "color": "#ffff80"
+        }
+      },
+      "4": {
+        "path": "W:/Navigation/Touren/test/Iseo - Wenns.gpx",
+        "settings": {
+          "visible": false,
+          "editable": false,
+          "color": "#008000"
+        }
+      },
+      "5": {
+        "path": "W:/Navigation/Touren/test/bft Autowäsche, Obernburg a.Main - Sölden.gpx",
+        "settings": {
+          "visible": false,
+          "editable": true,
+          "color": "#400080"
+        }
+      }
+    }
+  }
+}

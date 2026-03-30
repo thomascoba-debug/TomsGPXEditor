@@ -10,7 +10,8 @@ This dialog provides:
 import tkinter as tk
 from tkinter import ttk
 from src.ui.base import PersistentDialog
-from src.i18n.language_manager import get_language_manager, t
+from src.i18n import t, get_language_manager
+from src.ui.utils.dialog_utils import create_tooltip
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,9 +24,9 @@ class LanguageSettingsDialog(PersistentDialog):
         super().__init__(parent, properties, "LanguageSettingsDialog", modal=modal)
         
         self.save_callback = save_callback
-        self.language_manager = get_language_manager()
+        self.language_manager = get_language_manager()  # Only for language management
         
-        self.title(self.language_manager.t("menu.settings_items.language"))
+        self.title(t("menu.settings_items.language"))
         
         # Get current language
         self.current_language = tk.StringVar(value=self.language_manager.get_language())
@@ -53,6 +54,7 @@ class LanguageSettingsDialog(PersistentDialog):
             width=20
         )
         self.language_combo.pack(padx=5, pady=5)
+        create_tooltip(self.language_combo, self.language_manager.t("tooltips.settings_language"))
         
         # Populate with available languages
         self._populate_languages()

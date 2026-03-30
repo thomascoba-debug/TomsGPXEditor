@@ -1,3 +1,6 @@
+
+from src.constants.property_keys import SESSION_FILES
+from src.constants.property_keys import APP_RECENT_FILES
 """
 Recent files management based on session files with timestamp tracking
 """
@@ -22,9 +25,9 @@ class RecentFilesFromSessionManager:
     
     def _load_recent_files_with_timestamps(self) -> deque:
         """Load recent files from session_files with timestamp tracking"""
-        session_files = self.properties.get("session_files", {})
+        session_files = self.properties.get('files.session') or self.properties.data.get('files', {}).get('session', {})
         # Use the nested path in app dict
-        recent_files_data = self.properties.get("app.recent_files_timestamps", {})
+        recent_files_data = self.properties.get(APP_RECENT_FILES, {})
         
         # Extract file paths with timestamps
         file_entries = []
@@ -60,7 +63,7 @@ class RecentFilesFromSessionManager:
             recent_files_data[file_path] = time.time()
         
         # Use the nested path in app dict
-        self.properties.set("app.recent_files_timestamps", recent_files_data)
+        self.properties.set(APP_RECENT_FILES, recent_files_data)
         self.properties.save()
     
     def add_file(self, file_path: str) -> None:
@@ -115,7 +118,7 @@ class RecentFilesFromSessionManager:
         """Clear all recent files"""
         self.recent_files.clear()
         # Use the nested path in app dict
-        self.properties.remove("app.recent_files_timestamps")
+        self.properties.remove(APP_RECENT_FILES)
         self.properties.save()
         logger.debug("Cleared all recent files")
     
@@ -135,10 +138,10 @@ class RecentFilesFromSessionManager:
         """Sync recent files with current session files (maintains timestamps)"""
         # Load current timestamps
         # Use the nested path in app dict
-        current_timestamps = self.properties.get("app.recent_files_timestamps", {})
+        current_timestamps = self.properties.get(APP_RECENT_FILES, {})
         
         # Get current session files
-        session_files = self.properties.get("session_files", {})
+        session_files = self.properties.get('files.session') or self.properties.data.get('files', {}).get('session', {})
         current_session_paths = set()
         
         for ref_num, file_data in session_files.items():
@@ -161,7 +164,7 @@ class RecentFilesFromSessionManager:
         
         # Save updated timestamps
         # Use the nested path in app dict
-        self.properties.set("app.recent_files_timestamps", current_timestamps)
+        self.properties.set(APP_RECENT_FILES, current_timestamps)
         self.properties.save()
         
         logger.debug(f"Synced recent files with session files: {len(self.recent_files)} files")
