@@ -64,11 +64,11 @@ def render_tracks_on_map(map_widget, entries, properties):
     except Exception:
         pass
 
-    downsample = properties.get("downsample_step", 1)
-    marker_enabled = properties.get("marker_enabled", True)
-    marker_step = properties.get("marker_step", 20)
-    marker_icon_path = properties.get("marker_icon_path", "")
-    marker_icon_size = properties.get("marker_icon_size", [32, 32])
+    downsample = properties.get("dialogs.settings.rendering.downsampling.step", 1)
+    marker_enabled = properties.get("dialogs.settings.marker.enabled", True)
+    marker_step = properties.get("dialogs.settings.marker.waypoints.percent", 20)  # Use waypoints percent as step
+    marker_icon_path = properties.get("dialogs.settings.marker.icon_path", "")
+    marker_icon_size = properties.get("dialogs.settings.marker.icon_size", [32, 32])
 
     for entry in entries:
 

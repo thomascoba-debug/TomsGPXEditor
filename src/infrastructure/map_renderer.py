@@ -142,23 +142,23 @@ def _add_marker(map_widget, latitude, longitude, text, icon_path, icon_size, col
 
 def _render_markers(map_widget, gpx_data, properties):
     """Render markers for waypoints, track points, and route points"""
-    if not properties.get('marker_enabled', True):
+    if not properties.get('dialogs.settings.marker.enabled', True):
         return
         
     # Separate Einstellungen für jeden Punkt-Typ
-    waypoints_enabled = properties.get('dialogs.settings.rendering.waypoints.enabled', True)
-    trackpoints_enabled = properties.get('dialogs.settings.rendering.trackpoints.enabled', True)
-    routepoints_enabled = properties.get('dialogs.settings.rendering.routepoints.enabled', True)
+    waypoints_enabled = properties.get('dialogs.settings.marker.waypoints.enabled', True)
+    trackpoints_enabled = properties.get('dialogs.settings.marker.trackpoints.enabled', True)
+    routepoints_enabled = properties.get('dialogs.settings.marker.routepoints.enabled', True)
     
     # % Werte aus Properties
-    waypoints_percent = properties.get('dialogs.settings.rendering.waypoints.percent', 100)
-    trackpoints_percent = properties.get('dialogs.settings.rendering.trackpoints.percent', 50)
-    routepoints_percent = properties.get('dialogs.settings.rendering.routepoints.percent', 50)
+    waypoints_percent = properties.get('dialogs.settings.marker.waypoints.percent', 100)
+    trackpoints_percent = properties.get('dialogs.settings.marker.trackpoints.percent', 50)
+    routepoints_percent = properties.get('dialogs.settings.marker.routepoints.percent', 50)
     
     # Text-Enabled Einstellungen
-    waypoints_text_enabled = properties.get('dialogs.settings.rendering.waypoints.text_enabled', True)
-    trackpoints_text_enabled = properties.get('dialogs.settings.rendering.trackpoints.text_enabled', True)
-    routepoints_text_enabled = properties.get('dialogs.settings.rendering.routepoints.text_enabled', True)
+    waypoints_text_enabled = properties.get('dialogs.settings.marker.waypoints.text_enabled', True)
+    trackpoints_text_enabled = properties.get('dialogs.settings.marker.trackpoints.text_enabled', True)
+    routepoints_text_enabled = properties.get('dialogs.settings.marker.routepoints.text_enabled', True)
     
     # Step aus % berechnen
     def percent_to_step(percent):
@@ -174,17 +174,17 @@ def _render_markers(map_widget, gpx_data, properties):
     routepoints_step = percent_to_step(routepoints_percent)
     
     # Separate Farben für jeden Punkt-Typ (3 Farben pro Typ)
-    waypoints_color_circle = properties.get('dialogs.settings.rendering.waypoints.color_circle', "#9B261E")
-    waypoints_color_outside = properties.get('dialogs.settings.rendering.waypoints.color_outside', "#C5542D")
-    waypoints_color_text = properties.get('dialogs.settings.rendering.waypoints.color_text', "#652A22")
+    waypoints_color_circle = properties.get('dialogs.settings.marker.waypoints.color_circle', "#9B261E")
+    waypoints_color_outside = properties.get('dialogs.settings.marker.waypoints.color_outside', "#C5542D")
+    waypoints_color_text = properties.get('dialogs.settings.marker.waypoints.color_text', "#652A22")
     
-    trackpoints_color_circle = properties.get('dialogs.settings.rendering.trackpoints.color_circle', "#4169E1")
-    trackpoints_color_outside = properties.get('dialogs.settings.rendering.trackpoints.color_outside', "#6495ED")
-    trackpoints_color_text = properties.get('dialogs.settings.rendering.trackpoints.color_text', "#FFFFFF")
+    trackpoints_color_circle = properties.get('dialogs.settings.marker.trackpoints.color_circle', "#4169E1")
+    trackpoints_color_outside = properties.get('dialogs.settings.marker.trackpoints.color_outside', "#6495ED")
+    trackpoints_color_text = properties.get('dialogs.settings.marker.trackpoints.color_text', "#FFFFFF")
     
-    routepoints_color_circle = properties.get('dialogs.settings.rendering.routepoints.color_circle', "#228B22")
-    routepoints_color_outside = properties.get('dialogs.settings.rendering.routepoints.color_outside', "#32CD32")
-    routepoints_color_text = properties.get('dialogs.settings.rendering.routepoints.color_text', "#FFFFFF")
+    routepoints_color_circle = properties.get('dialogs.settings.marker.routepoints.color_circle', "#228B22")
+    routepoints_color_outside = properties.get('dialogs.settings.marker.routepoints.color_outside', "#32CD32")
+    routepoints_color_text = properties.get('dialogs.settings.marker.routepoints.color_text', "#FFFFFF")
     
     # Render waypoints
     if waypoints_enabled and gpx_data.waypoints:
